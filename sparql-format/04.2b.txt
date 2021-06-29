@@ -1,0 +1,10 @@
+#!/usr/bin/env spang2
+# @option --fmt
+
+BASE <http://example.org/book/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?title
+WHERE {
+  <book1> dc:title ?title .
+}

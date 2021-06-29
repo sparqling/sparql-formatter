@@ -1,0 +1,13 @@
+#!/usr/bin/env spang2
+# @option --fmt
+
+PREFIX : <http://books.example/>
+
+SELECT (sum(?lprice) AS ?totalPrice)
+WHERE {
+  ?org :affiliates ?auth .
+  ?auth :writesBook ?book .
+  ?book :price ?lprice .
+}
+GROUP BY ?org
+HAVING (sum(?lprice) > 10)

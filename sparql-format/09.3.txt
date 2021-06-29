@@ -1,0 +1,9 @@
+#!/usr/bin/env spang2
+# @option --fmt
+
+PREFIX : <http://example/>
+
+SELECT *
+WHERE {
+  ?s :item/:price ?x .
+}

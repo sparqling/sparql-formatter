@@ -1,0 +1,13 @@
+#!/usr/bin/env spang2
+# @option --fmt
+
+PREFIX : <http://example/>
+
+SELECT *
+WHERE {
+  ?x :p ?n .
+  MINUS {
+    ?x :q ?m .
+    FILTER (?n = ?m)
+  }
+}
