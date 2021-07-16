@@ -1,4 +1,4 @@
-# SPARQL 1.1
+# SPARQL 1.1 formatter
 
 ## SPARQL query examples
 
