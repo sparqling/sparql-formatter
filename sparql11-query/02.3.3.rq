@@ -1,4 +1,1 @@
-#!/usr/bin/env spang2
-# @option --fmt
-
 SELECT ?v WHERE { ?v ?p "abc"^^<http://example.org/datatype#specialDatatype> }

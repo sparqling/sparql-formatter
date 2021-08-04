@@ -1,6 +1,3 @@
-#!/usr/bin/env spang2
-# @option --fmt
-
 SELECT ?x
 WHERE {
 }

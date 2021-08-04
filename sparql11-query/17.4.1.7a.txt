@@ -1,6 +1,3 @@
-#!/usr/bin/env spang2
-# @option --fmt
-
 PREFIX a: <http://www.w3.org/2000/10/annotation-ns#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>

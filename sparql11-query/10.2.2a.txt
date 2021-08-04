@@ -1,6 +1,3 @@
-#!/usr/bin/env spang2
-# @option --fmt
-
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX : <http://example.org/book/>
 PREFIX ns: <http://example.org/ns#>

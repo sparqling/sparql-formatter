@@ -1,6 +1,3 @@
-#!/usr/bin/env spang2
-# @option --fmt
-
 PREFIX : <http://data.example/>
 SELECT (AVG(?size) AS ?asize)
 WHERE {

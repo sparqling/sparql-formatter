@@ -1,6 +1,3 @@
-#!/usr/bin/env spang2
-# @option --fmt
-
 PREFIX : <http://example.com/data/#>
 
 SELECT ?g (AVG(?p) AS ?avg) ((MIN(?p) + MAX(?p)) / 2 AS ?c)
