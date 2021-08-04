@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset='utf-8'>
-    <title>Sparql Formatter</title>
+    <title>SPARQL 1.1 formatter</title>
     <link crossorigin='anonymous' href='https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
           integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' rel='stylesheet'>
     <link href='./pages/lib/codemirror/codemirror.css' rel='stylesheet'>
@@ -85,11 +85,11 @@
     <nav class='navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top' id='header'>
         <div class='mr-5' style='color: white'>
             <h3>
-                Sparql Formatter
+                SPARQL 1.1 formatter
             </h3>
         </div>
         <select id="query-select">
-            <option>Select query...</option>
+            <option>Examples</option>
             <option>02.1.rq</option>
             <option>02.2.rq</option>
             <option>02.3.1.rq</option>
@@ -186,8 +186,7 @@
     <div id='main-area'>
         <div id='input-area'>
             <textarea id='sparql-input' style='height: 100%; width: 100%;'>
-SELECT * WHERE { ?s ?p ?o. } LIMIT 10
-            </textarea>
+SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
         </div>
         <div id='formatted-area'>
             <textarea id='formatted-input' style='height: 100%; width: 100%;'>
@@ -195,8 +194,7 @@ SELECT *
 WHERE {
   ?s ?p ?o .
 }
-LIMIT 10
-            </textarea>
+LIMIT 10</textarea>
         </div>
     </div>
 </div>
