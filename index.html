@@ -7,6 +7,7 @@
           integrity='sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh' rel='stylesheet'>
     <link href='./pages/lib/codemirror/codemirror.css' rel='stylesheet'>
     <link href='./pages/lib/monokai.css' rel='stylesheet'>
+    <link href='./pages/style.css' rel='stylesheet'>
     <script src='./pages/lib/spfmt_bundled.js'></script>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' rel='stylesheet'>
     <script src='./pages/lib/codemirror/codemirror.js'></script>
@@ -19,69 +20,6 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js'></script>
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
-    <style>
-     body {
-         font-family: Baskerville;
-     }
-
-     #input-area {
-         left: 0;
-         width: 48%;
-     }
-
-     #formatted-area {
-         flex: 1;
-         width: 48%;
-         height: 100%
-     }
-
-     .ui-resizable-handle {
-         background: #cccccc;
-     }
-
-     #main-area {
-         display: inline-flex;
-         width: 100%;
-         height: calc(100vh - 60px);
-     }
-
-
-     span .highlighted {
-         background: rgba(200, 200, 0, 0.5);
-     }
-
-     span .syntax-error {
-         background: rgba(255, 0, 0, 0.7);
-         border-bottom: red;
-     }
-
-     span .syntax-error-line {
-         background: rgba(255, 0, 0, 0.4);
-     }
-
-     #header {
-         background: #2c5f85 !important;
-         height: 60px;
-     }
-
-     .toast-top-right {
-         top: 70px;
-     }
-
-     .dropdown-toggle {
-         -webkit-appearance: none;
-         border-radius: 0;
-     }
-
-     .CodeMirror-selected {
-         background-color: rgba(200, 200, 100, 0.5) !important;
-     }
-
-     .CodeMirror {
-         font-family: 'Courier', monospace;
-         font-size: 16px;
-     }
-    </style>
 </head>
 <body>
 <div id='app'>
