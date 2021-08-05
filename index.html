@@ -8,7 +8,6 @@
     <link href='./pages/lib/codemirror/codemirror.css' rel='stylesheet'>
     <link href='./pages/lib/monokai.css' rel='stylesheet'>
     <link href='./pages/style.css' rel='stylesheet'>
-    <script src='./pages/lib/spfmt_bundled.js'></script>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' rel='stylesheet'>
     <script src='./pages/lib/codemirror/codemirror.js'></script>
     <script src='./pages/lib/codemirror/simple.js'></script>
@@ -22,155 +21,107 @@
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
 </head>
 <body>
-<div id='app'>
-    <nav class='navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top' id='header'>
-        <div class='mr-5' style='color: white'>
-            <h3>
-                SPARQL 1.1 formatter
-            </h3>
-        </div>
-        <select id="query-select">
-            <option>Examples</option>
-            <option>02.1.rq</option>
-            <option>02.2.rq</option>
-            <option>02.3.1.rq</option>
-            <option>02.3.1a.rq</option>
-            <option>02.3.2.rq</option>
-            <option>02.3.3.rq</option>
-            <option>02.4.rq</option>
-            <option>02.5.rq</option>
-            <option>02.5a.rq</option>
-            <option>02.6.rq</option>
-            <option>03.1.rq</option>
-            <option>03.1a.rq</option>
-            <option>03.2.rq</option>
-            <option>04.2.rq</option>
-            <option>04.2a.rq</option>
-            <option>04.2b.rq</option>
-            <option>05.2.1.rq</option>
-            <option>05.2.rq</option>
-            <option>05.2a.rq</option>
-            <option>06.1.rq</option>
-            <option>06.2.rq</option>
-            <option>06.3.rq</option>
-            <option>07.rq</option>
-            <option>07a.rq</option>
-            <option>07b.rq</option>
-            <option>08.1.1.rq</option>
-            <option>08.1.2.rq</option>
-            <option>08.2.rq</option>
-            <option>08.3.1.rq</option>
-            <option>08.3.1a.rq</option>
-            <option>08.3.2.rq</option>
-            <option>08.3.2a.rq</option>
-            <option>08.3.3.rq</option>
-            <option>08.3.3a.rq</option>
-            <option>09.3.rq</option>
-            <option>09.3a.rq</option>
-            <option>09.3b.rq</option>
-            <option>09.4.rq</option>
-            <option>09.4a.rq</option>
-            <option>10.1.rq</option>
-            <option>10.1a.rq</option>
-            <option>10.2.2.rq</option>
-            <option>10.2.2a.rq</option>
-            <option>10.2.2b.rq</option>
-            <option>11.1.rq</option>
-            <option>11.2.rq</option>
-            <option>11.3.rq</option>
-            <option>11.4.rq</option>
-            <option>11.5.rq</option>
-            <option>12.rq</option>
-            <option>15.2.rq</option>
-            <option>15.3.1.rq</option>
-            <option>15.3.2.rq</option>
-            <option>15.3.rq</option>
-            <option>15.4.rq</option>
-            <option>15.5.rq</option>
-            <option>16.1.1.rq</option>
-            <option>16.1.2.rq</option>
-            <option>16.1.2a.rq</option>
-            <option>17.4.1.1.rq</option>
-            <option>17.4.1.1a.rq</option>
-            <option>17.4.1.7.rq</option>
-            <option>17.4.1.7a.rq</option>
-            <option>17.4.1.8.rq</option>
-            <option>17.4.1.8a.rq</option>
-            <option>17.4.2.1.rq</option>
-            <option>17.4.2.2.rq</option>
-            <option>17.4.2.3.rq</option>
-            <option>17.4.2.5.rq</option>
-            <option>17.4.2.6.rq</option>
-            <option>17.4.2.7.rq</option>
-            <option>17.4.3.13.rq</option>
-            <option>17.4.3.13a.rq</option>
-            <option>17.4.3.14.rq</option>
-        </select>
-    </nav>
-    <div id='main-area'>
-        <div id='input-area'>
-            <textarea id='sparql-input' style='height: 100%; width: 100%;'>
+    <div id='app'>
+        <nav class='navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top' id='header'>
+            <div class='mr-5' style='color: white'>
+                <h3>
+                    SPARQL 1.1 formatter
+                </h3>
+            </div>
+            <select id="query-select">
+                <option>Examples</option>
+                <option>02.1.rq</option>
+                <option>02.2.rq</option>
+                <option>02.3.1.rq</option>
+                <option>02.3.1a.rq</option>
+                <option>02.3.2.rq</option>
+                <option>02.3.3.rq</option>
+                <option>02.4.rq</option>
+                <option>02.5.rq</option>
+                <option>02.5a.rq</option>
+                <option>02.6.rq</option>
+                <option>03.1.rq</option>
+                <option>03.1a.rq</option>
+                <option>03.2.rq</option>
+                <option>04.2.rq</option>
+                <option>04.2a.rq</option>
+                <option>04.2b.rq</option>
+                <option>05.2.1.rq</option>
+                <option>05.2.rq</option>
+                <option>05.2a.rq</option>
+                <option>06.1.rq</option>
+                <option>06.2.rq</option>
+                <option>06.3.rq</option>
+                <option>07.rq</option>
+                <option>07a.rq</option>
+                <option>07b.rq</option>
+                <option>08.1.1.rq</option>
+                <option>08.1.2.rq</option>
+                <option>08.2.rq</option>
+                <option>08.3.1.rq</option>
+                <option>08.3.1a.rq</option>
+                <option>08.3.2.rq</option>
+                <option>08.3.2a.rq</option>
+                <option>08.3.3.rq</option>
+                <option>08.3.3a.rq</option>
+                <option>09.3.rq</option>
+                <option>09.3a.rq</option>
+                <option>09.3b.rq</option>
+                <option>09.4.rq</option>
+                <option>09.4a.rq</option>
+                <option>10.1.rq</option>
+                <option>10.1a.rq</option>
+                <option>10.2.2.rq</option>
+                <option>10.2.2a.rq</option>
+                <option>10.2.2b.rq</option>
+                <option>11.1.rq</option>
+                <option>11.2.rq</option>
+                <option>11.3.rq</option>
+                <option>11.4.rq</option>
+                <option>11.5.rq</option>
+                <option>12.rq</option>
+                <option>15.2.rq</option>
+                <option>15.3.1.rq</option>
+                <option>15.3.2.rq</option>
+                <option>15.3.rq</option>
+                <option>15.4.rq</option>
+                <option>15.5.rq</option>
+                <option>16.1.1.rq</option>
+                <option>16.1.2.rq</option>
+                <option>16.1.2a.rq</option>
+                <option>17.4.1.1.rq</option>
+                <option>17.4.1.1a.rq</option>
+                <option>17.4.1.7.rq</option>
+                <option>17.4.1.7a.rq</option>
+                <option>17.4.1.8.rq</option>
+                <option>17.4.1.8a.rq</option>
+                <option>17.4.2.1.rq</option>
+                <option>17.4.2.2.rq</option>
+                <option>17.4.2.3.rq</option>
+                <option>17.4.2.5.rq</option>
+                <option>17.4.2.6.rq</option>
+                <option>17.4.2.7.rq</option>
+                <option>17.4.3.13.rq</option>
+                <option>17.4.3.13a.rq</option>
+                <option>17.4.3.14.rq</option>
+            </select>
+        </nav>
+        <div id='main-area'>
+            <div id='input-area'>
+                <textarea id='sparql-input' style='height: 100%; width: 100%;'>
 SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
-        </div>
-        <div id='formatted-area'>
-            <textarea id='formatted-input' style='height: 100%; width: 100%;'>
+            </div>
+            <div id='formatted-area'>
+                <textarea id='formatted-input' style='height: 100%; width: 100%;'>
 SELECT *
 WHERE {
   ?s ?p ?o .
 }
 LIMIT 10</textarea>
+            </div>
         </div>
     </div>
-</div>
-<script>
-
- const q = document.querySelector.bind(document);
- let byProgram = false, editor, outputArea;
- let timerId;
-
- function reformat(event, ui) {
-     try{
-         outputArea.setValue(spfmt.reformat(editor.getValue()));
-     } catch(e) {
-         console.log(e);
-         toastr.error('', 'SyntaxError', {preventDuplicates: true})
-     }
- }
- 
- editor = CodeMirror.fromTextArea(q('#sparql-input'), {
-     lineNumbers: true,
-     viewportMargin: Infinity,
-     theme: "monokai",
-     lineWrapping: true,
- });
- 
- outputArea = CodeMirror.fromTextArea(q('#formatted-input'), {
-     lineNumbers: true,
-     viewportMargin: Infinity,
-     theme: "monokai",
-     lineWrapping: true,
-     readOnly: true
- });
- 
- editor.setSize('100%', '100%');
- outputArea.setSize('100%', '100%');
- 
-
- editor.on('change', (delta) => {
-     if (!byProgram) {
-         clearTimeout(timerId);
-         timerId = setTimeout(reformat, 1000);
-     } else {
-         byProgram = false;
-     }
- });
- 
- q('#query-select').addEventListener('change', (event) => {
-     let url = `https://raw.githubusercontent.com/sparqling/sparql-formatter/main/sparql11-query/${event.target.value}`;
-     axios.get(url).then((response) => {
-         editor.setValue(response.data);
-     });
- })
-</script>
+    <script src='./pages/lib/spfmt_bundled.js'></script>
+    <script src='./pages/main.js'></script>
 </body>
 </html>
