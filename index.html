@@ -22,128 +22,134 @@
     <script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js'></script>
 </head>
 <body>
-    <div id='app'>
-        <nav class='navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top' id='header'>
-            <div class='mr-5' style='color: white'>
-                <h3>
-                    SPARQL 1.1 formatter
-                </h3>
+<div id='app'>
+    <nav class='navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top' id='header'>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <div class='mr-5' style='color: white'>
+                    <h3>
+                        SPARQL 1.1 formatter
+                    </h3>
+                </div>
             </div>
+            <div class="navbar-collapse collapse">
+                <div class="text-white">
+                    Example query:
+                </div>
+                <select id="query-select" class="ml-2" style="height: 25px">
+                    <option>Select</option>
+                    <option>02.1.rq</option>
+                    <option>02.2.rq</option>
+                    <option>02.3.1.rq</option>
+                    <option>02.3.1a.rq</option>
+                    <option>02.3.2.rq</option>
+                    <option>02.3.3.rq</option>
+                    <option>02.4.rq</option>
+                    <option>02.5.rq</option>
+                    <option>02.5a.rq</option>
+                    <option>02.6.rq</option>
+                    <option>03.1.rq</option>
+                    <option>03.1a.rq</option>
+                    <option>03.2.rq</option>
+                    <option>04.2.rq</option>
+                    <option>04.2a.rq</option>
+                    <option>04.2b.rq</option>
+                    <option>05.2.1.rq</option>
+                    <option>05.2.rq</option>
+                    <option>05.2a.rq</option>
+                    <option>06.1.rq</option>
+                    <option>06.2.rq</option>
+                    <option>06.3.rq</option>
+                    <option>07.rq</option>
+                    <option>07a.rq</option>
+                    <option>07b.rq</option>
+                    <option>08.1.1.rq</option>
+                    <option>08.1.2.rq</option>
+                    <option>08.2.rq</option>
+                    <option>08.3.1.rq</option>
+                    <option>08.3.1a.rq</option>
+                    <option>08.3.2.rq</option>
+                    <option>08.3.2a.rq</option>
+                    <option>08.3.3.rq</option>
+                    <option>08.3.3a.rq</option>
+                    <option>09.3.rq</option>
+                    <option>09.3a.rq</option>
+                    <option>09.3b.rq</option>
+                    <option>09.4.rq</option>
+                    <option>09.4a.rq</option>
+                    <option>10.1.rq</option>
+                    <option>10.1a.rq</option>
+                    <option>10.2.2.rq</option>
+                    <option>10.2.2a.rq</option>
+                    <option>10.2.2b.rq</option>
+                    <option>11.1.rq</option>
+                    <option>11.2.rq</option>
+                    <option>11.3.rq</option>
+                    <option>11.4.rq</option>
+                    <option>11.5.rq</option>
+                    <option>12.rq</option>
+                    <option>15.2.rq</option>
+                    <option>15.3.1.rq</option>
+                    <option>15.3.2.rq</option>
+                    <option>15.3.rq</option>
+                    <option>15.4.rq</option>
+                    <option>15.5.rq</option>
+                    <option>16.1.1.rq</option>
+                    <option>16.1.2.rq</option>
+                    <option>16.1.2a.rq</option>
+                    <option>17.4.1.1.rq</option>
+                    <option>17.4.1.1a.rq</option>
+                    <option>17.4.1.7.rq</option>
+                    <option>17.4.1.7a.rq</option>
+                    <option>17.4.1.8.rq</option>
+                    <option>17.4.1.8a.rq</option>
+                    <option>17.4.2.1.rq</option>
+                    <option>17.4.2.2.rq</option>
+                    <option>17.4.2.3.rq</option>
+                    <option>17.4.2.5.rq</option>
+                    <option>17.4.2.6.rq</option>
+                    <option>17.4.2.7.rq</option>
+                    <option>17.4.3.13.rq</option>
+                    <option>17.4.3.13a.rq</option>
+                    <option>17.4.3.14.rq</option>
+                </select>
 
-            <div class="text-white">
-                Example query:
+                <div class="ml-5 text-white">
+                    Indent width:
+                </div>
+
+                <select id="indent-depth-input" class="ml-2" style="height: 25px">
+                    <option>2</option>
+                    <option>4</option>
+                    <option>8</option>
+                </select>
+
             </div>
-            <select id="query-select" class="ml-2" style="height: 25px">
-                <option>Select</option>
-                <option>02.1.rq</option>
-                <option>02.2.rq</option>
-                <option>02.3.1.rq</option>
-                <option>02.3.1a.rq</option>
-                <option>02.3.2.rq</option>
-                <option>02.3.3.rq</option>
-                <option>02.4.rq</option>
-                <option>02.5.rq</option>
-                <option>02.5a.rq</option>
-                <option>02.6.rq</option>
-                <option>03.1.rq</option>
-                <option>03.1a.rq</option>
-                <option>03.2.rq</option>
-                <option>04.2.rq</option>
-                <option>04.2a.rq</option>
-                <option>04.2b.rq</option>
-                <option>05.2.1.rq</option>
-                <option>05.2.rq</option>
-                <option>05.2a.rq</option>
-                <option>06.1.rq</option>
-                <option>06.2.rq</option>
-                <option>06.3.rq</option>
-                <option>07.rq</option>
-                <option>07a.rq</option>
-                <option>07b.rq</option>
-                <option>08.1.1.rq</option>
-                <option>08.1.2.rq</option>
-                <option>08.2.rq</option>
-                <option>08.3.1.rq</option>
-                <option>08.3.1a.rq</option>
-                <option>08.3.2.rq</option>
-                <option>08.3.2a.rq</option>
-                <option>08.3.3.rq</option>
-                <option>08.3.3a.rq</option>
-                <option>09.3.rq</option>
-                <option>09.3a.rq</option>
-                <option>09.3b.rq</option>
-                <option>09.4.rq</option>
-                <option>09.4a.rq</option>
-                <option>10.1.rq</option>
-                <option>10.1a.rq</option>
-                <option>10.2.2.rq</option>
-                <option>10.2.2a.rq</option>
-                <option>10.2.2b.rq</option>
-                <option>11.1.rq</option>
-                <option>11.2.rq</option>
-                <option>11.3.rq</option>
-                <option>11.4.rq</option>
-                <option>11.5.rq</option>
-                <option>12.rq</option>
-                <option>15.2.rq</option>
-                <option>15.3.1.rq</option>
-                <option>15.3.2.rq</option>
-                <option>15.3.rq</option>
-                <option>15.4.rq</option>
-                <option>15.5.rq</option>
-                <option>16.1.1.rq</option>
-                <option>16.1.2.rq</option>
-                <option>16.1.2a.rq</option>
-                <option>17.4.1.1.rq</option>
-                <option>17.4.1.1a.rq</option>
-                <option>17.4.1.7.rq</option>
-                <option>17.4.1.7a.rq</option>
-                <option>17.4.1.8.rq</option>
-                <option>17.4.1.8a.rq</option>
-                <option>17.4.2.1.rq</option>
-                <option>17.4.2.2.rq</option>
-                <option>17.4.2.3.rq</option>
-                <option>17.4.2.5.rq</option>
-                <option>17.4.2.6.rq</option>
-                <option>17.4.2.7.rq</option>
-                <option>17.4.3.13.rq</option>
-                <option>17.4.3.13a.rq</option>
-                <option>17.4.3.14.rq</option>
-            </select>
-
-            <div class="ml-5 text-white">
-                Indent width:
-            </div>
-
-            <select id="indent-depth-input" class="ml-2" style="height: 25px">
-                <option>2</option>
-                <option>4</option>
-                <option>8</option>
-            </select>
-            <div class="float float-right">
+            <div class="nav  navbar-nav navbar-right">
                 <a href="https://github.com/sparqling/sparql-formatter">
                     <img src="./pages/GitHub-Mark-Light-64px.png" style="height: 50px;">
                 </a>
             </div>
-        </nav>
-        <div id='main-area'>
-            <div id='input-area' class="m-3">
-                Input SPARQL
-                <textarea id='sparql-input'>
+        </div>
+    </nav>
+    <div id='main-area'>
+        <div id='input-area' class="m-3">
+            Input SPARQL
+            <textarea id='sparql-input'>
 SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
-            </div>
-            <div id='formatted-area' class="m-3">
-                Formatted SPARQL
-                <textarea id='formatted-input'>
+        </div>
+        <div id='formatted-area' class="m-3">
+            Formatted SPARQL
+            <textarea id='formatted-input'>
 SELECT *
 WHERE {
   ?s ?p ?o .
 }
 LIMIT 10</textarea>
-            </div>
         </div>
     </div>
-    <script src='https://cdn.jsdelivr.net/gh/sparqling/spang/js/spfmt_bundled.js'></script>
-    <script src='./pages/main.js'></script>
+</div>
+<script src='https://cdn.jsdelivr.net/gh/sparqling/spang/js/spfmt_bundled.js'></script>
+<script src='./pages/main.js'></script>
 </body>
 </html>
