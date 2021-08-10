@@ -28,8 +28,12 @@
                     SPARQL 1.1 formatter
                 </h3>
             </div>
-            <select id="query-select">
-                <option>Examples</option>
+
+            <div class="text-white">
+                Example query:
+            </div>
+            <select id="query-select" class="ml-2" style="height: 25px">
+                <option>Select</option>
                 <option>02.1.rq</option>
                 <option>02.2.rq</option>
                 <option>02.3.1.rq</option>
@@ -105,6 +109,11 @@
                 <option>17.4.3.13a.rq</option>
                 <option>17.4.3.14.rq</option>
             </select>
+
+            <div class="ml-5 text-white">
+                Indent width:
+            </div>
+            <input id="indent-depth-input" class="ml-2" type="number" value="2" style="width: 40px; height: 25px;">
         </nav>
         <div id='main-area'>
             <div id='input-area' class="m-3">
