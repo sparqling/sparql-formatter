@@ -3,15 +3,13 @@ body {
 }
 #input-area {
     left: 0;
-    width: 48%;
+    width: 50%;
+    height: 100%
 }
 #formatted-area {
     flex: 1;
-    width: 48%;
+    width: 50%;
     height: 100%
-}
-.ui-resizable-handle {
-    background: #cccccc;
 }
 #main-area {
     display: inline-flex;

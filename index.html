@@ -107,12 +107,14 @@
             </select>
         </nav>
         <div id='main-area'>
-            <div id='input-area'>
-                <textarea id='sparql-input' style='height: 100%; width: 100%;'>
+            <div id='input-area' class="m-3">
+                Input SPARQL
+                <textarea id='sparql-input'>
 SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
             </div>
-            <div id='formatted-area'>
-                <textarea id='formatted-input' style='height: 100%; width: 100%;'>
+            <div id='formatted-area' class="m-3">
+                Formatted SPARQL
+                <textarea id='formatted-input'>
 SELECT *
 WHERE {
   ?s ?p ?o .
