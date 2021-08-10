@@ -8,6 +8,7 @@
     <link href='./pages/lib/codemirror/codemirror.css' rel='stylesheet'>
     <link href='./pages/lib/monokai.css' rel='stylesheet'>
     <link href='./pages/style.css' rel='stylesheet'>
+    <link href='./pages/favicon.ico' rel='shortcut icon' type='image/x-icon'>
     <link href='https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css' rel='stylesheet'>
     <script src='./pages/lib/codemirror/codemirror.js'></script>
     <script src='./pages/lib/codemirror/simple.js'></script>
@@ -113,7 +114,17 @@
             <div class="ml-5 text-white">
                 Indent width:
             </div>
-            <input id="indent-depth-input" class="ml-2" type="number" value="2" style="width: 40px; height: 25px;">
+
+            <select id="indent-depth-input" class="ml-2" style="height: 25px">
+                <option>2</option>
+                <option>4</option>
+                <option>8</option>
+            </select>
+            <div class="float float-right">
+                <a href="https://github.com/sparqling/sparql-formatter">
+                    <img src="./pages/GitHub-Mark-Light-64px.png" style="height: 50px;">
+                </a>
+            </div>
         </nav>
         <div id='main-area'>
             <div id='input-area' class="m-3">
