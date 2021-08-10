@@ -50,3 +50,9 @@ q('#query-select').addEventListener('change', (event) => {
     editor.setValue(response.data);
   });
 })
+
+
+q('#copy-button').addEventListener('click', () => {
+  navigator.clipboard.writeText(outputArea.getValue());
+  toastr.success('', 'Copied', {preventDuplicates: true, fadeOut: 200, timeOut: 2000})
+});

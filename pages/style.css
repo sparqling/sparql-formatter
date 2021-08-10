@@ -45,3 +45,9 @@ span .syntax-error-line {
     font-family: 'Courier', monospace;
     font-size: 16px;
 }
+
+
+#copy-button:focus {
+    outline: none;
+    box-shadow: none;
+}
