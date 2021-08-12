@@ -2,6 +2,15 @@ body {
     font-family: Baskerville;
     background: #eeeeee;
 }
+#header {
+    background: #2c5f85 !important;
+    height: 60px;
+}
+#main-area {
+    display: inline-flex;
+    width: 100%;
+    height: calc(100vh - 60px);
+}
 #input-area {
     left: 0;
     width: 50%;
@@ -12,10 +21,19 @@ body {
     width: 50%;
     height: 100%
 }
-#main-area {
-    display: inline-flex;
-    width: 100%;
-    height: calc(100vh - 60px);
+#copy-button:focus {
+    outline: none;
+    box-shadow: none;
+}
+.CodeMirror-selected {
+    background-color: rgba(200, 200, 100, 0.5) !important;
+}
+.CodeMirror {
+    font-family: 'Courier', monospace;
+    font-size: 16px;
+}
+.toast-top-right {
+    top: 70px;
 }
 span .highlighted {
     background: rgba(200, 200, 0, 0.5);
@@ -27,27 +45,7 @@ span .syntax-error {
 span .syntax-error-line {
     background: rgba(255, 0, 0, 0.4);
 }
-#header {
-    background: #2c5f85 !important;
-    height: 60px;
-}
-.toast-top-right {
-    top: 70px;
-}
 .dropdown-toggle {
     -webkit-appearance: none;
     border-radius: 0;
-}
-.CodeMirror-selected {
-    background-color: rgba(200, 200, 100, 0.5) !important;
-}
-.CodeMirror {
-    font-family: 'Courier', monospace;
-    font-size: 16px;
-}
-
-
-#copy-button:focus {
-    outline: none;
-    box-shadow: none;
 }
