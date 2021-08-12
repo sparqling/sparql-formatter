@@ -23,14 +23,12 @@ function  onChanged(delta) {
 editor = CodeMirror.fromTextArea(q('#sparql-input'), {
   lineNumbers: true,
   viewportMargin: Infinity,
-  // theme: "monokai",
   lineWrapping: true,
 });
 
 outputArea = CodeMirror.fromTextArea(q('#formatted-input'), {
   lineNumbers: true,
   viewportMargin: Infinity,
-  // theme: "monokai",
   lineWrapping: true,
   readOnly: true
 });
