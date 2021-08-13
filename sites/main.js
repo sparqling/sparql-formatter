@@ -4,7 +4,7 @@ let timerId;
 
 function reformat(event, ui) {
   try {
-    outputArea.setValue(spfmt.reformat(editor.getValue(), q('#indent-depth-input').value));
+    outputArea.setValue(spfmt.reformat(editor.getValue(), q('#indent-depth-input').value) + '\n');
   } catch (e) {
     console.log(e);
     toastr.error('', 'SyntaxError', { preventDuplicates: true });
