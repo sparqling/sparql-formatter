@@ -54,7 +54,6 @@ q('#query-select').addEventListener('change', (event) => {
 
 q('#copy-button').addEventListener('click', () => {
   navigator.clipboard.writeText(outputArea.getValue());
-  toastr.success('', 'Copied to clipboard', { preventDuplicates: true, fadeOut: 200, timeOut: 2000 });
 });
 
 document.addEventListener('DOMContentLoaded', function (event) {
