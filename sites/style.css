@@ -35,6 +35,9 @@ body {
 #copy-button:focus {
     outline: none;
 }
+h3 {
+    color: white;
+}
 .subheading {
     color: #234d6b;
     font-weight: bold;
