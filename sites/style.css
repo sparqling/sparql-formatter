@@ -12,13 +12,11 @@ body {
     height: calc(100vh - 60px);
 }
 #input-area {
-    left: 0;
-    width: 50%;
+    width: 49%;
     height: 93%
 }
 #formatted-area {
     flex: 1;
-    width: 50%;
     height: 93%
 }
 #copy-button:focus {
