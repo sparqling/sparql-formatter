@@ -50,8 +50,8 @@
                         <select id="query-select" class="text-muted" style="width: 130px"></select>
                     </div>
 
-                    <div class="mt-1" style="position:relative; height: 100%">
-                        <textarea id='sparql-input'>
+                    <div class="mt-1 text-container">
+                        <textarea id='input-sparql'>
 SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
                     </div>
                 </div>
@@ -60,18 +60,18 @@ SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
                     <span class="ml-3 subheading">Formatted:</span>
                     <div class="float-right">
                         <span class="mr-1 text-muted">indent</span>
-                        <select id="indent-depth-input" class="text-muted" style="width: 36px">
+                        <select id="indent-depth" class="text-muted" style="width: 36px">
                             <option>2</option>
                             <option>4</option>
                         </select>
                     </div>
 
-                    <div class="mt-1" style="position:relative; height: 100%">
-                        <button id="copy-button" class="border-0 bg-transparent" style="position:absolute; top:3px; right:5px; z-index: 999;">
+                    <div class="mt-1 text-container">
+                        <button id="copy-button" class="border-0 rounded">
                             <i class="far fa-copy text-muted small"></i>
                             <span class="small text-muted">Copy</span>
                         </button>
-                        <textarea id='formatted-input'>
+                        <textarea id='formatted-sparql'>
 SELECT *
 WHERE {
   ?s ?p ?o .

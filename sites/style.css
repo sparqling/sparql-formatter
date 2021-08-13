@@ -13,19 +13,28 @@ body {
 }
 #input-area {
     width: 49%;
-    height: 93%
+    height: 93%;
 }
 #formatted-area {
     flex: 1;
-    height: 93%
+    height: 93%;
+}
+#copy-button {
+    position:absolute;
+    top: 3px;
+    right: 5px;
+    z-index: 999;
+    background: transparent;
 }
 #copy-button:focus {
     outline: none;
-    box-shadow: none;
 }
 .subheading {
     color: #234d6b;
     font-weight: bold;
+}
+.text-container {
+    height: 100%;
 }
 .CodeMirror-selected {
     background-color: rgba(200, 200, 100, 0.5) !important;

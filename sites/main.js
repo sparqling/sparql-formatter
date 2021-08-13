@@ -4,7 +4,7 @@ let timerId;
 
 function reformat(event, ui) {
   try {
-    outputArea.setValue(spfmt.reformat(editor.getValue(), q('#indent-depth-input').value) + '\n');
+    outputArea.setValue(spfmt.reformat(editor.getValue(), q('#indent-depth').value) + '\n');
   } catch (e) {
     console.log(e);
     toastr.error('', 'SyntaxError', { preventDuplicates: true });
@@ -20,13 +20,13 @@ function onChanged(delta) {
   }
 }
 
-editor = CodeMirror.fromTextArea(q('#sparql-input'), {
+editor = CodeMirror.fromTextArea(q('#input-sparql'), {
   lineNumbers: true,
   viewportMargin: Infinity,
   lineWrapping: true
 });
 
-outputArea = CodeMirror.fromTextArea(q('#formatted-input'), {
+outputArea = CodeMirror.fromTextArea(q('#formatted-sparql'), {
   lineNumbers: true,
   viewportMargin: Infinity,
   lineWrapping: true,
@@ -39,7 +39,7 @@ outputArea.setSize('100%', '100%');
 
 editor.on('change', onChanged);
 
-q('#indent-depth-input').addEventListener('change', onChanged);
+q('#indent-depth').addEventListener('change', onChanged);
 
 q('#query-select').addEventListener('change', (event) => {
   if (event.target.value === '') {
