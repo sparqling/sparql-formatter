@@ -59,14 +59,16 @@
                 </div>
             </nav>
             <div id='main-area'>
-                <div id='input-area' class="m-3">
-                    Input SPARQL
+                <div id='input-area' class="mt-2 ml-1">
+                    <div class="d-inline ml-3">
+                        Input:
+                    </div>
                     <textarea id='sparql-input'>
 SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
                 </div>
-                <div id='formatted-area' class="m-3">
-                    <div class="d-inline">
-                        Formatted SPARQL
+                <div id='formatted-area' class="mt-2 mr-2">
+                    <div class="d-inline ml-3">
+                        Formatted:
                     </div>
 
                     <div style="position:relative; height: 100%">
