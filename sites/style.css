@@ -20,7 +20,7 @@ body {
     height: 93%;
 }
 #copy-button {
-    position:absolute;
+    position: absolute;
     top: 3px;
     right: 5px;
     z-index: 999;
@@ -34,6 +34,7 @@ body {
     font-weight: bold;
 }
 .text-container {
+    position: relative;
     height: 100%;
 }
 .CodeMirror-selected {
