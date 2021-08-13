@@ -26,6 +26,12 @@ body {
     z-index: 999;
     background: transparent;
 }
+#copy-button:hover {
+    background: #eeeeee;
+}
+#copy-button:active {
+    background: #d8d8d8;
+}
 #copy-button:focus {
     outline: none;
 }
