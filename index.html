@@ -26,31 +26,14 @@
             <nav class='navbar navbar-expand-md navbar-light bg-white shadow-sm sticky-top' id='header'>
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <div class='mr-5' style='color: white'>
+                        <div class="mt-2" style='color: white'>
                             <h3>
                                 SPARQL 1.1 formatter
                             </h3>
                         </div>
                     </div>
-                    <div class="navbar-collapse collapse">
-                        <div class="text-white">
-                            Examples:
-                        </div>
-                        <select id="query-select" class="ml-2" style="width: 130px">
-                        </select>
 
-                        <div class="ml-5 text-white">
-                            Indent:
-                        </div>
-
-                        <select id="indent-depth-input" class="ml-2" style="width: 32px">
-                            <option>2</option>
-                            <option>4</option>
-                            <option>8</option>
-                        </select>
-
-                    </div>
-                    <div class="nav  navbar-nav navbar-right">
+                    <div class="nav navbar-nav navbar-right">
                         <a href="https://github.com/sparqling/sparql-formatter" target="_blank" rel="noopener noreferrer">
                             <img src="./sites/img/GitHub_Logo_White.png" style="height: 22px;">
                             <img src="./sites/img/GitHub-Mark-Light-32px.png">
@@ -58,20 +41,28 @@
                     </div>
                 </div>
             </nav>
+
             <div id='main-area'>
                 <div id='input-area' class="mt-2 ml-1">
-                    <div class="d-inline ml-3">
-                        Input:
-                    </div>
-                    <textarea id='sparql-input'>
-SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
-                </div>
-                <div id='formatted-area' class="mt-2 mr-2">
-                    <div class="d-inline ml-3">
-                        Formatted:
-                    </div>
+                    <span class="ml-3 font-weight-bold">Input</span>
+                    <span class="ml-3 mr-1">example</span>
+                    <select id="query-select" style="width: 130px"></select>
 
-                    <div style="position:relative; height: 100%">
+                    <div class="mt-1" style="position:relative; height: 100%">
+                        <textarea id='sparql-input'>
+SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
+                    </div>
+                </div>
+
+                <div id='formatted-area' class="mt-2 mr-2">
+                    <span class="ml-3 font-weight-bold">Output</span>
+                    <span class="ml-3 mr-1">indent</span>
+                    <select id="indent-depth-input" style="width: 36px">
+                        <option>2</option>
+                        <option>4</option>
+                    </select>
+
+                    <div class="mt-1" style="position:relative; height: 100%">
                         <button id="copy-button" class="border-0 bg-transparent" style="position:absolute; top:3px; right:5px; z-index: 999;">
                             <i class="far fa-copy text-muted small"></i>
                             <span class="small text-muted">Copy</span>

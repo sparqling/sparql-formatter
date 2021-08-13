@@ -43,10 +43,14 @@ editor.on('change', onChanged);
 q('#indent-depth-input').addEventListener('change', onChanged);
 
 q('#query-select').addEventListener('change', (event) => {
-  let url = `https://raw.githubusercontent.com/sparqling/sparql-formatter/main/sparql11-query/${event.target.value}`;
-  axios.get(url).then((response) => {
-    editor.setValue(response.data);
-  });
+  if (event.target.value === '') {
+    editor.setValue('SELECT * WHERE { ?s ?p ?o. } LIMIT 10');
+  } else {
+    let url = `https://raw.githubusercontent.com/sparqling/sparql-formatter/main/sparql11-query/${event.target.value}`;
+    axios.get(url).then((response) => {
+      editor.setValue(response.data);
+    });
+  }
 })
 
 
@@ -63,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     selectNode.innerHTML = '';
 
     let firstOption = document.createElement("option");
-    firstOption.innerText = 'Select';
+    firstOption.innerText = '';
     selectNode.appendChild(firstOption);
 
     for(let object of response.data) {
