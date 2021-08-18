@@ -14,19 +14,13 @@
   }
 }
 
-DOCUMENT = h:(HEADER_LINE*) WS* s:SPARQL WS* f:(Function*) WS*
+DOCUMENT = h:(HEADER_LINE*) WS* s:SPARQL WS*
 {
   s.headers = h;
   s.comments = Object.entries(Comments).map(([loc, str]) => ({
     text: str,
     line: parseInt(loc),
   }));
-
-  if (s.functions) {
-    s.functions = s.functions.concat(f);
-  } else {
-    s.functions = f;
-  }
 
   return s;
 }
@@ -37,25 +31,13 @@ SPARQL = QueryUnit / UpdateUnit
 QueryUnit = Query
 
 // [2] Query ::= Prologue ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) ValuesClause
-// Function is added after Prologue
-Query = p:Prologue WS* f:(Function*) WS* q:( SelectQuery / ConstructQuery / DescribeQuery / AskQuery ) v:ValuesClause
+Query = p:Prologue WS* WS* q:( SelectQuery / ConstructQuery / DescribeQuery / AskQuery ) v:ValuesClause
 {
   return {
     token: 'query',
     prologue: p,
     body: q,
-    functions: f,
     inlineData: v
-  }
-}
-
-Function = h:FunctionCall WS* b:GroupGraphPattern WS*
-{
-  return {
-    token: 'function',
-    header: h,
-    body: b,
-    location: location(),
   }
 }
 
