@@ -194,61 +194,33 @@ function peg$parse(input, options) {
           });
         }
 
-        let query = {
+        return {
           token: 'executableunit',
           kind: 'select',
           dataset: dataset,
           projection: s.vars,
           modifier: s.modifier,
           pattern: w,
+          limit: sm.limit,
+          offset: sm.offset,
+          group: sm.group,
+          having: sm.having,
+          order: sm.order,
           location: location(),
         }
-
-        if (sm != null) {
-          if (sm.limit != null) {
-            query.limit = sm.limit;
-          }
-          if (sm.offset != null) {
-            query.offset = sm.offset;
-          }
-          if (sm.group != null) {
-            query.group = sm.group;
-          }
-          if (sm.having != null) {
-            query.having = sm.having;
-          }
-          if (sm.order != null && sm.order != "") {
-            query.order = sm.order;
-          }
-        }
-
-        return query;
       },
       peg$c9 = function(s, w, sm) {
-        let query = {
+        return {
           token: 'subselect',
           kind: 'select',
           projection: s.vars,
           modifier: s.modifier,
           pattern: w,
+          limit: sm.limit,
+          offset: sm.offset,
+          group: sm.group,
+          order: sm.order,
         };
-
-        if (sm != null) {
-          if (sm.limit != null) {
-            query.limit = sm.limit;
-          }
-          if (sm.offset != null) {
-            query.offset = sm.offset;
-          }
-          if (sm.group != null) {
-            query.group = sm.group;
-          }
-          if (sm.order != null && sm.order != "") {
-            query.order = sm.order;
-          }
-        }
-        
-        return query;
       },
       peg$c10 = "select",
       peg$c11 = peg$literalExpectation("SELECT", true),
@@ -2869,7 +2841,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseQuery() {
-    var s0, s1, s2, s3, s4, s5;
+    var s0, s1, s2, s3, s4;
 
     s0 = peg$currPos;
     s1 = peg$parsePrologue();
@@ -2881,33 +2853,22 @@ function peg$parse(input, options) {
         s3 = peg$parseWS();
       }
       if (s2 !== peg$FAILED) {
-        s3 = [];
-        s4 = peg$parseWS();
-        while (s4 !== peg$FAILED) {
-          s3.push(s4);
-          s4 = peg$parseWS();
-        }
-        if (s3 !== peg$FAILED) {
-          s4 = peg$parseSelectQuery();
-          if (s4 === peg$FAILED) {
-            s4 = peg$parseConstructQuery();
-            if (s4 === peg$FAILED) {
-              s4 = peg$parseDescribeQuery();
-              if (s4 === peg$FAILED) {
-                s4 = peg$parseAskQuery();
-              }
+        s3 = peg$parseSelectQuery();
+        if (s3 === peg$FAILED) {
+          s3 = peg$parseConstructQuery();
+          if (s3 === peg$FAILED) {
+            s3 = peg$parseDescribeQuery();
+            if (s3 === peg$FAILED) {
+              s3 = peg$parseAskQuery();
             }
           }
+        }
+        if (s3 !== peg$FAILED) {
+          s4 = peg$parseValuesClause();
           if (s4 !== peg$FAILED) {
-            s5 = peg$parseValuesClause();
-            if (s5 !== peg$FAILED) {
-              peg$savedPos = s0;
-              s1 = peg$c1(s1, s4, s5);
-              s0 = s1;
-            } else {
-              peg$currPos = s0;
-              s0 = peg$FAILED;
-            }
+            peg$savedPos = s0;
+            s1 = peg$c1(s1, s3, s4);
+            s0 = s1;
           } else {
             peg$currPos = s0;
             s0 = peg$FAILED;

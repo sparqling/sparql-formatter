@@ -31,7 +31,7 @@ SPARQL = QueryUnit / UpdateUnit
 QueryUnit = Query
 
 // [2] Query ::= Prologue ( SelectQuery | ConstructQuery | DescribeQuery | AskQuery ) ValuesClause
-Query = p:Prologue WS* WS* q:( SelectQuery / ConstructQuery / DescribeQuery / AskQuery ) v:ValuesClause
+Query = p:Prologue WS* q:( SelectQuery / ConstructQuery / DescribeQuery / AskQuery ) v:ValuesClause
 {
   return {
     token: 'query',
@@ -87,65 +87,37 @@ SelectQuery = s:SelectClause WS* gs:DatasetClause* WS* w:WhereClause WS* sm:Solu
     });
   }
 
-  let query = {
+  return {
     token: 'executableunit',
     kind: 'select',
     dataset: dataset,
     projection: s.vars,
     modifier: s.modifier,
     pattern: w,
+    limit: sm.limit,
+    offset: sm.offset,
+    group: sm.group,
+    having: sm.having,
+    order: sm.order,
     location: location(),
   }
-
-  if (sm != null) {
-    if (sm.limit != null) {
-      query.limit = sm.limit;
-    }
-    if (sm.offset != null) {
-      query.offset = sm.offset;
-    }
-    if (sm.group != null) {
-      query.group = sm.group;
-    }
-    if (sm.having != null) {
-      query.having = sm.having;
-    }
-    if (sm.order != null && sm.order != "") {
-      query.order = sm.order;
-    }
-  }
-
-  return query;
 }
 
 // [8] SubSelect ::= SelectClause WhereClause SolutionModifier ValuesClause
 // add ValuesClause
 SubSelect = s:SelectClause WS* w:WhereClause sm:SolutionModifier
 {
-  let query = {
+  return {
     token: 'subselect',
     kind: 'select',
     projection: s.vars,
     modifier: s.modifier,
     pattern: w,
+    limit: sm.limit,
+    offset: sm.offset,
+    group: sm.group,
+    order: sm.order,
   };
-
-  if (sm != null) {
-    if (sm.limit != null) {
-      query.limit = sm.limit;
-    }
-    if (sm.offset != null) {
-      query.offset = sm.offset;
-    }
-    if (sm.group != null) {
-      query.group = sm.group;
-    }
-    if (sm.order != null && sm.order != "") {
-      query.order = sm.order;
-    }
-  }
-  
-  return query;
 }
 
 // [9] SelectClause ::= 'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' )
