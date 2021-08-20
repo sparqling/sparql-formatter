@@ -501,16 +501,19 @@ ValuesClause = b:( 'VALUES'i DataBlock )?
 
 // [29] Update ::= Prologue ( Update1 ( ';' Update )? )?
 // Update ::= Prologue Update1 ( ';' Update? )?
-Update = p:Prologue WS* u:Update1 us:( WS* ';' WS* Update? )?
+Update = p:Prologue u:( WS* Update1 ( WS* ';' WS* Update )? )? WS*
 {
   let query = {
     token: 'update',
     prologue: p,
   };
   
-  let units = [u];
-  if (us != null && us.length != null && us[3] != null && us[3].units != null) {
-    units = units.concat(us[3].units);
+  let units = [];
+  if (u != null) {
+    units = [u[1]];
+    if (u[2]) {
+      units = units.concat(u[2][3].units);
+    }
   }
   query.units = units;
 
@@ -640,7 +643,7 @@ DeleteWhere = 'DELETE'i WS* 'WHERE'i WS* p:GroupGraphPattern
   }
 
   return {
-    kind: 'modify',
+    kind: 'deletewhere',
     pattern: p,
     delete: quads,
     with: null,
@@ -649,7 +652,7 @@ DeleteWhere = 'DELETE'i WS* 'WHERE'i WS* p:GroupGraphPattern
 }
 
 // [41] Modify ::= ( 'WITH' IRIref )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern
-Modify = wg:('WITH'i WS* IRIref)? WS* dic:( DeleteClause WS* InsertClause? / InsertClause ) WS* uc:UsingClause* WS* 'WHERE'i WS* p:GroupGraphPattern WS*
+Modify = wg:( 'WITH'i WS* IRIref )? WS* dic:( DeleteClause WS* InsertClause? / InsertClause ) WS* uc:UsingClause* WS* 'WHERE'i WS* p:GroupGraphPattern WS*
 {
   let query = {
     kind: 'modify',
@@ -658,24 +661,24 @@ Modify = wg:('WITH'i WS* IRIref)? WS* dic:( DeleteClause WS* InsertClause? / Ins
     delete: null,
     pattern: p,
   };
-  
+
   if (wg != "" && wg != null) {
     query.with = wg[2];
   }
-  
+
   if (dic.length === 3 && (dic[2] === ''|| dic[2] == null)) {
     query.delete = dic[0];
   } else if (dic.length === 3 && dic[0].length != null && dic[1].length != null && dic[2].length != null) {
     query.delete = dic[0];
     query.insert = dic[2];
-  } else  {
+  } else {
     query.insert = dic;
   }
-  
+
   if (uc != '') {
     query.using = uc;
   }
-  
+
   return query;
 }
 
@@ -735,13 +738,13 @@ GraphRefAll = g:GraphRef
 // [48] QuadPattern ::= '{' Quads '}'
 QuadPattern = WS* '{' WS* qs:Quads WS* '}' WS*
 {
-  return qs.quadsContext;
+  return qs;
 }
 
 // [49] QuadData ::= '{' Quads '}'
 QuadData = WS* '{' WS* qs:Quads WS* '}' WS*
 {
-  return qs.quadsContext;
+  return qs;
 }
 
 // [50] Quads ::= TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )*
@@ -758,7 +761,7 @@ Quads = ts:TriplesTemplate? qs:( QuadsNotTriples '.'? TriplesTemplate? )*
 
   if (qs && qs.length>0 && qs[0].length > 0) {
     quads = quads.concat(qs[0][0].quadsContext);
-    
+
     if (qs[0][2] != null && qs[0][2].triplesContext != null) {
       for (let i = 0; i < qs[0][2].triplesContext.length; i++) {
         let triple = qs[0][2].triplesContext[i]
