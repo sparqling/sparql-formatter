@@ -45,15 +45,7 @@ Query = p:Prologue WS* WS* q:( SelectQuery / ConstructQuery / DescribeQuery / As
 UpdateUnit = Update
 
 // [4] Prologue ::= ( BaseDecl | PrefixDecl )*
-// Prologue  ::=  BaseDecl? PrefixDecl*
-Prologue = b:BaseDecl? WS* p:PrefixDecl*
-{
-  return {
-    token: 'prologue',
-    base: b,
-    prefixes: p,
-  }
-}
+Prologue = ( BaseDecl / PrefixDecl )*
 
 // [5] BaseDecl ::= 'BASE' IRIREF
 BaseDecl = WS* 'BASE'i WS* i:IRIREF
