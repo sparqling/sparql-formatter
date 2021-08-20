@@ -500,7 +500,6 @@ ValuesClause = b:( 'VALUES'i DataBlock )?
 }
 
 // [29] Update ::= Prologue ( Update1 ( ';' Update )? )?
-// Update ::= Prologue Update1 ( ';' Update? )?
 Update = p:Prologue u:( WS* Update1 ( WS* ';' WS* Update )? )? WS*
 {
   let query = {
@@ -509,7 +508,7 @@ Update = p:Prologue u:( WS* Update1 ( WS* ';' WS* Update )? )? WS*
     units: [],
   };
   
-  if (u != null) {
+  if (u) {
     query.units = [u[1]];
     if (u[2]) {
       query.units = query.units.concat(u[2][3].units);

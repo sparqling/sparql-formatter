@@ -587,7 +587,7 @@ function peg$parse(input, options) {
           units: [],
         };
         
-        if (u != null) {
+        if (u) {
           query.units = [u[1]];
           if (u[2]) {
             query.units = query.units.concat(u[2][3].units);
