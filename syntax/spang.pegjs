@@ -506,16 +506,15 @@ Update = p:Prologue u:( WS* Update1 ( WS* ';' WS* Update )? )? WS*
   let query = {
     token: 'update',
     prologue: p,
+    units: [],
   };
   
-  let units = [];
   if (u != null) {
-    units = [u[1]];
+    query.units = [u[1]];
     if (u[2]) {
-      units = units.concat(u[2][3].units);
+      query.units = query.units.concat(u[2][3].units);
     }
   }
-  query.units = units;
 
   return query;
 }
@@ -652,32 +651,30 @@ DeleteWhere = 'DELETE'i WS* 'WHERE'i WS* p:GroupGraphPattern
 }
 
 // [41] Modify ::= ( 'WITH' IRIref )? ( DeleteClause InsertClause? | InsertClause ) UsingClause* 'WHERE' GroupGraphPattern
-Modify = wg:( 'WITH'i WS* IRIref )? WS* dic:( DeleteClause WS* InsertClause? / InsertClause ) WS* uc:UsingClause* WS* 'WHERE'i WS* p:GroupGraphPattern WS*
+Modify = w:( 'WITH'i WS* IRIref WS* )? m:( DeleteClause WS* InsertClause? / InsertClause ) WS* u:UsingClause* WS* 'WHERE'i WS* p:GroupGraphPattern WS*
 {
   let query = {
     kind: 'modify',
-    with: null,
-    insert: null,
-    delete: null,
-    pattern: p,
   };
 
-  if (wg != "" && wg != null) {
-    query.with = wg[2];
+  if (w) {
+    query.with = w[2];
   }
 
-  if (dic.length === 3 && (dic[2] === ''|| dic[2] == null)) {
-    query.delete = dic[0];
-  } else if (dic.length === 3 && dic[0].length != null && dic[1].length != null && dic[2].length != null) {
-    query.delete = dic[0];
-    query.insert = dic[2];
+  if (m.length === 3) {
+    query.delete = m[0];
+    if (m[2]) {
+      query.insert = m[2];
+    }
   } else {
-    query.insert = dic;
+    query.insert = m;
   }
 
-  if (uc != '') {
-    query.using = uc;
+  if (u.length) {
+    query.using = u;
   }
+
+  query.pattern = p;
 
   return query;
 }
@@ -736,37 +733,32 @@ GraphRefAll = g:GraphRef
 }
 
 // [48] QuadPattern ::= '{' Quads '}'
-QuadPattern = WS* '{' WS* qs:Quads WS* '}' WS*
+QuadPattern = WS* '{' WS* q:Quads WS* '}' WS*
 {
-  return qs;
+  return q;
 }
 
 // [49] QuadData ::= '{' Quads '}'
-QuadData = WS* '{' WS* qs:Quads WS* '}' WS*
+QuadData = WS* '{' WS* q:Quads WS* '}' WS*
 {
-  return qs;
+  return q;
 }
 
 // [50] Quads ::= TriplesTemplate? ( QuadsNotTriples '.'? TriplesTemplate? )*
 Quads = ts:TriplesTemplate? qs:( QuadsNotTriples '.'? TriplesTemplate? )*
 {
   let quads = [];
-  if (ts != null && ts.triplesContext != null) {
+  if (ts?.triplesContext) {
     for (var i=0; i<ts.triplesContext.length; i++) {
-      let triple = ts.triplesContext[i]
-      triple.graph = null;
-      quads.push(triple)
+      quads.push(ts.triplesContext[i])
     }
   }
 
   if (qs && qs.length>0 && qs[0].length > 0) {
-    quads = quads.concat(qs[0][0].quadsContext);
-
-    if (qs[0][2] != null && qs[0][2].triplesContext != null) {
+    quads = quads.concat(qs[0][0].quadsContext);    
+    if (qs[0][2]?.triplesContext) {
       for (let i = 0; i < qs[0][2].triplesContext.length; i++) {
-        let triple = qs[0][2].triplesContext[i]
-        triple.graph = null;
-        quads.push(triple)
+        quads.push(qs[0][2].triplesContext[i])
       }
     }
   }
@@ -2609,7 +2601,7 @@ IRIrefOrFunction = i:IRIref WS* args:ArgList?
 }
 
 // [129] RDFLiteral ::= String ( LANGTAG | ( '^^' IRIref ) )?
-RDFLiteral = s:String e:( LANGTAG / ('^^' IRIref) )?
+RDFLiteral = s:String e:( LANGTAG / ( '^^' IRIref ) )?
 {
   let ret = {
     token:'literal',
@@ -2619,9 +2611,9 @@ RDFLiteral = s:String e:( LANGTAG / ('^^' IRIref) )?
     location: location(),
   };
 
-  if (typeof(e) === "string" && e.length > 0) {
-    ret.lang = e.slice(1);
-  } else if (e != null && typeof(e) === "object") {
+  if (typeof(e) === "string") {
+    ret.lang = e;
+  } else if (e) {
     ret.type = e[1];
   }
 
@@ -2645,18 +2637,16 @@ BooleanLiteral = 'TRUE'i
 {
   return {
     token: "literal",
-    lang: null,
-    type: "http://www.w3.org/2001/XMLSchema#boolean",
     value: true,
+    type: "http://www.w3.org/2001/XMLSchema#boolean",
   }
 }
 / 'FALSE'i
 {
   return {
     token: "literal",
-    lang: null,
-    type: "http://www.w3.org/2001/XMLSchema#boolean",
     value: false,
+    type: "http://www.w3.org/2001/XMLSchema#boolean",
   }
 }
 
@@ -2806,11 +2796,13 @@ VAR3 = '{{' v:VARNAME '}}'
 // [145] LANGTAG ::= '@' [a-zA-Z]+ ('-' [a-zA-Z0-9]+)*
 LANGTAG = '@' a:[a-zA-Z]+ b:('-' [a-zA-Z0-9]+)*
 {
-  if (b.length===0) {
-    return ("@"+a.join('')).toLowerCase();
-  } else {
-    return ("@"+a.join('')+"-"+b[0][1].join('')).toLowerCase();
+  const lang = a.join('');
+
+  if (b.length) {
+    lang += '-' + b[0][1].join('');
   }
+
+  return lang.toLowerCase();
 }
 
 // [146] INTEGER ::= [0-9]+
@@ -2818,9 +2810,8 @@ INTEGER = d:[0-9]+
 {
   return {
     token: "literal",
-    lang: null,
-    type: "http://www.w3.org/2001/XMLSchema#integer",
     value: flattenString(d),
+    type: "http://www.w3.org/2001/XMLSchema#integer",
   }
 }
 
@@ -2830,18 +2821,16 @@ DECIMAL = a:[0-9]+ b:'.' c:[0-9]*
 {
   return {
     token: "literal",
-    lang: null,
-    type: "http://www.w3.org/2001/XMLSchema#decimal",
     value: flattenString([a, b, c]),
+    type: "http://www.w3.org/2001/XMLSchema#decimal",
   }
 }
 / a:'.' b:[0-9]+
 {
   return {
     token: "literal",
-    lang: null,
-    type: "http://www.w3.org/2001/XMLSchema#decimal",
     value: flattenString([a, b]),
+    type: "http://www.w3.org/2001/XMLSchema#decimal",
   }
 }
 
@@ -2850,27 +2839,24 @@ DOUBLE = a:[0-9]+ b:'.' c:[0-9]* e:EXPONENT
 {
   return {
     token: "literal",
-    lang: null,
-    type: "http://www.w3.org/2001/XMLSchema#double",
     value: flattenString([a, b, c, e]),
+    type: "http://www.w3.org/2001/XMLSchema#double",
   }
 }
 / a:'.' b:[0-9]+ c:EXPONENT
 {
   return {
     token: "literal",
-    lang: null,
-    type: "http://www.w3.org/2001/XMLSchema#double",
     value: flattenString([a, b, c]),
+    type: "http://www.w3.org/2001/XMLSchema#double",
   }
 }
 / a:[0-9]+ b:EXPONENT
 {
   return {
     token: "literal",
-    lang: null,
-    type: "http://www.w3.org/2001/XMLSchema#double",
     value: flattenString([a, b]),
+    type: "http://www.w3.org/2001/XMLSchema#double",
   }
 }
 
