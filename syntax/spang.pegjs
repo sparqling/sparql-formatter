@@ -158,7 +158,7 @@ SelectClause = WS* 'SELECT'i WS* mod:( 'DISTINCT'i / 'REDUCED'i )? WS*
 }
 
 // [10] ConstructQuery ::= 'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier )
-ConstructQuery = WS* 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* w:WhereClause WS* sm:SolutionModifier
+ConstructQuery = 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* w:WhereClause WS* sm:SolutionModifier
 {
   const dataset = { named:[], implicit:[] };
   gs.forEach((g) => {
@@ -189,7 +189,7 @@ ConstructQuery = WS* 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* 
     location: location(),
   };
 }
-/ WS* 'CONSTRUCT'i WS* gs:DatasetClause* WS* 'WHERE'i WS* '{' WS* t:TriplesTemplate? WS* '}' WS* sm:SolutionModifier
+/ 'CONSTRUCT'i WS* gs:DatasetClause* WS* 'WHERE'i WS* '{' WS* t:TriplesTemplate? WS* '}' WS* sm:SolutionModifier
 {
   let dataset = { named: [], implicit: [] };
   gs.forEach((g) => {
@@ -208,7 +208,7 @@ ConstructQuery = WS* 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* 
     });
   }
   
-  let query = {
+  return {
     kind: 'construct',
     token: 'executableunit',
     dataset: dataset,
@@ -217,22 +217,11 @@ ConstructQuery = WS* 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* 
       token: "basicgraphpattern",
       triplesContext: t.triplesContext
     },
+    limit: sm.limit,
+    offset: sm.offset,
+    order: sm.order,
     location: location(),
   };
-  
-  if (sm != null) {
-    if (sm.limit != null) {
-      query.limit = sm.limit;
-    }
-    if (sm.offset != null) {
-      query.offset = sm.offset;
-    }
-    if (sm.order != null && sm.order != "") {
-      query.order = sm.order;
-    }
-  }
-
-  return query
 }
 
 // [11] DescribeQuery ::= 'DESCRIBE' ( VarOrIri+ | '*' ) DatasetClause* WhereClause? SolutionModifier
