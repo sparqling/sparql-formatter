@@ -289,28 +289,17 @@ function peg$parse(input, options) {
           });
         }
         
-        let query = {
+        return {
           kind: 'construct',
           token: 'executableunit',
           dataset: dataset,
           template: t,
           pattern: w,
+          // limit: sm.limit,
+          // offset: sm.offset,
+          // order: sm.order,
           location: location(),
         };
-
-        if (sm != null) {
-          if (sm.limit != null) {
-            query.limit = sm.limit;
-          }
-          if (sm.offset != null) {
-            query.offset = sm.offset;
-          }
-          if (sm.order != null && sm.order != "") {
-            query.order = sm.order;
-          }
-        }
-
-        return query
       },
       peg$c28 = "where",
       peg$c29 = peg$literalExpectation("WHERE", true),

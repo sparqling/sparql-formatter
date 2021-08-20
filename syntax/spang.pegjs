@@ -177,28 +177,17 @@ ConstructQuery = WS* 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* 
     });
   }
   
-  let query = {
+  return {
     kind: 'construct',
     token: 'executableunit',
     dataset: dataset,
     template: t,
     pattern: w,
+    limit: sm.limit,
+    offset: sm.offset,
+    order: sm.order,
     location: location(),
   };
-
-  if (sm != null) {
-    if (sm.limit != null) {
-      query.limit = sm.limit;
-    }
-    if (sm.offset != null) {
-      query.offset = sm.offset;
-    }
-    if (sm.order != null && sm.order != "") {
-      query.order = sm.order;
-    }
-  }
-
-  return query
 }
 / WS* 'CONSTRUCT'i WS* gs:DatasetClause* WS* 'WHERE'i WS* '{' WS* t:TriplesTemplate? WS* '}' WS* sm:SolutionModifier
 {
