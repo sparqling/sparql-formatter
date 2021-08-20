@@ -780,19 +780,18 @@ function peg$parse(input, options) {
       peg$c145 = peg$literalExpectation(".", false),
       peg$c146 = function(ts, qs) {
         let quads = [];
-        if (ts?.triplesContext) {
-          for (var i=0; i<ts.triplesContext.length; i++) {
-            quads.push(ts.triplesContext[i])
-          }
-        }
 
-        if (qs && qs.length>0 && qs[0].length > 0) {
-          quads = quads.concat(qs[0][0].quadsContext);    
-          if (qs[0][2]?.triplesContext) {
-            for (let i = 0; i < qs[0][2].triplesContext.length; i++) {
-              quads.push(qs[0][2].triplesContext[i])
-            }
-          }
+        ts?.triplesContext.forEach((t) => {
+          quads.push(t)
+        });
+
+        if (qs.length) {
+          qs.forEach((q) => {
+            quads = quads.concat(q[0].quadsContext);
+            q[2]?.triplesContext.forEach((t) => {
+              quads.push(t)
+            });
+          });
         }
         
         return {
