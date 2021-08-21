@@ -769,11 +769,11 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
 }
 
 // [55] TriplesBlock ::= TriplesSameSubjectPath ( '.' TriplesBlock? )?
-TriplesBlock = a:TriplesSameSubjectPath b:(WS* '.' TriplesBlock? )?
+TriplesBlock = a:TriplesSameSubjectPath b:( WS* '.' WS* TriplesBlock? )?
 {
   let triples = a.triplesContext;
-  if (b && b[2]) {
-    triples = triples.concat(b[2].triplesContext);
+  if (b && b[3]) {
+    triples = triples.concat(b[3].triplesContext);
   }
   
   return {
@@ -985,7 +985,7 @@ ConstructTriples = b:TriplesSameSubject bs:( WS* '.' WS* ConstructTriples? )?
 }
 
 // [75] TriplesSameSubject ::= VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList
-TriplesSameSubject = WS* s:VarOrTerm WS* pairs:PropertyListNotEmpty
+TriplesSameSubject = s:VarOrTerm WS* pairs:PropertyListNotEmpty
 {
   let triplesContext = pairs.triplesContext;
 
@@ -1118,7 +1118,7 @@ ObjectList = o:Object WS* os:( ',' WS* Object )*
 Object = GraphNode
 
 // [81] TriplesSameSubjectPath ::= VarOrTerm PropertyListPathNotEmpty | TriplesNodePath PropertyListPath
-TriplesSameSubjectPath = WS* s:VarOrTerm WS* list:PropertyListPathNotEmpty
+TriplesSameSubjectPath = s:VarOrTerm WS* list:PropertyListPathNotEmpty
 {
   let triplesContext = list.triplesContext;
 
