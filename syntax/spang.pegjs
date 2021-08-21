@@ -105,7 +105,7 @@ SelectQuery = s:SelectClause WS* gs:DatasetClause* WS* w:WhereClause WS* sm:Solu
 
 // [8] SubSelect ::= SelectClause WhereClause SolutionModifier ValuesClause
 // add ValuesClause
-SubSelect = s:SelectClause WS* w:WhereClause sm:SolutionModifier
+SubSelect = s:SelectClause WS* w:WhereClause WS* sm:SolutionModifier
 {
   return {
     token: 'subselect',
@@ -244,7 +244,7 @@ DescribeQuery = 'DESCRIBE'i WS* v:( VarOrIri+ / '*' ) WS* DatasetClause* WS* w:W
 
 // [12] AskQuery ::= 'ASK' DatasetClause* WhereClause SolutionModifier
 // add SolutionModifier
-AskQuery = WS* 'ASK'i WS* gs:DatasetClause* WS* w:WhereClause 
+AskQuery = WS* 'ASK'i WS* gs:DatasetClause* WS* w:WhereClause WS*
 {
   const dataset = { named: [], implicit: [] };
   gs.forEach((g) => {
@@ -304,7 +304,7 @@ NamedGraphClause = 'NAMED'i WS* s:SourceSelector
 SourceSelector = IRIref
 
 // [17] WhereClause ::= 'WHERE'? GroupGraphPattern
-WhereClause = ('WHERE'i)? WS* g:GroupGraphPattern WS*
+WhereClause = ('WHERE'i)? WS* g:GroupGraphPattern
 {
   return g;
 }
