@@ -700,14 +700,12 @@ Quads = ts:TriplesTemplate? qs:( QuadsNotTriples '.'? TriplesTemplate? )*
     quads.push(t)
   });
 
-  if (qs.length) {
-    qs.forEach((q) => {
-      quads = quads.concat(q[0].quadsContext);
-      q[2]?.triplesContext.forEach((t) => {
-        quads.push(t)
-      });
+  qs.forEach((q) => {
+    quads = quads.concat(q[0].quadsContext);
+    q[2]?.triplesContext.forEach((t) => {
+      quads.push(t)
     });
-  }
+  });
   
   return {
     token:'quads',
