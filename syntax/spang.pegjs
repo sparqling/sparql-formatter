@@ -749,29 +749,29 @@ GroupGraphPattern = '{' WS* p:( SubSelect / GroupGraphPatternSub )  WS* '}'
 // [54] GroupGraphPatternSub ::= TriplesBlock? ( GraphPatternNotTriples '.'? TriplesBlock? )*
 GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'? WS* TriplesBlock? )*
 {
-  let blocks = [];
-  if (tb != null && tb != []) {
-    blocks.push(tb);
-  }
-  for (let i = 0; i < tbs.length; i++) {
-    for (let j = 0; j < tbs[i].length; j++) {
-      if (tbs[i][j] != null && tbs[i][j].token != null) {
-        blocks.push(tbs[i][j]);
-      }
-    }
-  }
-
+  let patterns = [];
   let filters = [];
   let binds = [];
-  let patterns = [];
+
+  let blocks = [];
+  if (tb) {
+    blocks.push(tb);
+  }
+  tbs.forEach((b) => {
+    blocks.push(b[0]);
+    if (b[4]) {
+      blocks.push(b[4]);
+    }
+  });
+
   let tmpPatterns = [];
-  blocks.forEach((block) => {
-    if (block.token === 'filter') {
-      filters.push(block);
-    } else if (block.token === 'bind') {
-      binds.push(block);
-    } else if (block.token === 'triplesblock') {
-      tmpPatterns.push(block);
+  blocks.forEach((b) => {
+    if (b.token === 'filter') {
+      filters.push(b);
+    } else if (b.token === 'bind') {
+      binds.push(b);
+    } else if (b.token === 'triplesblock') {
+      tmpPatterns.push(b);
     } else {
       if (tmpPatterns.length != 0 || filters.length != 0) {
         const tmpContext = tmpPatterns.map(pattern => pattern.triplesContext).flat();
@@ -780,7 +780,7 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
         }
         tmpPatterns = [];
       }
-      patterns.push(block);
+      patterns.push(b);
     }
   });
   if (tmpPatterns.length != 0 || filters.length != 0) {
@@ -792,9 +792,9 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
 
   return {
     token: 'groupgraphpattern',
+    patterns: patterns,
     filters: filters,
     binds: binds,
-    patterns: patterns,
     location: location(),
   }
 }
