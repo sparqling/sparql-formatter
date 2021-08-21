@@ -745,13 +745,11 @@ function peg$parse(input, options) {
       },
       peg$c146 = function(g, ts) {
         let quads = [];
-        if (ts!=null) {
-          for (let i = 0; i < ts.triplesContext.length; i++) {
-            let triple = ts.triplesContext[i];
-            triple.graph = g;
-            quads.push(triple)
-          }
-        }
+        ts?.triplesContext.forEach((t) => {
+          let triple = t;
+          triple.graph = g;
+          quads.push(triple)
+        });
         
         return {
           token:'quadsnottriples',

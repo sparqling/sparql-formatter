@@ -720,13 +720,11 @@ Quads = ts:TriplesTemplate? qs:( QuadsNotTriples '.'? TriplesTemplate? )*
 QuadsNotTriples = WS* 'GRAPH'i WS* g:VarOrIri WS* '{' WS* ts:TriplesTemplate? WS* '}' WS*
 {
   let quads = [];
-  if (ts!=null) {
-    for (let i = 0; i < ts.triplesContext.length; i++) {
-      let triple = ts.triplesContext[i];
-      triple.graph = g;
-      quads.push(triple)
-    }
-  }
+  ts?.triplesContext.forEach((t) => {
+    let triple = t;
+    triple.graph = g;
+    quads.push(triple)
+  });
   
   return {
     token:'quadsnottriples',
