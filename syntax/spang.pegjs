@@ -121,40 +121,46 @@ SubSelect = s:SelectClause WS* w:WhereClause sm:SolutionModifier
 }
 
 // [9] SelectClause ::= 'SELECT' ( 'DISTINCT' | 'REDUCED' )? ( ( Var | ( '(' Expression 'AS' Var ')' ) )+ | '*' )
-SelectClause = WS* 'SELECT'i WS* mod:( 'DISTINCT'i / 'REDUCED'i )? WS*
-  proj:( ( ( WS* Var ) / ( WS* '(' WS* Expression WS* 'AS'i WS* Var WS* ')' ) )+ / '*' )
+SelectClause = 'SELECT'i WS* m:( 'DISTINCT'i / 'REDUCED'i )? WS*
+  vs:(
+    (
+      ( WS* Var ) /
+      ( WS* '(' WS* Expression WS* 'AS'i WS* Var WS* ')' )
+    )+ /
+    '*'
+  )
 {
-  if (proj.length === 1 && proj[0] === "*") {
-    return {
-      vars: [{
-        token: 'variable',
-        kind: '*',
-        location: location(),
-      }],
-      modifier: mod?.toUpperCase(),
-    };
+  let vars;
+  if (vs === "*") {
+    vars = [{
+      token: 'variable',
+      kind: '*',
+      location: location(),
+    }];
   } else {
-    return {
-      vars: proj.map((elem) => {
-        if (elem.length === 2) {
-          return {
-            token: 'variable',
-            kind: 'var',
-            value: elem[1],
-          };
-        } else {
-          return {
-            token: 'variable',
-            kind: 'aliased',
-            expression: elem[3],
-            alias: elem[7],
-            location: location(),
-          };
-        }
-      }),
-      modifier: mod?.toUpperCase(),
-    };
+    vars = vs.map((v) => {
+      if (v.length === 2) {
+        return {
+          token: 'variable',
+          kind: 'var',
+          value: v[1],
+        };
+      } else {
+        return {
+          token: 'variable',
+          kind: 'aliased',
+          expression: v[3],
+          alias: v[7],
+          location: location(),
+        };
+      }
+    });
   }
+
+  return {
+    vars: vars,
+    modifier: m?.toUpperCase(),
+  };
 }
 
 // [10] ConstructQuery ::= 'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier )
