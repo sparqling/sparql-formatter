@@ -1059,21 +1059,18 @@ PropertyListNotEmpty = v:Verb WS* ol:ObjectList rest:( WS* ';' WS* ( Verb WS* Ob
     }
   });
   
-  for (let i = 0; i < rest.length; i++) {
-    if (!rest[i][3]) {
-      continue;
+  rest.forEach((r) => {
+    if (r[3]) {
+      r[3][2].forEach((o) => {
+        if (o.triplesContext) {
+          triplesContext = triplesContext.concat(o.triplesContext);
+          pairs.push([r[3][0], o.chainSubject]);
+        } else {
+          pairs.push([r[3][0], o])
+        }
+      });
     }
-    const newVerb  = rest[i][3][0];
-    const newObjsList = rest[i][3][2] || [];
-    for (let j = 0; j < newObjsList.length; j++) {
-      if (newObjsList[j].triplesContext != null) {
-        triplesContext = triplesContext.concat(newObjsList[j].triplesContext);
-        pairs.push([newVerb, newObjsList[j].chainSubject]);
-      } else {
-        pairs.push([newVerb, newObjsList[j]])
-      }
-    }
-  }
+  });
   
   return {
     token: 'propertylist',
@@ -1180,21 +1177,18 @@ PropertyListPathNotEmpty = v:( VerbPath / VerbSimple ) WS* ol:ObjectListPath res
     }
   });
 
-  for (let i = 0; i < rest.length; i++) {
-    if (!rest[i][3]) {
-      continue;
+  rest.forEach((r) => {
+    if (r[3]) {
+      r[3][2].forEach((o) => {
+        if (o.triplesContext) {
+          triplesContext = triplesContext.concat(o.triplesContext);
+          pairs.push([r[3][0], o.chainSubject]);
+        } else {
+          pairs.push([r[3][0], o])
+        }
+      });
     }
-    const newVerb  = rest[i][3][0];
-    const newObjsList = rest[i][3][2] || [];
-    for (let j = 0; j < newObjsList.length; j++) {
-      if (newObjsList[j].triplesContext != null) {
-        triplesContext = triplesContext.concat(newObjsList[j].triplesContext);
-        pairs.push([newVerb, newObjsList[j].chainSubject]);
-      } else {
-        pairs.push([newVerb, newObjsList[j]])
-      }
-    }
-  }
+  });
   
   return {
     token: 'propertylist',
