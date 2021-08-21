@@ -950,20 +950,17 @@ function peg$parse(input, options) {
       peg$c181 = function(s, pairs) {
         let triplesContext = pairs.triplesContext;
 
-        if (pairs.pairs) {
-          for (let i=0; i < pairs.pairs.length; i++) {
-            let pair = pairs.pairs[i];
-            if (pair[1].length != null) {
-              pair[1] = pair[1][0]
-            }
-            if (s.token && s.token === 'triplesnodecollection') {
-              triplesContext.push({ subject: s.chainSubject[0], predicate: pair[0], object: pair[1] });
-              triplesContext = triplesContext.concat(s.triplesContext);
-            } else {
-              triplesContext.push({ subject: s, predicate: pair[0], object: pair[1] });
-            }
+        pairs.pairs.forEach((pair) => {
+          if (pair[1].length != null) {
+            pair[1] = pair[1][0]
           }
-        }
+          if (s.token && s.token === 'triplesnodecollection') {
+            triplesContext.push({ subject: s.chainSubject[0], predicate: pair[0], object: pair[1] });
+            triplesContext = triplesContext.concat(s.triplesContext);
+          } else {
+            triplesContext.push({ subject: s, predicate: pair[0], object: pair[1] });
+          }
+        });
         
         return {
           token: 'triplessamesubject',
