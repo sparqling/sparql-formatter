@@ -750,37 +750,20 @@ GroupGraphPattern = '{' WS* p:( SubSelect / GroupGraphPatternSub )  WS* '}'
 GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'? WS* TriplesBlock? )*
 {
   let patterns = [];
-  let filters = [];
-  let binds = [];
 
-  let blocks = [];
   if (tb) {
-    blocks.push(tb);
+    patterns.push(tb);
   }
   tbs.forEach((b) => {
-    blocks.push(b[0]);
+    patterns.push(b[0]);
     if (b[4]) {
-      blocks.push(b[4]);
-    }
-  });
-
-  blocks.forEach((b) => {
-    if (b.token === 'filter') {
-      filters.push(b);
-    } else if (b.token === 'bind') {
-      binds.push(b);
-    } else if (b.token === 'triplesblock') {
-      patterns.push(b);
-    } else {
-      patterns.push(b);
+      patterns.push(b[4]);
     }
   });
 
   return {
     token: 'ggps',
     patterns: patterns,
-    filters: filters,
-    binds: binds,
     location: location(),
   }
 }
