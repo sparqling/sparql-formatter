@@ -782,31 +782,17 @@ function peg$parse(input, options) {
           }
         });
 
-        let tmpPatterns = [];
         blocks.forEach((b) => {
           if (b.token === 'filter') {
             filters.push(b);
           } else if (b.token === 'bind') {
             binds.push(b);
           } else if (b.token === 'triplesblock') {
-            tmpPatterns.push(b);
+            patterns.push({ token: 'bgp', triplesContext: b.triplesContext, location: location() });
           } else {
-            if (tmpPatterns.length != 0 || filters.length != 0) {
-              const tmpContext = tmpPatterns.map(pattern => pattern.triplesContext).flat();
-              if (tmpContext.length > 0) {
-                patterns.push({ token: 'bgp', triplesContext: tmpContext, location: location() });
-              }
-              tmpPatterns = [];
-            }
             patterns.push(b);
           }
         });
-        if (tmpPatterns.length != 0 || filters.length != 0) {
-          const tmpContext = tmpPatterns.map(pattern => pattern.triplesContext).flat();
-          if (tmpContext.length > 0) {
-            patterns.push({ token: 'bgp', triplesContext: tmpContext, location: location() });
-          }
-        }
 
         return {
           token: 'ggps',
