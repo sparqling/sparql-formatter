@@ -331,7 +331,7 @@ function peg$parse(input, options) {
           dataset: dataset,
           template: t,
           pattern: {
-            token: "basicgraphpattern",
+            token: 'bgp',
             triplesContext: t.triplesContext
           },
           limit: sm.limit,
@@ -794,7 +794,7 @@ function peg$parse(input, options) {
             if (tmpPatterns.length != 0 || filters.length != 0) {
               const tmpContext = tmpPatterns.map(pattern => pattern.triplesContext).flat();
               if (tmpContext.length > 0) {
-                patterns.push({ token: 'basicgraphpattern', triplesContext: tmpContext, location: location() });
+                patterns.push({ token: 'bgp', triplesContext: tmpContext, location: location() });
               }
               tmpPatterns = [];
             }
@@ -804,7 +804,7 @@ function peg$parse(input, options) {
         if (tmpPatterns.length != 0 || filters.length != 0) {
           const tmpContext = tmpPatterns.map(pattern => pattern.triplesContext).flat();
           if (tmpContext.length > 0) {
-            patterns.push({ token: 'basicgraphpattern', triplesContext: tmpContext, location: location() });
+            patterns.push({ token: 'bgp', triplesContext: tmpContext, location: location() });
           }
         }
 

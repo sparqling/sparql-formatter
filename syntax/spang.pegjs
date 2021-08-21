@@ -220,7 +220,7 @@ ConstructQuery = 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* 
     dataset: dataset,
     template: t,
     pattern: {
-      token: "basicgraphpattern",
+      token: 'bgp',
       triplesContext: t.triplesContext
     },
     limit: sm.limit,
@@ -776,7 +776,7 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
       if (tmpPatterns.length != 0 || filters.length != 0) {
         const tmpContext = tmpPatterns.map(pattern => pattern.triplesContext).flat();
         if (tmpContext.length > 0) {
-          patterns.push({ token: 'basicgraphpattern', triplesContext: tmpContext, location: location() });
+          patterns.push({ token: 'bgp', triplesContext: tmpContext, location: location() });
         }
         tmpPatterns = [];
       }
@@ -786,7 +786,7 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
   if (tmpPatterns.length != 0 || filters.length != 0) {
     const tmpContext = tmpPatterns.map(pattern => pattern.triplesContext).flat();
     if (tmpContext.length > 0) {
-      patterns.push({ token: 'basicgraphpattern', triplesContext: tmpContext, location: location() });
+      patterns.push({ token: 'bgp', triplesContext: tmpContext, location: location() });
     }
   }
 
