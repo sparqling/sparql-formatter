@@ -1000,18 +1000,18 @@ function peg$parse(input, options) {
       peg$c183 = function(v, ol, rest) {
         let pairs = [];
         let triplesContext = [];
-        for (let i = 0; i < ol.length; i++) {
-          if (ol[i].triplesContext != null) {
-            triplesContext = triplesContext.concat(ol[i].triplesContext);
-            if (ol[i].token === 'triplesnodecollection' && ol[i].chainSubject.length != null) {
-              pairs.push([v, ol[i].chainSubject[0]]);
+        ol.forEach((o) => {
+          if (o.triplesContext) {
+            triplesContext = triplesContext.concat(o.triplesContext);
+            if (o.token === 'triplesnodecollection' && o.chainSubject.length ) {
+              pairs.push([v, o.chainSubject[0]]);
             } else {
-              pairs.push([v, ol[i].chainSubject]);
+              pairs.push([v, o.chainSubject]);
             }
           } else {
-            pairs.push([v, ol[i]])
+            pairs.push([v, o])
           }
-        }
+        });
         
         for (let i = 0; i < rest.length; i++) {
           if (!rest[i][3]) {
@@ -1103,19 +1103,19 @@ function peg$parse(input, options) {
       peg$c190 = function(v, ol, rest) {
         let pairs = [];
         let triplesContext = [];
-        for (let i = 0; i < ol.length; i++) {
-          if (ol[i].triplesContext != null) {
-            triplesContext = triplesContext.concat(ol[i].triplesContext);
-            if (ol[i].token==='triplesnodecollection' && ol[i].chainSubject.length != null) {
-              pairs.push([v, ol[i].chainSubject[0]]);
+        ol.forEach((o) => {
+          if (o.triplesContext) {
+            triplesContext = triplesContext.concat(o.triplesContext);
+            if (o.token === 'triplesnodecollection' && o.chainSubject.length ) {
+              pairs.push([v, o.chainSubject[0]]);
             } else {
-              pairs.push([v, ol[i].chainSubject]);
+              pairs.push([v, o.chainSubject]);
             }
           } else {
-            pairs.push([v, ol[i]])
+            pairs.push([v, o])
           }
-        }
-        
+        });
+
         for (let i = 0; i < rest.length; i++) {
           if (!rest[i][3]) {
             continue;
