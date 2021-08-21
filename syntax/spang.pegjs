@@ -1200,17 +1200,14 @@ VerbPath = Path
 VerbSimple = Var
 
 // [86] ObjectListPath ::= ObjectPath ( ',' ObjectPath )*
-ObjectListPath = o:ObjectPath WS* os:(',' WS* ObjectPath)*
+ObjectListPath = o:ObjectPath os:( WS* ',' WS* ObjectPath )*
 {
   let ret = [o];
-  for (let i = 0; i < os.length; i++) {
-    for (let j = 0; j < os[i].length; j++) {
-      if (typeof(os[i][j]) == "object" && os[i][j].token != null) {
-        ret.push(os[i][j]);
-      }
-    }
-  }
-  
+
+  os.forEach((oi) => {
+    ret.push(oi[3]);
+  });
+
   return ret;
 }
 
