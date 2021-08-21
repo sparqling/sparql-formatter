@@ -1093,17 +1093,13 @@ Verb = VarOrIri
 }
 
 // [79] ObjectList ::= Object ( ',' Object )*
-ObjectList = o:Object WS* os:( ',' WS* Object )*
+ObjectList = o:Object os:( WS* ',' WS* Object )*
 {
   let ret = [o];
 
-  for (let i = 0; i < os.length; i++) {
-    for (let j = 0; j < os[i].length; j++) {
-      if (typeof(os[i][j]) == "object" && os[i][j].token != null) {
-        ret.push(os[i][j]);
-      }
-    }
-  }
+  os.forEach((oi) => {
+    ret.push(oi[3]);
+  });
 
   return ret;
 }
