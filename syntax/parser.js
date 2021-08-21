@@ -809,7 +809,7 @@ function peg$parse(input, options) {
         }
 
         return {
-          token: 'groupgraphpattern',
+          token: 'ggps',
           patterns: patterns,
           filters: filters,
           binds: binds,

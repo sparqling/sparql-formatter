@@ -791,7 +791,7 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
   }
 
   return {
-    token: 'groupgraphpattern',
+    token: 'ggps',
     patterns: patterns,
     filters: filters,
     binds: binds,
