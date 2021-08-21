@@ -67,7 +67,7 @@ PrefixDecl = WS* 'PREFIX'i  WS* p:PNAME_NS  WS* l:IRIREF
 }
 
 // [7] SelectQuery ::= SelectClause DatasetClause* WhereClause SolutionModifier
-SelectQuery = s:SelectClause WS* gs:DatasetClause* WS* w:WhereClause WS* sm:SolutionModifier WS* BindingsClause 
+SelectQuery = s:SelectClause WS* gs:DatasetClause* WS* w:WhereClause WS* sm:SolutionModifier
 {
   const dataset = { named: [], implicit: [] };
   gs.forEach((g) => {
@@ -430,12 +430,6 @@ OffsetClause = 'OFFSET'i WS* i:INTEGER WS*
     offset: parseInt(i.value)
   };
 }
-
-// BindingsClause ::= ( 'BINDINGS' Var* '{' ( '(' BindingValue+ ')' | NIL )* '}' )?
-BindingsClause = ( 'BINDINGS' Var* '{' ( '(' BindingValue+ ')' / NIL )* '}' )?
-
-// BindingValue ::= IRIref | RDFLiteral | NumericLiteral | BooleanLiteral | 'UNDEF'
-BindingValue = IRIref / RDFLiteral / NumericLiteral / BooleanLiteral / 'UNDEF'
 
 // [28] ValuesClause ::= ( 'VALUES' DataBlock )?
 ValuesClause = b:( 'VALUES'i DataBlock )?
