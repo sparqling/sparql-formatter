@@ -770,7 +770,7 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
     } else if (b.token === 'bind') {
       binds.push(b);
     } else if (b.token === 'triplesblock') {
-      patterns.push({ token: 'bgp', triplesContext: b.triplesContext, location: location() });
+      patterns.push(b);
     } else {
       patterns.push(b);
     }
@@ -789,7 +789,7 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
 TriplesBlock = a:TriplesSameSubjectPath b:(WS* '.' TriplesBlock? )?
 {
   let triples = a.triplesContext;
-  if (b != null && b[2] != null && b[2].triplesContext != null) {
+  if (b && b[2]) {
     triples = triples.concat(b[2].triplesContext);
   }
   
