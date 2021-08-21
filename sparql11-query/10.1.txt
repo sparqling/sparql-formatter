@@ -5,7 +5,7 @@ SELECT ?title ?price
 WHERE {
   ?x ns:price ?p .
   ?x ns:discount ?discount .
-  ?x dc:title ?title .
-  FILTER (?price < 20)
   BIND(?p * (1 - ?discount) AS ?price)
+  FILTER (?price < 20)
+  ?x dc:title ?title .
 }
