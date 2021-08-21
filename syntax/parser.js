@@ -6710,6 +6710,9 @@ function peg$parse(input, options) {
       }
       if (s2 !== peg$FAILED) {
         s3 = peg$parseSubSelect();
+        if (s3 === peg$FAILED) {
+          s3 = peg$parseGroupGraphPatternSub();
+        }
         if (s3 !== peg$FAILED) {
           s4 = [];
           s5 = peg$parseWS();
@@ -6748,64 +6751,6 @@ function peg$parse(input, options) {
     } else {
       peg$currPos = s0;
       s0 = peg$FAILED;
-    }
-    if (s0 === peg$FAILED) {
-      s0 = peg$currPos;
-      if (input.charCodeAt(peg$currPos) === 123) {
-        s1 = peg$c30;
-        peg$currPos++;
-      } else {
-        s1 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c31); }
-      }
-      if (s1 !== peg$FAILED) {
-        s2 = [];
-        s3 = peg$parseWS();
-        while (s3 !== peg$FAILED) {
-          s2.push(s3);
-          s3 = peg$parseWS();
-        }
-        if (s2 !== peg$FAILED) {
-          s3 = peg$parseGroupGraphPatternSub();
-          if (s3 !== peg$FAILED) {
-            s4 = [];
-            s5 = peg$parseWS();
-            while (s5 !== peg$FAILED) {
-              s4.push(s5);
-              s5 = peg$parseWS();
-            }
-            if (s4 !== peg$FAILED) {
-              if (input.charCodeAt(peg$currPos) === 125) {
-                s5 = peg$c32;
-                peg$currPos++;
-              } else {
-                s5 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c33); }
-              }
-              if (s5 !== peg$FAILED) {
-                peg$savedPos = s0;
-                s1 = peg$c144(s3);
-                s0 = s1;
-              } else {
-                peg$currPos = s0;
-                s0 = peg$FAILED;
-              }
-            } else {
-              peg$currPos = s0;
-              s0 = peg$FAILED;
-            }
-          } else {
-            peg$currPos = s0;
-            s0 = peg$FAILED;
-          }
-        } else {
-          peg$currPos = s0;
-          s0 = peg$FAILED;
-        }
-      } else {
-        peg$currPos = s0;
-        s0 = peg$FAILED;
-      }
     }
 
     return s0;

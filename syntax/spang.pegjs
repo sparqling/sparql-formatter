@@ -741,11 +741,7 @@ TriplesTemplate = b:TriplesSameSubject bs:( WS* '.' WS* TriplesTemplate? )?
 }
 
 // [53] GroupGraphPattern ::= '{' ( SubSelect | GroupGraphPatternSub ) '}'
-GroupGraphPattern = '{' WS* p:SubSelect  WS* '}'
-{
-  return p;
-}
-/ '{' WS* p:GroupGraphPatternSub WS* '}' 
+GroupGraphPattern = '{' WS* p:( SubSelect / GroupGraphPatternSub )  WS* '}'
 {
   return p;
 }
