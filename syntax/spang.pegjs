@@ -784,7 +784,7 @@ TriplesBlock = a:TriplesSameSubjectPath b:(WS* '.' TriplesBlock? )?
 }
 
 // [56] GraphPatternNotTriples ::= GroupOrUnionGraphPattern | OptionalGraphPattern | MinusGraphPattern | GraphGraphPattern | ServiceGraphPattern | Filter | Bind | InlineData
-GraphPatternNotTriples = GroupOrUnionGraphPattern / OptionalGraphPattern / MinusGraphPattern / GraphGraphPattern / ServiceGraphPattern / Filter / Bind / InlineData / FunctionCall
+GraphPatternNotTriples = GroupOrUnionGraphPattern / OptionalGraphPattern / MinusGraphPattern / GraphGraphPattern / ServiceGraphPattern / Filter / Bind / InlineData
 
 // [57] OptionalGraphPattern ::= 'OPTIONAL' GroupGraphPattern
 OptionalGraphPattern = WS* 'OPTIONAL'i WS* v:GroupGraphPattern

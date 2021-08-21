@@ -6953,9 +6953,6 @@ function peg$parse(input, options) {
                 s0 = peg$parseBind();
                 if (s0 === peg$FAILED) {
                   s0 = peg$parseInlineData();
-                  if (s0 === peg$FAILED) {
-                    s0 = peg$parseFunctionCall();
-                  }
                 }
               }
             }
