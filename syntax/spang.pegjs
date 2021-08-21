@@ -2728,7 +2728,7 @@ VAR3 = '{{' v:VARNAME '}}'
 // [145] LANGTAG ::= '@' [a-zA-Z]+ ('-' [a-zA-Z0-9]+)*
 LANGTAG = '@' a:[a-zA-Z]+ b:('-' [a-zA-Z0-9]+)*
 {
-  const lang = a.join('');
+  let lang = a.join('');
 
   if (b.length) {
     lang += '-' + b[0][1].join('');

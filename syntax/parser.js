@@ -2433,7 +2433,7 @@ function peg$parse(input, options) {
       peg$c483 = /^[a-zA-Z0-9]/,
       peg$c484 = peg$classExpectation([["a", "z"], ["A", "Z"], ["0", "9"]], false, false),
       peg$c485 = function(a, b) {
-        const lang = a.join('');
+        let lang = a.join('');
 
         if (b.length) {
           lang += '-' + b[0][1].join('');
