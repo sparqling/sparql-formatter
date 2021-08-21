@@ -757,14 +757,10 @@ function peg$parse(input, options) {
       },
       peg$c147 = function(b, bs) {
         let triples = b.triplesContext;
-        if (bs != null && typeof(bs) === 'object') {
-          if (bs.length != null) {
-            if (bs[3] != null && bs[3].triplesContext!=null) {
-              triples = triples.concat(bs[3].triplesContext);
-            }
-          }
+        if (bs && bs[3]) {
+          triples = triples.concat(bs[3].triplesContext);
         }
-        
+
         return {
           token:'triplestemplate',
           triplesContext: triples,

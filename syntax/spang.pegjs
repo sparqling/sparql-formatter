@@ -732,17 +732,13 @@ QuadsNotTriples = WS* 'GRAPH'i WS* g:VarOrIri WS* '{' WS* ts:TriplesTemplate? WS
 }
 
 // [52] TriplesTemplate ::= TriplesSameSubject ( '.' TriplesTemplate? )?
-TriplesTemplate = b:TriplesSameSubject bs:(WS* '.' WS* TriplesTemplate? )?
+TriplesTemplate = b:TriplesSameSubject bs:( WS* '.' WS* TriplesTemplate? )?
 {
   let triples = b.triplesContext;
-  if (bs != null && typeof(bs) === 'object') {
-    if (bs.length != null) {
-      if (bs[3] != null && bs[3].triplesContext!=null) {
-        triples = triples.concat(bs[3].triplesContext);
-      }
-    }
+  if (bs && bs[3]) {
+    triples = triples.concat(bs[3].triplesContext);
   }
-  
+
   return {
     token:'triplestemplate',
     triplesContext: triples,
