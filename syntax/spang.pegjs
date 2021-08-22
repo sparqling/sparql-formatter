@@ -1387,26 +1387,22 @@ TriplesNode = c:Collection
 BlankNodePropertyList = WS* '[' WS* pl:PropertyListNotEmpty WS* ']' WS*
 {
   GlobalBlankNodeCounter++;
-  var subject = {token:'blank', value:'_:'+GlobalBlankNodeCounter};
-  var newTriples =  [];
+  const subject = { token:'blank', value: `_:${GlobalBlankNodeCounter}` };
 
-  for(var i=0; i< pl.pairs.length; i++) {
-    var pair = pl.pairs[i];
-    var triple = {}
-    triple.subject = subject;
-    triple.predicate = pair[0];
-    if(pair[1].length != null)
-      pair[1] = pair[1][0]
-    triple.object = pair[1];
-    newTriples.push(triple);
-  }
+  let triples = [];
+  pl.pairs.forEach((pair) => {
+    if (pair[1].length) {
+      pair[1] = pair[1][0];
+    }
+    triples.push({ subject: subject, predicate: pair[0], object: pair[1] });
+  });
 
   return {
     token: 'triplesnode',
-    location: location(),
     kind: 'blanknodepropertylist',
     triplesContext: pl.triplesContext.concat(newTriples),
-    chainSubject: subject
+    chainSubject: subject,
+    location: location(),
   };
 }
 
@@ -1477,7 +1473,7 @@ BlankNodePropertyListPath = WS* '[' WS* pl:PropertyListPathNotEmpty WS* ']' WS*
   GlobalBlankNodeCounter++;
   const subject = { token: 'blank', value: `_:${GlobalBlankNodeCounter}` };
 
-  let triples =  [];
+  let triples = [];
   pl.pairs.forEach((pair) => {
     if (pair[1].length) {
       pair[1] = pair[1][0];
