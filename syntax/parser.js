@@ -201,8 +201,7 @@ function peg$parse(input, options) {
           projection: s.vars,
           modifier: s.modifier,
           pattern: w,
-          limit: sm.limit,
-          offset: sm.offset,
+          limitoffset: sm.limitoffset,
           group: sm.group,
           having: sm.having,
           order: sm.order,
@@ -216,8 +215,7 @@ function peg$parse(input, options) {
           projection: s.vars,
           modifier: s.modifier,
           pattern: w,
-          limit: sm.limit,
-          offset: sm.offset,
+          limitoffset: sm.limitoffset,
           group: sm.group,
           order: sm.order,
         };
@@ -295,8 +293,7 @@ function peg$parse(input, options) {
           dataset: dataset,
           template: t,
           pattern: w,
-          limit: sm.limit,
-          offset: sm.offset,
+          limitoffset: sm.limitoffset,
           order: sm.order,
           location: location(),
         };
@@ -334,8 +331,7 @@ function peg$parse(input, options) {
             token: 'bgp',
             triplesContext: t.triplesContext
           },
-          limit: sm.limit,
-          offset: sm.offset,
+          limitoffset: sm.limitoffset,
           order: sm.order,
           location: location(),
         };
@@ -408,8 +404,7 @@ function peg$parse(input, options) {
         return {
           group: gc,
           order: oc,
-          limit: lo?.limit,
-          offset: lo?.offset,
+          limitoffset: lo,
           having: h,
         }
       },
@@ -482,17 +477,17 @@ function peg$parse(input, options) {
         }
       },
       peg$c71 = function(cls) {
-        let acum = {};
+        // if (cls.length === 1) {
+        //   return [cls[0]];
+        // } else if (cls.length === 2) {
+        //   return [cls[0], cls[1]];
+        // }
+        let ret = [cls[0]];
+        if (cls[1]) {
+          ret.push(cls[1]);
+        }
 
-        cls.forEach((cl) => {
-          if (cl != null && cl.limit != null) {
-            acum.limit = cl.limit;
-          } else if (cl != null && cl.offset != null){
-            acum.offset = cl.offset;
-          }
-        });
-        
-        return acum;
+        return ret;
       },
       peg$c72 = "limit",
       peg$c73 = peg$literalExpectation("LIMIT", true),
@@ -1267,26 +1262,22 @@ function peg$parse(input, options) {
       peg$c213 = peg$literalExpectation("]", false),
       peg$c214 = function(pl) {
         GlobalBlankNodeCounter++;
-        var subject = {token:'blank', value:'_:'+GlobalBlankNodeCounter};
-        var newTriples =  [];
+        const subject = { token:'blank', value: `_:${GlobalBlankNodeCounter}` };
 
-        for(var i=0; i< pl.pairs.length; i++) {
-          var pair = pl.pairs[i];
-          var triple = {}
-          triple.subject = subject;
-          triple.predicate = pair[0];
-          if(pair[1].length != null)
-            pair[1] = pair[1][0]
-          triple.object = pair[1];
-          newTriples.push(triple);
-        }
+        let triples = [];
+        pl.pairs.forEach((pair) => {
+          if (pair[1].length) {
+            pair[1] = pair[1][0];
+          }
+          triples.push({ subject: subject, predicate: pair[0], object: pair[1] });
+        });
 
         return {
           token: 'triplesnode',
-          location: location(),
           kind: 'blanknodepropertylist',
           triplesContext: pl.triplesContext.concat(newTriples),
-          chainSubject: subject
+          chainSubject: subject,
+          location: location(),
         };
       },
       peg$c215 = function(c) {
@@ -1351,7 +1342,7 @@ function peg$parse(input, options) {
         GlobalBlankNodeCounter++;
         const subject = { token: 'blank', value: `_:${GlobalBlankNodeCounter}` };
 
-        let triples =  [];
+        let triples = [];
         pl.pairs.forEach((pair) => {
           if (pair[1].length) {
             pair[1] = pair[1][0];
@@ -1363,8 +1354,7 @@ function peg$parse(input, options) {
           token: 'triplesnode',
           kind: 'blanknodepropertylist',
           chainSubject: subject,
-          triplesContext: pl.triplesContext,
-          // triplesContext: pl.triplesContext.concat(triples),
+          triplesContext: pl.triplesContext.concat(triples),
           location: location(),
         };
       },
@@ -9866,7 +9856,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseBlankNodePropertyListPath() {
-    var s0, s1, s2, s3, s4, s5, s6, s7;
+    var s0, s1, s2, s3, s4, s5, s6, s7, s8;
 
     s0 = peg$currPos;
     s1 = [];
@@ -9893,24 +9883,35 @@ function peg$parse(input, options) {
         if (s3 !== peg$FAILED) {
           s4 = peg$parsePropertyListPathNotEmpty();
           if (s4 !== peg$FAILED) {
-            if (input.charCodeAt(peg$currPos) === 93) {
-              s5 = peg$c212;
-              peg$currPos++;
-            } else {
-              s5 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c213); }
+            s5 = [];
+            s6 = peg$parseWS();
+            while (s6 !== peg$FAILED) {
+              s5.push(s6);
+              s6 = peg$parseWS();
             }
             if (s5 !== peg$FAILED) {
-              s6 = [];
-              s7 = peg$parseWS();
-              while (s7 !== peg$FAILED) {
-                s6.push(s7);
-                s7 = peg$parseWS();
+              if (input.charCodeAt(peg$currPos) === 93) {
+                s6 = peg$c212;
+                peg$currPos++;
+              } else {
+                s6 = peg$FAILED;
+                if (peg$silentFails === 0) { peg$fail(peg$c213); }
               }
               if (s6 !== peg$FAILED) {
-                peg$savedPos = s0;
-                s1 = peg$c216(s4);
-                s0 = s1;
+                s7 = [];
+                s8 = peg$parseWS();
+                while (s8 !== peg$FAILED) {
+                  s7.push(s8);
+                  s8 = peg$parseWS();
+                }
+                if (s7 !== peg$FAILED) {
+                  peg$savedPos = s0;
+                  s1 = peg$c216(s4);
+                  s0 = s1;
+                } else {
+                  peg$currPos = s0;
+                  s0 = peg$FAILED;
+                }
               } else {
                 peg$currPos = s0;
                 s0 = peg$FAILED;

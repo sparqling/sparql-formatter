@@ -94,8 +94,7 @@ SelectQuery = s:SelectClause WS* gs:DatasetClause* WS* w:WhereClause WS* sm:Solu
     projection: s.vars,
     modifier: s.modifier,
     pattern: w,
-    limit: sm.limit,
-    offset: sm.offset,
+    limitoffset: sm.limitoffset,
     group: sm.group,
     having: sm.having,
     order: sm.order,
@@ -113,8 +112,7 @@ SubSelect = s:SelectClause WS* w:WhereClause WS* sm:SolutionModifier
     projection: s.vars,
     modifier: s.modifier,
     pattern: w,
-    limit: sm.limit,
-    offset: sm.offset,
+    limitoffset: sm.limitoffset,
     group: sm.group,
     order: sm.order,
   };
@@ -189,8 +187,7 @@ ConstructQuery = 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* 
     dataset: dataset,
     template: t,
     pattern: w,
-    limit: sm.limit,
-    offset: sm.offset,
+    limitoffset: sm.limitoffset,
     order: sm.order,
     location: location(),
   };
@@ -223,8 +220,7 @@ ConstructQuery = 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* 
       token: 'bgp',
       triplesContext: t.triplesContext
     },
-    limit: sm.limit,
-    offset: sm.offset,
+    limitoffset: sm.limitoffset,
     order: sm.order,
     location: location(),
   };
@@ -315,8 +311,7 @@ SolutionModifier = gc:GroupClause? h:HavingClause? oc:OrderClause? lo:LimitOffse
   return {
     group: gc,
     order: oc,
-    limit: lo?.limit,
-    offset: lo?.offset,
+    limitoffset: lo,
     having: h,
   }
 }
@@ -402,16 +397,10 @@ OrderCondition = direction:( 'ASC'i / 'DESC'i ) WS* e:BrackettedExpression WS*
 // [25] LimitOffsetClauses ::= LimitClause OffsetClause? | OffsetClause LimitClause?
 LimitOffsetClauses = cls:( LimitClause OffsetClause? / OffsetClause LimitClause? )
 {
-  let acum = {};
-
-  cls.forEach((cl) => {
-    if (cl != null && cl.limit != null) {
-      acum.limit = cl.limit;
-    } else if (cl != null && cl.offset != null){
-      acum.offset = cl.offset;
-    }
-  });
-  
+  let acum = [cls[0]];
+  if (cls[1]) {
+    acum.push(cls[1]);
+  }
   return acum;
 }
 
