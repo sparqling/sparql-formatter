@@ -1517,15 +1517,15 @@ CollectionPath = WS* '(' WS* gn:GraphNodePath+ WS* ')' WS*
 }
 
 // [104] GraphNode ::= VarOrTerm | TriplesNode
-GraphNode = gn:(WS* VarOrTerm WS* / WS* TriplesNode WS*)
+GraphNode = WS* gn:( VarOrTerm / TriplesNode )
 {
-  return gn[1];
+  return gn;
 }
 
 // [105] GraphNodePath ::= VarOrTerm | TriplesNodePath
-GraphNodePath =gn:(WS* VarOrTerm WS* / WS* TriplesNodePath WS*)
+GraphNodePath = WS* gn:( VarOrTerm / TriplesNodePath )
 {
-  return gn[1];
+  return gn;
 }
 
 // [106] VarOrTerm ::= Var | GraphTerm
