@@ -1,6 +1,6 @@
 SELECT (AVG(?y) AS ?avg)
 WHERE {
-  ?a :x ?x .
-  ?a :y ?y .
+  ?a :x ?x ;
+     :y ?y .
 }
 GROUP BY ?x

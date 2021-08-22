@@ -4,7 +4,7 @@ PREFIX eg: <http://biometrics.example/ns#>
 
 SELECT ?name ?shoeSize
 WHERE {
-  ?x foaf:name ?name .
-  ?x eg:shoeSize ?shoeSize .
+  ?x foaf:name ?name ;
+     eg:shoeSize ?shoeSize .
   FILTER (datatype(?shoeSize) = xsd:integer)
 }

@@ -7,8 +7,8 @@ WHERE {
   ?annot a:annotates <http://www.w3.org/TR/rdf-sparql-query/> .
   ?annot dc:creator ?c .
   OPTIONAL {
-    ?c foaf:given ?given .
-    ?c foaf:family ?family .
+    ?c foaf:given ?given ;
+       foaf:family ?family .
   }
   FILTER isBlank(?c)
 }

@@ -5,6 +5,6 @@ PREFIX ns: <http://example.org/ns#>
 SELECT ?book ?title ?price
 WHERE {
   VALUES ?book { :book1 :book3 }
-  ?book dc:title ?title .
-  ?book ns:price ?price .
+  ?book dc:title ?title ;
+        ns:price ?price .
 }
