@@ -1349,31 +1349,22 @@ function peg$parse(input, options) {
       },
       peg$c216 = function(pl) {
         GlobalBlankNodeCounter++;
+        const subject = { token: 'blank', value: `_:${GlobalBlankNodeCounter}` };
 
-        const subject = {
-          token: 'blank',
-          value: '_:' + GlobalBlankNodeCounter,
-        };
-
-        let newTriples =  [];
-        for (let i = 0; i < pl.pairs.length; i++) {
-          const pair = pl.pairs[i];
-          let triple = {
-            subject: subject,
-            predicate: pair[0],
-          };
-          if (pair[1].length != null) {
+        let triples =  [];
+        pl.pairs.forEach((pair) => {
+          if (pair[1].length) {
             pair[1] = pair[1][0];
           }
-          triple.object = pair[1];
-          newTriples.push(triple);
-        }
+          triples.push({ subject: subject, predicate: pair[0], object: pair[1] });
+        });
 
         return {
           token: 'triplesnode',
           kind: 'blanknodepropertylist',
           chainSubject: subject,
-          triplesContext: pl.triplesContext.concat(newTriples),
+          triplesContext: pl.triplesContext,
+          // triplesContext: pl.triplesContext.concat(triples),
           location: location(),
         };
       },
