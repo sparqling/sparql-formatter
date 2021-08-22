@@ -1529,10 +1529,10 @@ GraphNodePath = WS* gn:( VarOrTerm / TriplesNodePath )
 }
 
 // [106] VarOrTerm ::= Var | GraphTerm
-VarOrTerm = (Var / GraphTerm)
+VarOrTerm = Var / GraphTerm
 
 // [107] VarOrIri ::= Var | IRIref
-VarOrIri = (Var /IRIref)
+VarOrIri = Var / IRIref
 
 // [108] Var ::= VAR1 | VAR2
 Var = WS* v:(VAR1 / VAR2 / VAR3) WS*
