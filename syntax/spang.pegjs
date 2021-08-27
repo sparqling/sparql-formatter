@@ -713,11 +713,6 @@ QuadsNotTriples = WS* 'GRAPH'i WS* g:VarOrIri WS* '{' WS* ts:TriplesTemplate? WS
 // [52] TriplesTemplate ::= TriplesSameSubject ( '.' TriplesTemplate? )?
 TriplesTemplate = b:TriplesSameSubject bs:( WS* '.' WS* TriplesTemplate? )?
 {
-  let triples = b.triplesContext;
-  if (bs && bs[3]) {
-    triples = triples.concat(bs[3].triplesContext);
-  }
-
   let triplesblock = [b];
   if (bs && bs[3]) {
     triplesblock = triplesblock.concat(bs[3].triplesblock);
@@ -726,7 +721,6 @@ TriplesTemplate = b:TriplesSameSubject bs:( WS* '.' WS* TriplesTemplate? )?
   return {
     token:'triplestemplate',
     triplesblock: triplesblock,
-    triplesContext: triples,
     location: location(),
   };
 }
@@ -762,11 +756,6 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
 // [55] TriplesBlock ::= TriplesSameSubjectPath ( '.' TriplesBlock? )?
 TriplesBlock = a:TriplesSameSubjectPath b:( WS* '.' WS* TriplesBlock? )?
 {
-  let triples = a.triplesContext;
-  if (b && b[3]) {
-    triples = triples.concat(b[3].triplesContext);
-  }
-  
   let triplesblock = [a];
   if (b && b[3]) {
     triplesblock = triplesblock.concat(b[3].triplesblock);
@@ -775,7 +764,6 @@ TriplesBlock = a:TriplesSameSubjectPath b:( WS* '.' WS* TriplesBlock? )?
   return {
     token: 'triplesblock',
     triplesblock: triplesblock,
-    triplesContext: triples,
     location: location(),
   }
 }
@@ -965,11 +953,6 @@ ConstructTemplate = '{' WS* ts:ConstructTriples? WS* '}'
 // [74] ConstructTriples ::= TriplesSameSubject ( '.' ConstructTriples? )?
 ConstructTriples = b:TriplesSameSubject bs:( WS* '.' WS* ConstructTriples? )?
 {
-  let triples = b.triplesContext;
-  if (bs && bs[3]) {
-    triples = triples.concat(bs[3].triplesContext);
-  }
-
   let triplesblock = [b];
   if (bs && bs[3]) {
     triplesblock = triplesblock.concat(bs[3].triplesblock);
@@ -978,7 +961,6 @@ ConstructTriples = b:TriplesSameSubject bs:( WS* '.' WS* ConstructTriples? )?
   return {
     token:'triplestemplate',
     triplesblock: triplesblock,
-    triplesContext: triples,
     location: location(),
   }
 }
@@ -986,25 +968,16 @@ ConstructTriples = b:TriplesSameSubject bs:( WS* '.' WS* ConstructTriples? )?
 // [75] TriplesSameSubject ::= VarOrTerm PropertyListNotEmpty | TriplesNode PropertyList
 TriplesSameSubject = s:VarOrTerm WS* pairs:PropertyListNotEmpty
 {
-  let triplesContext = pairs.triplesContext;
-
   pairs.pairs.forEach((pair) => {
     if (pair[1].length != null) {
       pair[1] = pair[1][0]
     }
-    if (s.token && s.token === 'triplesnodecollection') {
-      triplesContext.push({ subject: s.chainSubject[0], predicate: pair[0], object: pair[1] });
-      triplesContext = triplesContext.concat(s.triplesContext);
-    } else {
-      triplesContext.push({ subject: s, predicate: pair[0], object: pair[1] });
-    }
   });
-  
+
   return {
     token: 'triplessamesubject',
     chainSubject: s,
     propertylist: pairs,
-    triplesContext: triplesContext,
   }
 }
 / WS* tn:TriplesNode WS* pairs:PropertyList
@@ -1055,7 +1028,6 @@ PropertyListNotEmpty = v:Verb WS* ol:ObjectList rest:( WS* ';' WS* ( Verb WS* Ob
   return {
     token: 'propertylist',
     pairs: pairs,
-    triplesContext: [],
   };
 }
 
