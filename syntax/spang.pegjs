@@ -765,8 +765,14 @@ TriplesBlock = a:TriplesSameSubjectPath b:( WS* '.' WS* TriplesBlock? )?
     triples = triples.concat(b[3].triplesContext);
   }
   
+  let triplesblock = [a];
+  if (b && b[3]) {
+    triplesblock = triplesblock.concat(b[3].triplesblock);
+  }
+
   return {
     token: 'triplesblock',
+    triplesblock: triplesblock,
     triplesContext: triples,
     location: location(),
   }
@@ -958,16 +964,18 @@ ConstructTemplate = '{' WS* ts:ConstructTriples? WS* '}'
 ConstructTriples = b:TriplesSameSubject bs:( WS* '.' WS* ConstructTriples? )?
 {
   let triples = b.triplesContext;
-  if (bs != null && typeof(bs) === 'object') {
-    if (bs.length != null) {
-      if (bs[3] != null && bs[3].triplesContext != null) {
-        triples = triples.concat(bs[3].triplesContext);
-      }
-    }
+  if (bs && bs[3]) {
+    triples = triples.concat(bs[3].triplesContext);
   }
-  
+
+  let triplesblock = [b];
+  if (bs && bs[3]) {
+    triplesblock = triplesblock.concat(bs[3].triplesblock);
+  }
+
   return {
     token:'triplestemplate',
+    triplesblock: triplesblock,
     triplesContext: triples,
     location: location(),
   }
@@ -993,6 +1001,7 @@ TriplesSameSubject = s:VarOrTerm WS* pairs:PropertyListNotEmpty
   return {
     token: 'triplessamesubject',
     chainSubject: s,
+    propertylist: pairs,
     triplesContext: triplesContext,
   }
 }
@@ -1034,37 +1043,17 @@ PropertyList = PropertyListNotEmpty?
 PropertyListNotEmpty = v:Verb WS* ol:ObjectList rest:( WS* ';' WS* ( Verb WS* ObjectList )? )*
 {
   let pairs = [];
-  let triplesContext = [];
-  ol.forEach((o) => {
-    if (o.triplesContext) {
-      triplesContext = triplesContext.concat(o.triplesContext);
-      if (o.token === 'triplesnodecollection' && o.chainSubject.length ) {
-        pairs.push([v, o.chainSubject[0]]);
-      } else {
-        pairs.push([v, o.chainSubject]);
-      }
-    } else {
-      pairs.push([v, o])
-    }
-  });
-  
+  pairs.push([v, ol]);
   rest.forEach((r) => {
     if (r[3]) {
-      r[3][2].forEach((o) => {
-        if (o.triplesContext) {
-          triplesContext = triplesContext.concat(o.triplesContext);
-          pairs.push([r[3][0], o.chainSubject]);
-        } else {
-          pairs.push([r[3][0], o])
-        }
-      });
+      pairs.push([r[3][0], r[3][2]]);
     }
   });
-  
+
   return {
     token: 'propertylist',
     pairs: pairs,
-    triplesContext: triplesContext,
+    triplesContext: [],
   };
 }
 
@@ -1108,6 +1097,7 @@ TriplesSameSubjectPath = s:VarOrTerm WS* list:PropertyListPathNotEmpty
   return {
     token: 'triplessamesubject',
     chainSubject: s,
+    propertylist: list,
     triplesContext: triplesContext,
   }
 }
@@ -1148,37 +1138,17 @@ PropertyListPath = PropertyListPathNotEmpty?
 PropertyListPathNotEmpty = v:( VerbPath / VerbSimple ) WS* ol:ObjectListPath rest:( WS* ';' WS* ( ( VerbPath / VerbSimple ) WS* ObjectList )? )*
 {
   let pairs = [];
-  let triplesContext = [];
-  ol.forEach((o) => {
-    if (o.triplesContext) {
-      triplesContext = triplesContext.concat(o.triplesContext);
-      if (o.token === 'triplesnodecollection' && o.chainSubject.length ) {
-        pairs.push([v, o.chainSubject[0]]);
-      } else {
-        pairs.push([v, o.chainSubject]);
-      }
-    } else {
-      pairs.push([v, o])
-    }
-  });
-
+  pairs.push([v, ol]);
   rest.forEach((r) => {
     if (r[3]) {
-      r[3][2].forEach((o) => {
-        if (o.triplesContext) {
-          triplesContext = triplesContext.concat(o.triplesContext);
-          pairs.push([r[3][0], o.chainSubject]);
-        } else {
-          pairs.push([r[3][0], o])
-        }
-      });
+      pairs.push([r[3][0], r[3][2]]);
     }
   });
   
   return {
     token: 'propertylist',
     pairs: pairs,
-    triplesContext: triplesContext,
+    triplesContext: [],
   };
 }
 

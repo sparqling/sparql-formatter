@@ -477,17 +477,11 @@ function peg$parse(input, options) {
         }
       },
       peg$c71 = function(cls) {
-        // if (cls.length === 1) {
-        //   return [cls[0]];
-        // } else if (cls.length === 2) {
-        //   return [cls[0], cls[1]];
-        // }
-        let ret = [cls[0]];
+        let acum = [cls[0]];
         if (cls[1]) {
-          ret.push(cls[1]);
+          acum.push(cls[1]);
         }
-
-        return ret;
+        return acum;
       },
       peg$c72 = "limit",
       peg$c73 = peg$literalExpectation("LIMIT", true),
@@ -786,8 +780,14 @@ function peg$parse(input, options) {
           triples = triples.concat(b[3].triplesContext);
         }
         
+        let triplesblock = [a];
+        if (b && b[3]) {
+          triplesblock = triplesblock.concat(b[3].triplesblock);
+        }
+
         return {
           token: 'triplesblock',
+          triplesblock: triplesblock,
           triplesContext: triples,
           location: location(),
         }
@@ -928,16 +928,18 @@ function peg$parse(input, options) {
       },
       peg$c180 = function(b, bs) {
         let triples = b.triplesContext;
-        if (bs != null && typeof(bs) === 'object') {
-          if (bs.length != null) {
-            if (bs[3] != null && bs[3].triplesContext != null) {
-              triples = triples.concat(bs[3].triplesContext);
-            }
-          }
+        if (bs && bs[3]) {
+          triples = triples.concat(bs[3].triplesContext);
         }
-        
+
+        let triplesblock = [b];
+        if (bs && bs[3]) {
+          triplesblock = triplesblock.concat(bs[3].triplesblock);
+        }
+
         return {
           token:'triplestemplate',
+          triplesblock: triplesblock,
           triplesContext: triples,
           location: location(),
         }
@@ -960,6 +962,7 @@ function peg$parse(input, options) {
         return {
           token: 'triplessamesubject',
           chainSubject: s,
+          propertylist: pairs,
           triplesContext: triplesContext,
         }
       },
@@ -994,37 +997,17 @@ function peg$parse(input, options) {
       },
       peg$c183 = function(v, ol, rest) {
         let pairs = [];
-        let triplesContext = [];
-        ol.forEach((o) => {
-          if (o.triplesContext) {
-            triplesContext = triplesContext.concat(o.triplesContext);
-            if (o.token === 'triplesnodecollection' && o.chainSubject.length ) {
-              pairs.push([v, o.chainSubject[0]]);
-            } else {
-              pairs.push([v, o.chainSubject]);
-            }
-          } else {
-            pairs.push([v, o])
-          }
-        });
-        
+        pairs.push([v, ol]);
         rest.forEach((r) => {
           if (r[3]) {
-            r[3][2].forEach((o) => {
-              if (o.triplesContext) {
-                triplesContext = triplesContext.concat(o.triplesContext);
-                pairs.push([r[3][0], o.chainSubject]);
-              } else {
-                pairs.push([r[3][0], o])
-              }
-            });
+            pairs.push([r[3][0], r[3][2]]);
           }
         });
-        
+
         return {
           token: 'propertylist',
           pairs: pairs,
-          triplesContext: triplesContext,
+          triplesContext: [],
         };
       },
       peg$c184 = "a",
@@ -1057,6 +1040,7 @@ function peg$parse(input, options) {
         return {
           token: 'triplessamesubject',
           chainSubject: s,
+          propertylist: list,
           triplesContext: triplesContext,
         }
       },
@@ -1090,37 +1074,17 @@ function peg$parse(input, options) {
       },
       peg$c190 = function(v, ol, rest) {
         let pairs = [];
-        let triplesContext = [];
-        ol.forEach((o) => {
-          if (o.triplesContext) {
-            triplesContext = triplesContext.concat(o.triplesContext);
-            if (o.token === 'triplesnodecollection' && o.chainSubject.length ) {
-              pairs.push([v, o.chainSubject[0]]);
-            } else {
-              pairs.push([v, o.chainSubject]);
-            }
-          } else {
-            pairs.push([v, o])
-          }
-        });
-
+        pairs.push([v, ol]);
         rest.forEach((r) => {
           if (r[3]) {
-            r[3][2].forEach((o) => {
-              if (o.triplesContext) {
-                triplesContext = triplesContext.concat(o.triplesContext);
-                pairs.push([r[3][0], o.chainSubject]);
-              } else {
-                pairs.push([r[3][0], o])
-              }
-            });
+            pairs.push([r[3][0], r[3][2]]);
           }
         });
         
         return {
           token: 'propertylist',
           pairs: pairs,
-          triplesContext: triplesContext,
+          triplesContext: [],
         };
       },
       peg$c191 = "|",
