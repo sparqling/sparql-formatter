@@ -326,11 +326,7 @@ function peg$parse(input, options) {
           kind: 'construct',
           token: 'executableunit',
           dataset: dataset,
-          template: t,
-          pattern: {
-            token: 'bgp',
-            triplesContext: t.triplesContext
-          },
+          pattern: t,
           limitoffset: sm.limitoffset,
           order: sm.order,
           location: location(),
@@ -746,8 +742,14 @@ function peg$parse(input, options) {
           triples = triples.concat(bs[3].triplesContext);
         }
 
+        let triplesblock = [b];
+        if (bs && bs[3]) {
+          triplesblock = triplesblock.concat(bs[3].triplesblock);
+        }
+
         return {
           token:'triplestemplate',
+          triplesblock: triplesblock,
           triplesContext: triples,
           location: location(),
         };

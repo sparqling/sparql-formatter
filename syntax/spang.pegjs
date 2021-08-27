@@ -215,11 +215,7 @@ ConstructQuery = 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* 
     kind: 'construct',
     token: 'executableunit',
     dataset: dataset,
-    template: t,
-    pattern: {
-      token: 'bgp',
-      triplesContext: t.triplesContext
-    },
+    pattern: t,
     limitoffset: sm.limitoffset,
     order: sm.order,
     location: location(),
@@ -722,8 +718,14 @@ TriplesTemplate = b:TriplesSameSubject bs:( WS* '.' WS* TriplesTemplate? )?
     triples = triples.concat(bs[3].triplesContext);
   }
 
+  let triplesblock = [b];
+  if (bs && bs[3]) {
+    triplesblock = triplesblock.concat(bs[3].triplesblock);
+  }
+
   return {
     token:'triplestemplate',
+    triplesblock: triplesblock,
     triplesContext: triples,
     location: location(),
   };
