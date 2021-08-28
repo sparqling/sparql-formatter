@@ -13,7 +13,7 @@
     "sparql-formatter-test": "./bin/sparql-formatter-test.js"
   },
   "scripts": {
-    "pegjs": "pegjs -o syntax/parser.js syntax/spang.pegjs"
+    "pegjs": "pegjs -o syntax/parser.js syntax/sparql.pegjs"
   },
   "dependencies": {
     "commander": "^8.0.0",
