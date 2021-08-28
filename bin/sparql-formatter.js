@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const program = require('commander');
-const parser = require('../syntax/parser.js');
+const parser = require('../lib/parser.js');
 const formatter = require('../lib/formatter.js');
 const version = require('../package.json').version;
 
