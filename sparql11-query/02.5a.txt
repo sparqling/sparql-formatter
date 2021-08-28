@@ -4,5 +4,5 @@ SELECT ?name
 WHERE {
   ?P foaf:givenName ?G ;
      foaf:surname ?S .
-  BIND(CONCAT(?G, " ", ?S) AS ?name)
+  BIND (CONCAT(?G, " ", ?S) AS ?name)
 }

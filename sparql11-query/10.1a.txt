@@ -6,7 +6,7 @@ WHERE {
   {
     ?x ns:price ?p .
     ?x ns:discount ?discount .
-    BIND(?p * (1 - ?discount) AS ?price)
+    BIND (?p * (1 - ?discount) AS ?price)
   }
   {
     ?x dc:title ?title .
