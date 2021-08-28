@@ -1,7 +1,0 @@
-#!/usr/bin/env spang2
-# @option --fmt
-
-SELECT (COUNT(DISTINCT ?o) AS ?count)
-WHERE {
-  ?s foaf:name ?o .
-}
