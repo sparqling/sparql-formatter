@@ -615,29 +615,9 @@ function peg$parse(input, options) {
         }
       },
       peg$c119 = function(p) {
-        let patternsCollection = p.patterns[0];
-        if (patternsCollection.triplesContext == null && patternsCollection.patterns != null) {
-          patternsCollection = patternsCollection.patterns[0].triplesContext;
-        } else {
-          patternsCollection = patternsCollection.triplesContext;
-        }
-
-        let quads = [];
-        for (let i = 0; i < patternsCollection.length; i++) {
-          quads.push({
-            subject: patternsCollection[i].subject,
-            predicate: patternsCollection[i].predicate,
-            object: patternsCollection[i].object,
-            graph: patternsCollection[i].graph,
-          });
-        }
-
         return {
           kind: 'deletewhere',
           pattern: p,
-          delete: quads,
-          with: null,
-          using: null,
         };
       },
       peg$c120 = "with",
@@ -704,37 +684,25 @@ function peg$parse(input, options) {
       peg$c140 = peg$literalExpectation(".", false),
       peg$c141 = function(ts, qs) {
         let quads = [];
-
-        ts?.triplesContext.forEach((t) => {
-          quads.push(t)
-        });
-
+        if (ts) {
+          quads = quads.concat(ts);
+        }
         qs.forEach((q) => {
-          quads = quads.concat(q[0].quadsContext);
-          q[2]?.triplesContext.forEach((t) => {
-            quads.push(t)
-          });
+          quads = quads.concat(q[0]);
+          if (q[2]) {
+            quads = quads.concat(q[2]);
+          }
         });
-        
+
         return {
           token:'quads',
-          quadsContext: quads,
+          triplesblock: quads,
           location: location(),
         }
       },
       peg$c142 = function(g, ts) {
-        let quads = [];
-        ts?.triplesContext.forEach((t) => {
-          let triple = t;
-          triple.graph = g;
-          quads.push(triple)
-        });
-        
-        return {
-          token:'quadsnottriples',
-          quadsContext: quads,
-          location: location(),
-        }
+        ts.graph = g;
+        return ts;
       },
       peg$c143 = function(b, bs) {
         let triplesblock = [b];
