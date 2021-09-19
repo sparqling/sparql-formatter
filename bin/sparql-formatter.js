@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
+const fs = require('fs').promises;
 const program = require('commander');
 const parser = require('../lib/parser.js');
 const formatter = require('../lib/formatter.js');
@@ -19,22 +19,32 @@ if (program.args.length < 1) {
   program.help();
 }
 
-const sparql = fs.readFileSync(program.args[0], "utf8").toString();
-let ast;
-try {
-  ast = new parser.parse(sparql);
-} catch (err) {
-  printError(sparql, err);
-  process.exit(1);
-}
+(async () => {
+  let sparql;
+  try {
+    sparql = await fs.readFile(program.args[0], "utf8");
+  } catch (err) {
+    console.error(`cannot open ${program.args[0]}`);
+    process.exit(1);
+  }
+  sparql = sparql.toString();
 
-if (opts.debug) {
-  console.log(JSON.stringify(ast, undefined, 2));
-} else if (opts.json) {
-  console.log(JSON.stringify(ast, selector, 2));
-} else {
-  console.log(formatter.format(ast, opts.indent));
-}
+  let ast;
+  try {
+    ast = new parser.parse(sparql);
+  } catch (err) {
+    printError(sparql, err);
+    process.exit(1);
+  }
+
+  if (opts.debug) {
+    console.log(JSON.stringify(ast, undefined, 2));
+  } else if (opts.json) {
+    console.log(JSON.stringify(ast, selector, 2));
+  } else {
+    console.log(formatter.format(ast, opts.indent));
+  }
+})();
 
 function selector(key, value) {
   if (key !== 'location') {
