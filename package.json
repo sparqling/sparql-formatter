@@ -13,12 +13,16 @@
     "sparql-formatter-test": "./bin/sparql-formatter-test.js"
   },
   "scripts": {
-    "pegjs": "pegjs -o lib/parser.js lib/sparql.pegjs"
+    "pegjs": "pegjs -o lib/parser.js lib/sparql.pegjs",
+    "browserify": "browserify js/_formatter.js > js/formatter.js"
   },
   "dependencies": {
     "commander": "^8.0.0",
     "csv-write-stream": "^2.0.0",
     "ls": "^0.2.1",
     "pegjs": "^0.10.0"
+  },
+  "devDependencies": {
+    "browserify": "^17.0.0"
   }
 }
