@@ -14,7 +14,8 @@
   },
   "scripts": {
     "pegjs": "pegjs -o lib/parser.js lib/sparql.pegjs",
-    "browserify": "browserify js/_formatter.js > js/formatter.js"
+    "browserify": "browserify js/_formatter.js > js/formatter.js",
+    "test": "sparql-formatter-test sparql11-query/*.rq sparql11-update/*.rq"
   },
   "dependencies": {
     "commander": "^8.0.0",
