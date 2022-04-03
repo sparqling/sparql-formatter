@@ -1,0 +1,8 @@
+#!/usr/bin/env spang2
+# @option --fmt 
+
+SELECT *
+WHERE {
+  ?s ?p ?o .
+  FILTER (?o NOT IN (1, 2, 3) )
+}

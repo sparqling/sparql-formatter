@@ -1,0 +1,6 @@
+#!/usr/bin/env sparql-formatter
+
+SELECT COUNT(DISTINCT ?o)
+WHERE {
+  ?s foaf:name ?o .
+}

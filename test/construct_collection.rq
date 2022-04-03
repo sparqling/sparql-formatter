@@ -1,0 +1,5 @@
+construct { (:hoge :fuga) ?p ?o }
+where {
+  ?s ?p ?o
+}
+
