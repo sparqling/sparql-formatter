@@ -1,0 +1,4 @@
+SELECT *
+WHERE {
+  ?s ?p '''h''oge''' .
+}

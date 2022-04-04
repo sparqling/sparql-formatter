@@ -1,0 +1,4 @@
+SELECT *
+WHERE {
+  ?s ?p :%0101 .
+}

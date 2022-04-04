@@ -1,0 +1,6 @@
+CONSTRUCT {
+  ( :hoge :fuga ) ?p ?o .
+}
+WHERE {
+  ?s ?p ?o .
+}
