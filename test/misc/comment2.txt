@@ -1,0 +1,6 @@
+SELECT *
+WHERE {
+  # comment 1
+  ?s ?p ?o . # comment hoge
+  # comment 2
+}
