@@ -7,7 +7,7 @@ spfmt = (sparql, indentDepth = 2) => {
 
 },{"../lib/formatter.js":2,"../lib/parser":3}],2:[function(require,module,exports){
 let output;
-let commentsList;
+let comments;
 let currentIndent;
 let indentUnit = '  ';
 
@@ -15,7 +15,7 @@ exports.format = (syntaxTree, indentDepth = 2) => {
   indentUnit = ' '.repeat(indentDepth);
 
   output = [];
-  commentsList = syntaxTree.comments;
+  comments = syntaxTree.comments;
   currentIndent = '';
 
   if (syntaxTree.headers.length > 0) {
@@ -49,7 +49,9 @@ exports.format = (syntaxTree, indentDepth = 2) => {
     addInlineData(syntaxTree.inlineData);
   }
 
-  addComments();
+  while (comments.length > 0) {
+    output.push(comments.shift().text);
+  }
 
   return output.join('\n');
 };
@@ -66,19 +68,15 @@ const decreaseIndent = (depth = 1) => {
   currentIndent = currentIndent.substr(0, currentIndent.length - indentUnit.length * depth);
 };
 
-const addLine = (lineText, commentPtr = 0) => {
-  // 0 means min ptr, so no comments will be added.
-  addComments(commentPtr);
-  output.push(currentIndent + lineText);
+const addLine = (line) => {
+  output.push(currentIndent + line);
 };
 
-const addComments = (commentPtr = -1) => {
-  // -1 means 'max' ptr, so all comments will be added.
+const addLineWithComment = (line, pos) => {
   let commentAdded = false;
-  while (commentsList.length > 0 && (commentsList[0].line < commentPtr || commentPtr == -1)) {
-    const commentText = commentsList.shift().text;
-    if (commentAdded || commentPtr == -1 || output[output.length - 1] === '') {
-      // newline is necessary before comment
+  while (comments.length && comments[0].pos < pos) {
+    const commentText = comments.shift().text;
+    if (commentAdded || output[output.length - 1] === '') {
       output.push(commentText);
     } else {
       // newline is not necessary
@@ -86,6 +84,7 @@ const addComments = (commentPtr = -1) => {
     }
     commentAdded = true;
   }
+  addLine(line);
 };
 
 const addAsk = (ask) => {
@@ -157,6 +156,12 @@ const addUnit = (unit) => {
       silent = ' SILENT ';
     }
     addLine(`COPY${silent}${g1} TO ${g2}`);
+  } else if (unit.kind === 'load') {
+    let silent = ' ';
+    if (unit.silent) {
+      silent = ' SILENT ';
+    }
+    addLine(`LOAD${silent}${getUri(unit.sourceGraph)}`);
   }
 };
 
@@ -178,20 +183,20 @@ const addQuads = (quads) => {
 
 const addSelect = (select) => {
   const proj = select.projection;
-  const lastLine = proj[0].value ? proj[0].value.location.start.line : proj[0].location.start.line;
+  const pos = proj[0].value ? proj[0].value.location.start.offset : proj[0].location.start.offset;
 
   let args = '';
   if (select.modifier) {
     args += `${select.modifier.toString()} `;
   }
   args += proj.map(getProjection).join(' ');
-  addLine(`SELECT ${args}`, lastLine);
+  addLineWithComment(`SELECT ${args}`, pos);
 
   addDataset(select.dataset);
 
-  addLine('WHERE {', lastLine + 1);
+  addLineWithComment('WHERE {', pos + 1);
   addGroupGraphPatternSub(select.pattern);
-  addLine('}', select.pattern.location.end.line);
+  addLineWithComment('}', select.pattern.location.end.offset);
 
   addSolutionModifier(select);
 };
@@ -438,7 +443,13 @@ const getPropertyList = (propertylist, sLen = 4) => {
 const getAggregate = (expr) => {
   if (expr.aggregateType === 'count') {
     let distinct = expr.distinct ? 'DISTINCT ' : '';
-    return `COUNT(${distinct}${getExpression(expr.expression)})`;
+    let expression;
+    if (expr.expression === '*') {
+      expression = '*'
+    } else {
+      expression = getExpression(expr.expression);
+    }
+    return `COUNT(${distinct}${expression})`;
   } else if (expr.aggregateType === 'sum') {
     return `sum(?${expr.expression.value.value})`;
   } else if (expr.aggregateType === 'min') {
@@ -794,7 +805,7 @@ function peg$parse(input, options) {
         s.headers = h;
         s.comments = Object.entries(Comments).map(([loc, str]) => ({
           text: str,
-          line: parseInt(loc),
+          pos: parseInt(loc),
         }));
 
         return s;
@@ -2754,8 +2765,7 @@ function peg$parse(input, options) {
       peg$c515 = "#",
       peg$c516 = peg$literalExpectation("#", false),
       peg$c517 = function() {
-        const line = location().start.line;
-        Comments[line] = text();
+        Comments[location().start.offset] = text();
 
         return '';
       },
