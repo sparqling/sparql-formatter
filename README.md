@@ -4,7 +4,7 @@ Website: https://sparqling.github.io/sparql-formatter/
 
 ## Command line tools
 
-### Install
+### Installation
 
 ```
 $ git clone https://github.com/sparqling/sparql-formatter
