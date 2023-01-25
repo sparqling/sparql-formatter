@@ -2,6 +2,13 @@
 
 Website: https://sparqling.github.io/sparql-formatter/
 
+## Examples
+```
+const format = require('sparql-formatter');
+
+console.log(format('select * where {?s ?p ?o}'));
+```
+
 ## Command line tools
 
 ### Installation
