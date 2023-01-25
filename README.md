@@ -9,8 +9,8 @@ $ npm install sparql-formatter
 ```
 
 ### Usage:
-#### format(sparql, indentDepth = 2)
-* sparql: string
+#### format(query, indentDepth = 2)
+* query: string
 * indentDepth: integer (>= 0)
 
 ```
