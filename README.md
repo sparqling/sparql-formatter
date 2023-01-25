@@ -19,6 +19,14 @@ const format = require('sparql-formatter');
 console.log(format('select * where {?s ?p ?o}'));
 ```
 
+Output:
+```
+SELECT *
+WHERE {
+  ?s ?p ?o .
+}
+```
+
 ## CLI
 ```
 $ npm install -g sparql-formatter
