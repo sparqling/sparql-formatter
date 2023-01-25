@@ -8,6 +8,9 @@
   },
   "author": "Hirokazu Chiba",
   "license": "MIT",
+  "keywords": [
+    "parser"
+  ],
   "bin": {
     "sparql-formatter": "./bin/sparql-formatter.js",
     "sparql-formatter-test": "./bin/sparql-formatter-test.js"
