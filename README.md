@@ -7,7 +7,12 @@ Website: https://sparqling.github.io/sparql-formatter/
 ```
 $ npm install sparql-formatter
 ```
+
 ### Usage:
+#### format(sparql, indentDepth = 2)
+* sparql: string
+* indentDepth: integer (>= 0)
+
 ```
 const format = require('sparql-formatter');
 
