@@ -2,7 +2,11 @@
 
 Website: https://sparqling.github.io/sparql-formatter/
 
-## Node.js
+npm: https://www.npmjs.com/package/sparql-formatter
+
+Docker: https://hub.docker.com/r/sparqling/sparql-formatter
+
+## Usage in Node.js
 
 ### format(query, indentDepth = 2)
 * query: string
