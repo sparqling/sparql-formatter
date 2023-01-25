@@ -3,16 +3,12 @@
 Website: https://sparqling.github.io/sparql-formatter/
 
 ## Node.js
-### Installation:
-```
-$ npm install sparql-formatter
-```
 
-### Usage:
-#### format(query, indentDepth = 2)
+### format(query, indentDepth = 2)
 * query: string
 * indentDepth: integer (>= 0)
 
+Example:
 ```
 const format = require('sparql-formatter');
 
@@ -32,6 +28,8 @@ WHERE {
 $ npm install -g sparql-formatter
 ```
 A symbolic link to `./bin/sparql-formatter.js` will be created as `sparql-formatter` in your path.
+
+Input:
 ```
 $ cat sparql11-query/02.2.rq
 PREFIX foaf:   <http://xmlns.com/foaf/0.1/>
@@ -41,7 +39,8 @@ WHERE
   { ?x foaf:name ?name .
     ?x foaf:mbox ?mbox }
 ```
-### Usage:
+
+Output:
 ```
 $ sparql-formatter sparql11-query/02.2.rq
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
