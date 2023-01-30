@@ -50,7 +50,7 @@ exports.format = (syntaxTree, indentDepth = 2) => {
   }
 
   while (comments.length > 0) {
-    output.push(comments.shift().text);
+    output[output.length - 1] += comments.shift().text;
   }
 
   return output.join('\n');
@@ -73,16 +73,8 @@ const addLine = (line) => {
 };
 
 const addLineWithComment = (line, pos) => {
-  let commentAdded = false;
   while (comments.length && comments[0].pos < pos) {
-    const commentText = comments.shift().text;
-    if (commentAdded || output[output.length - 1] === '') {
-      output.push(commentText);
-    } else {
-      // newline is not necessary
-      output[output.length - 1] += commentText;
-    }
-    commentAdded = true;
+    output[output.length - 1] += comments.shift().text;
   }
   addLine(line);
 };
@@ -184,6 +176,7 @@ const addQuads = (quads) => {
 const addSelect = (select) => {
   const proj = select.projection;
   const pos = proj[0].value ? proj[0].value.location.start.offset : proj[0].location.start.offset;
+  const projEndPos = proj[0].value ? proj[0].value.location.end.offset : proj[0].location.end.offset;
 
   let args = '';
   if (select.modifier) {
@@ -194,7 +187,7 @@ const addSelect = (select) => {
 
   addDataset(select.dataset);
 
-  addLineWithComment('WHERE {', pos + 1);
+  addLineWithComment('WHERE {', projEndPos+1);
   addGroupGraphPatternSub(select.pattern);
   addLineWithComment('}', select.pattern.location.end.offset);
 
@@ -422,7 +415,7 @@ const addTriplesBlock = (triplesblock) => {
 const addTriplePath = (triplepath) => {
   const s = getTripleElem(triplepath.chainSubject);
   const props = getPropertyList(triplepath.propertylist, s?.length);
-  addLine(`${s}${props} .`);
+  addLineWithComment(`${s}${props} .`, triplepath.chainSubject.location.start.offset);
 };
 
 const getPropertyList = (propertylist, sLen = 4) => {
@@ -20095,34 +20088,43 @@ function peg$parse(input, options) {
   }
 
   function peg$parseCOMMENT() {
-    var s0, s1, s2, s3, s4;
+    var s0, s1, s2, s3, s4, s5;
 
     s0 = peg$currPos;
-    s1 = [];
-    s2 = peg$parseSPACE_OR_TAB();
-    while (s2 !== peg$FAILED) {
-      s1.push(s2);
-      s2 = peg$parseSPACE_OR_TAB();
+    s1 = peg$parseNEW_LINE();
+    if (s1 === peg$FAILED) {
+      s1 = null;
     }
     if (s1 !== peg$FAILED) {
-      if (input.charCodeAt(peg$currPos) === 35) {
-        s2 = peg$c515;
-        peg$currPos++;
-      } else {
-        s2 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c516); }
+      s2 = [];
+      s3 = peg$parseSPACE_OR_TAB();
+      while (s3 !== peg$FAILED) {
+        s2.push(s3);
+        s3 = peg$parseSPACE_OR_TAB();
       }
       if (s2 !== peg$FAILED) {
-        s3 = [];
-        s4 = peg$parseNON_NEW_LINE();
-        while (s4 !== peg$FAILED) {
-          s3.push(s4);
-          s4 = peg$parseNON_NEW_LINE();
+        if (input.charCodeAt(peg$currPos) === 35) {
+          s3 = peg$c515;
+          peg$currPos++;
+        } else {
+          s3 = peg$FAILED;
+          if (peg$silentFails === 0) { peg$fail(peg$c516); }
         }
         if (s3 !== peg$FAILED) {
-          peg$savedPos = s0;
-          s1 = peg$c517();
-          s0 = s1;
+          s4 = [];
+          s5 = peg$parseNON_NEW_LINE();
+          while (s5 !== peg$FAILED) {
+            s4.push(s5);
+            s5 = peg$parseNON_NEW_LINE();
+          }
+          if (s4 !== peg$FAILED) {
+            peg$savedPos = s0;
+            s1 = peg$c517();
+            s0 = s1;
+          } else {
+            peg$currPos = s0;
+            s0 = peg$FAILED;
+          }
         } else {
           peg$currPos = s0;
           s0 = peg$FAILED;
