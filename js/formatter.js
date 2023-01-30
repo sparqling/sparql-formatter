@@ -124,6 +124,9 @@ const addUnit = (unit) => {
       addLine('INSERT');
       addQuads(unit.insert.triplesblock);
     }
+    if (unit.using) {
+      addLine(`USING ${getUsing(unit.using[0])}`);
+    }
     addLine('WHERE {');
     addGroupGraphPatternSub(unit.pattern);
     addLine('}');
@@ -157,6 +160,32 @@ const addUnit = (unit) => {
       silent = ' SILENT ';
     }
     addLine(`LOAD${silent}${getUri(unit.sourceGraph)}`);
+  } else if (unit.kind === 'clear') {
+    let silent = ' ';
+    if (unit.silent) {
+      silent = ' SILENT ';
+    }
+    addLine(`CLEAR${silent}${getGraphRefAll(unit.destinyGraph)}`);
+  } else if (unit.kind === 'drop') {
+    let silent = ' ';
+    if (unit.silent) {
+      silent = ' SILENT ';
+    }
+    addLine(`DROP${silent}${getGraphRefAll(unit.destinyGraph)}`);
+  } else if (unit.kind === 'create') {
+    let silent = ' ';
+    if (unit.silent) {
+      silent = ' SILENT ';
+    }
+    addLine(`CREATE${silent}GRAPH ${getUri(unit.destinyGraph)}`);
+  }
+};
+
+const getUsing = (graph) => {
+  if (graph.kind === 'default') {
+    return getUri(graph.uri);
+  } else if (graph.kind === 'named') {
+    return `NAMED ${getUri(graph.uri)}`;
   }
 };
 
@@ -165,6 +194,18 @@ const getGraphOrDefault = (graph) => {
     return 'DEFAULT';
   } else {
     return getTripleElem(graph);
+  }
+};
+
+const getGraphRefAll = (graph) => {
+  if (graph === 'default') {
+    return 'DEFAULT';
+  } else if (graph === 'named') {
+    return 'NAMED';
+  } else if (graph === 'all') {
+    return 'ALL';
+  } else {
+    return `GRAPH ${getUri(graph)}`;
   }
 };
 
@@ -179,7 +220,7 @@ const addQuads = (quads) => {
 const addSelect = (select) => {
   const proj = select.projection;
   const pos = proj[0].value ? proj[0].value.location.start.offset : proj[0].location.start.offset;
-  const projEndPos = proj[0].value ? proj[0].value.location.end.offset : proj[0].location.end.offset;
+  let endPos = proj[0].value ? proj[0].value.location.end.offset : proj[0].location.end.offset;
 
   let args = '';
   if (select.modifier) {
@@ -188,9 +229,12 @@ const addSelect = (select) => {
   args += proj.map(getProjection).join(' ');
   addLineWithComment(`SELECT ${args}`, pos);
 
-  addDataset(select.dataset);
+  const datasetEndPos= addDataset(select.dataset);
+  if (datasetEndPos > endPos) {
+    endPos = datasetEndPos;
+  }
 
-  addLineWithComment('WHERE {', projEndPos+1);
+  addLineWithComment('WHERE {', endPos+1);
   addGroupGraphPatternSub(select.pattern);
   addLineWithComment('}', select.pattern.location.end.offset);
 
@@ -198,13 +242,15 @@ const addSelect = (select) => {
 };
 
 const addDataset = (dataset) => {
+  let endPos;
   if (dataset) {
     dataset.implicit.forEach((graph) => {
-      addFrom(graph);
+      endPos = addFrom(graph);
     });
     dataset.named.forEach((graph) => {
-      addFromNamed(graph);
+      endPos = addFromNamed(graph);
     });
+    return endPos;
   }
 }
 
@@ -229,7 +275,7 @@ const addSolutionModifier = (body) => {
 
 const addConstruct = (body) => {
   if (body.template) {
-    addLine('CONSTRUCT {');
+    addLineWithComment('CONSTRUCT {', body.location.start.offset);
     increaseIndent();
     addTriplesBlock(body.template.triplesblock);
     decreaseIndent();
@@ -256,14 +302,20 @@ const addConstruct = (body) => {
 const addFrom = (graph) => {
   const uri = getUri(graph);
   if (uri != null) {
-    addLine('FROM ' + uri);
+    const pos = graph.location.start.offset;
+    const endPos = graph.location.end.offset;
+    addLineWithComment('FROM ' + uri, pos);
+    return endPos;
   }
 };
 
 const addFromNamed = (graph) => {
   const uri = getUri(graph);
   if (uri != null) {
-    addLine('FROM NAMED ' + uri);
+    const pos = graph.location.start.offset;
+    const endPos = graph.location.end.offset;
+    addLineWithComment('FROM NAMED ' + uri, pos);
+    return endPos;
   }
 };
 
@@ -303,7 +355,7 @@ const addPattern = (pattern) => {
       addGGP(pattern);
       break;
     case 'filter':
-      addFilter(pattern.value);
+      addFilter(pattern);
       break;
     case 'bind':
       addLine(`BIND (${getExpression(pattern.expression)} AS ${getVar(pattern.as)})`);
@@ -384,14 +436,14 @@ const getProjection = (projection) => {
 };
 
 const addFilter = (filter) => {
-  if (filter.expressionType === 'builtincall' && filter.builtincall === 'notexists') {
+  if (filter.value.expressionType === 'builtincall' && filter.value.builtincall === 'notexists') {
     addLine(`FILTER NOT EXISTS`);
-    filter.args.forEach(addGGP);
-  } else if (filter.expressionType === 'builtincall' && filter.builtincall === 'exists') {
+    filter.value.args.forEach(addGGP);
+  } else if (filter.value.expressionType === 'builtincall' && filter.value.builtincall === 'exists') {
     addLine(`FILTER EXISTS`);
-    filter.args.forEach(addGGP);
+    filter.value.args.forEach(addGGP);
   } else {
-    addLine(`FILTER ${getExpression(filter)}`);
+    addLineWithComment(`FILTER ${getExpression(filter.value)}`, filter.location.start.offset);
   }
 };
 
@@ -401,7 +453,7 @@ const addTriplesBlock = (triplesblock) => {
   } else {
     triplesblock.forEach((t) => {
       if (t.graph) {
-        addLine(`GRAPH ${getTripleElem(t.graph)} {`);
+        addLineWithComment(`GRAPH ${getTripleElem(t.graph)} {`, t.graph.location.start.offset);
         increaseIndent();
         addTriplesBlock(t.triplesblock);
         decreaseIndent();
