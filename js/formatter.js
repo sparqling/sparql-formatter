@@ -41,9 +41,12 @@ exports.format = (syntaxTree, indentDepth = 2) => {
   } else if (syntaxTree.body?.kind === 'describe') {
     addDescribe(syntaxTree.body);
   } else if (syntaxTree.units) {
-    syntaxTree.units.forEach((unit) => {
-      addUnit(unit);
-    });
+    for (let i = 0; i < syntaxTree.units.length; i++) {
+      if (i > 0) {
+        output[output.length - 1] += " ;\n";
+      }
+      addUnit(syntaxTree.units[i]);
+    }
   }
   if (syntaxTree.inlineData) {
     addInlineData(syntaxTree.inlineData);
