@@ -1,0 +1,5 @@
+SELECT ?s ?p ?o
+WHERE {
+    ?s ?p ?o
+}
+LIMI 10
