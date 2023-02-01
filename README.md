@@ -77,7 +77,7 @@ $ npm link
 ```
 This will make a symbolic link to `./bin/*` as `sparql-formatter` and `sparql-formatter-test` in your path.
 
-## Usage in web page
+## Usage in web pages
 Read the following file:
 ```
 <script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@main/dist/main.js'></script>
