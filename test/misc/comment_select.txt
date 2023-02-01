@@ -1,0 +1,7 @@
+#!/usr/bin/env spang2
+# @endpoint test
+
+SELECT ?s ?p # comment
+WHERE {
+  ?s ?p ?o .
+}
