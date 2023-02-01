@@ -219,8 +219,9 @@ const addQuads = (quads) => {
 
 const addSelect = (select) => {
   const proj = select.projection;
+  const lastProj = proj[proj.length-1];
   const pos = proj[0].value ? proj[0].value.location.start.offset : proj[0].location.start.offset;
-  let endPos = proj[0].value ? proj[0].value.location.end.offset : proj[0].location.end.offset;
+  let endPos = lastProj.value ? lastProj.value.location.end.offset : lastProj.location.end.offset;
 
   let args = '';
   if (select.modifier) {
@@ -469,8 +470,25 @@ const addTriplesBlock = (triplesblock) => {
 
 const addTriplePath = (triplepath) => {
   const s = getTripleElem(triplepath.chainSubject);
-  const props = getPropertyList(triplepath.propertylist, s?.length);
-  addLineWithComment(`${s}${props} .`, triplepath.chainSubject.location.start.offset);
+  let out;
+  let outPos;
+  triplepath.propertylist.pairs.forEach((pair) => {
+    const p = getTripleElem(pair[0]);
+    const o = getTripleElem(pair[1]);
+    if (out) {
+      addLineWithComment(`${out} ;`, outPos);
+      out = ' '.repeat(s.length) + ` ${p} ${o}`;
+      if (pair[0].location) {
+        outPos = pair[0].location.start.offset;
+      } else {
+        outPos = pair[1][0].location.start.offset;
+      }
+    } else {
+      out = `${s} ${p} ${o}`;
+      outPos = triplepath.chainSubject.location.start.offset;
+    }
+  });
+  addLineWithComment(`${out} .`, outPos);
 };
 
 const getPropertyList = (propertylist, sLen = 4) => {
