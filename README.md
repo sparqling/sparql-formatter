@@ -8,15 +8,15 @@ Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 
 ## Usage in Node.js
 
-### format(query, indentDepth = 2)
+### formatSparql(query, indentDepth = 2)
 * query: string
 * indentDepth: integer (>= 0)
 
 Example:
 ```
-const format = require('sparql-formatter');
+const formatSparql = require('sparql-formatter');
 
-console.log(format('select * where {?s ?p ?o}'));
+console.log(formatSparql('select * where {?s ?p ?o}'));
 ```
 
 Output:
