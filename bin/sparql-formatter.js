@@ -15,17 +15,21 @@ const opts = program
   .parse(process.argv)
   .opts();
 
-if (program.args.length < 1) {
+if (program.args.length < 1 && process.stdin.isTTY) {
   program.help();
 }
 
 (async () => {
   let sparql;
-  try {
-    sparql = await fs.readFile(program.args[0], "utf8");
-  } catch (err) {
-    console.error(`cannot open ${program.args[0]}`);
-    process.exit(1);
+  if (program.args[0]) {
+    try {
+      sparql = await fs.readFile(program.args[0], "utf8");
+    } catch (err) {
+      console.error(`cannot open ${program.args[0]}`);
+      process.exit(1);
+    }
+  } else {
+    sparql = await readStdin();
   }
   sparql = sparql.toString();
 
@@ -45,6 +49,19 @@ if (program.args.length < 1) {
     console.log(formatter.format(ast, opts.indent));
   }
 })();
+
+function readStdin() {
+  let buf = '';
+  return new Promise(resolve => {
+    process.stdin.on('readable', () => {
+      let chunk;
+      while (chunk = process.stdin.read()) {
+        buf += chunk;
+      }
+    });
+    process.stdin.on('end', () => resolve(buf))
+  });
+}
 
 function selector(key, value) {
   if (key !== 'location') {
