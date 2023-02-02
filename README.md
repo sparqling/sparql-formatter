@@ -33,7 +33,7 @@ WHERE {
 }
 ```
 
-## CLI
+## Command line interface
 ```
 $ npm install -g sparql-formatter
 ```
