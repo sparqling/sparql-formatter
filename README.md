@@ -6,17 +6,23 @@ npm: https://www.npmjs.com/package/sparql-formatter
 
 Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 
-## Usage in Node.js
-
-### formatSparql(query, indentDepth = 2)
+## Usage in web pages
+Read the following file:
+```
+<script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@main/dist/main.js'></script>
+```
+Use the following function:
+### spfmt(query, indentDepth = 2)
 * query: string
 * indentDepth: integer (>= 0)
 
+## Usage in Node.js
+
 Example:
 ```
-const formatSparql = require('sparql-formatter');
+const spfmt = require('sparql-formatter');
 
-console.log(formatSparql('select * where {?s ?p ?o}'));
+console.log(spfmt('select * where {?s ?p ?o}'));
 ```
 
 Output:
@@ -76,14 +82,6 @@ Optionally,
 $ npm link
 ```
 This will make a symbolic link to `./bin/*` as `sparql-formatter` and `sparql-formatter-test` in your path.
-
-## Usage in web pages
-Read the following file:
-```
-<script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@main/dist/main.js'></script>
-```
-Use the following function:
-### spfmt(query, indentDepth = 2)
 
 ## SPARQL 1.1 query examples
 
