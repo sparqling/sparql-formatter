@@ -37,7 +37,11 @@ if (program.args.length < 1 && process.stdin.isTTY) {
   try {
     ast = new parser.parse(sparql);
   } catch (err) {
-    printError(sparql, err);
+    if (opts.debug) {
+      console.log(JSON.stringify(err, undefined, 2));
+    } else {
+      printError(sparql, err);
+    }
     process.exit(1);
   }
 
