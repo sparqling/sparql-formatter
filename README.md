@@ -77,7 +77,7 @@ $ npm ci
 ```
 Now the CLI programs are under `./bin/`.
 
-Optionally,
+Optional:
 ```
 $ npm link
 ```
