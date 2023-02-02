@@ -4,10 +4,29 @@ let timerId;
 
 function reformat(event, ui) {
   try {
+    toastr.clear();
     outputArea.setValue(spfmt(editor.getValue(), q('#indent-depth').value) + '\n');
-  } catch (e) {
-    console.log(e);
-    toastr.error('', 'SyntaxError', { preventDuplicates: true });
+  } catch (err) {
+    let title = 'SyntaxError';
+    if (err.location) {
+      const startLine = err.location.start.line;
+      const endLine = err.location.end.line;
+      const startCol = err.location.start.column;
+      const endCol = err.location.end.column;
+      if (startLine == endLine) {
+        title += ` line:${startLine}(col:${startCol}-${endCol})\n`;
+      } else {
+        title += ` line:${startLine}(col:${startCol})-${endLine}(col:${endCol})\n`;
+      }
+    }
+    toastr.options = {
+      timeOut: 0,
+      extendedTimeOut: 0,
+      closeButton: true,
+      preventDuplicates: true
+    }
+    toastr.error(err.message || '', title);
+    outputArea.setValue('');
   }
 }
 
