@@ -39,6 +39,7 @@ if (program.args.length < 1 && process.stdin.isTTY) {
   } catch (err) {
     if (opts.debug) {
       console.log(JSON.stringify(err, undefined, 2));
+      console.error(err.message || '');
     } else {
       printError(sparql, err);
     }
@@ -85,7 +86,24 @@ function printError(inputText, err) {
     } else {
       console.error(`ERROR line:${startLine}(col:${startCol})-${endLine}(col:${endCol})`);
     }
-    console.error(err.message);
+    let message = '';
+    if (err.message) {
+      message = err.message;
+      message = message.replace('"#", ', '');
+      message = message.replace('[ \\t]', '');
+      message = message.replace('[\\n\\r]', '');
+      message = message.replace(/\[[^\dAa]\S+\]/g, '');
+      message = message.replace(', or ', '');
+      message = message.replace('end of input', '');
+      message = message.replace(/ but .* found.$/, '');
+      message = message.replace(/"(\S+)"/g, '$1');
+      message = message.replace(/'"'/, '"');
+      message = message.replace(/\\"/g, '"');
+      message = message.replace(/[, ]+$/g, '');
+      message = message.replace(/ , /, ' ');
+      message = message.replace(/, /g, ' ');
+    }
+    console.error(message);
     console.error('--');
 
     const lines = inputText.split('\n').slice(startLine - 1, endLine);
