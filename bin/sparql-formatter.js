@@ -82,9 +82,9 @@ function printError(inputText, err) {
     const endCol = err.location.end.column;
 
     if (startLine == endLine) {
-      console.error(`ERROR line:${startLine}(col:${startCol}-${endCol})`);
+      console.error(`SyntaxError at line:${startLine}(col:${startCol}-${endCol})`);
     } else {
-      console.error(`ERROR line:${startLine}(col:${startCol})-${endLine}(col:${endCol})`);
+      console.error(`SyntaxError at line:${startLine}(col:${startCol})-${endLine}(col:${endCol})`);
     }
     let message = '';
     if (err.message) {
