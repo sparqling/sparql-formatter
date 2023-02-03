@@ -3,10 +3,14 @@ let byProgram = false, editor, outputArea;
 let timerId;
 
 function reformat(event, ui) {
+  const input = editor.getValue();
+  const indentDepth = q('#indent-depth').value;
   try {
     toastr.clear();
-    outputArea.setValue(spfmt(editor.getValue(), q('#indent-depth').value) + '\n');
+    outputArea.setValue(spfmt(input, indentDepth));
   } catch (err) {
+    toastr.remove();
+    outputArea.setValue('');
     let title = 'SyntaxError';
     if (err.location) {
       const startLine = err.location.start.line;
@@ -18,6 +22,7 @@ function reformat(event, ui) {
       } else {
         title += ` line:${startLine}(col:${startCol})-${endLine}(col:${endCol})\n`;
       }
+      // outputArea.setSelection({line: startLine-1, ch: startCol-1}, {line: endLine-1, ch: endCol-1});
     }
     toastr.options = {
       timeOut: 0,
@@ -26,7 +31,6 @@ function reformat(event, ui) {
       preventDuplicates: true
     }
     toastr.error(err.message || '', title);
-    outputArea.setValue('');
   }
 }
 
