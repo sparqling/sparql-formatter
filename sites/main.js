@@ -18,9 +18,9 @@ function reformat(event, ui) {
       const startCol = err.location.start.column;
       const endCol = err.location.end.column;
       if (startLine == endLine) {
-        title += ` line:${startLine}(col:${startCol}-${endCol})\n`;
+        title += ` at line:${startLine}(col:${startCol}-${endCol})\n`;
       } else {
-        title += ` line:${startLine}(col:${startCol})-${endLine}(col:${endCol})\n`;
+        title += ` at line:${startLine}(col:${startCol})-${endLine}(col:${endCol})\n`;
       }
       // outputArea.setSelection({line: startLine-1, ch: startCol-1}, {line: endLine-1, ch: endCol-1});
     }
@@ -30,7 +30,25 @@ function reformat(event, ui) {
       closeButton: true,
       preventDuplicates: true
     }
-    toastr.error(err.message || '', title);
+    let message = '';
+    if (err.message) {
+      message = err.message;
+      // console.log(message);
+      message = message.replace('"#", ', '');
+      message = message.replace('[ \\t]', '');
+      message = message.replace('[\\n\\r]', '');
+      message = message.replace(/\[[^\dAa]\S+\]/g, '');
+      message = message.replace(', or ', '');
+      message = message.replace('end of input', '');
+      message = message.replace(/ but .* found.$/, '');
+      message = message.replace(/"(\S+)"/g, '$1');
+      message = message.replace(/'"'/, '"');
+      message = message.replace(/\\"/g, '"');
+      message = message.replace(/[, ]+$/g, '');
+      message = message.replace(/ , /, ' ');
+      message = message.replace(/, /g, ' ');
+    }
+    toastr.error(message, title);
   }
 }
 
