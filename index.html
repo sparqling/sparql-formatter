@@ -79,6 +79,22 @@ LIMIT 10</textarea>
                 </div>
             </div>
         </div>
+        <script>
+         const q = document.querySelector.bind(document);
+         const editor = CodeMirror.fromTextArea(q('#input-sparql'), {
+             lineNumbers: true,
+             viewportMargin: Infinity,
+             lineWrapping: true
+         });
+         const outputArea = CodeMirror.fromTextArea(q('#formatted-sparql'), {
+             lineNumbers: true,
+             viewportMargin: Infinity,
+             lineWrapping: true,
+             readOnly: true
+         });
+         editor.setSize('100%', '100%');
+         outputArea.setSize('100%', '100%');
+        </script>
         <script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@26c6104/dist/main.js'></script>
         <script src='./sites/main.js'></script>
     </body>
