@@ -9,7 +9,7 @@ function reformat(event, ui) {
     outputArea.setValue(spfmt(input, indentDepth));
   } catch (err) {
     toastr.remove();
-    outputArea.setValue('');
+    outputArea.setValue(input);
     let title = 'SyntaxError';
     if (err.location) {
       const startLine = err.location.start.line;
@@ -21,7 +21,7 @@ function reformat(event, ui) {
       } else {
         title += ` at line:${startLine}(col:${startCol})-${endLine}(col:${endCol})\n`;
       }
-      // outputArea.setSelection({line: startLine-1, ch: startCol-1}, {line: endLine-1, ch: endCol-1});
+      outputArea.setSelection({line: startLine-1, ch: startCol-1}, {line: endLine-1, ch: endCol-1});
     }
     toastr.options = {
       timeOut: 0,
@@ -33,19 +33,18 @@ function reformat(event, ui) {
     if (err.message) {
       message = err.message;
       // console.log(message);
-      message = message.replace('"#", ', '');
+      message = message.replace(/^Expected /, 'Expected:, ');
+      message = message.replace(/ but .* found.$/, '');
+      message = message.replace('end of input', '');
       message = message.replace('[ \\t]', '');
       message = message.replace('[\\n\\r]', '');
       message = message.replace(/\[[^\dAa]\S+\]/g, '');
-      message = message.replace(', or ', '');
-      message = message.replace('end of input', '');
-      message = message.replace(/ but .* found.$/, '');
+      message = message.replace('"#"', '');
       message = message.replace(/"(\S+)"/g, '$1');
       message = message.replace(/'"'/, '"');
       message = message.replace(/\\"/g, '"');
-      message = message.replace(/[, ]+$/g, '');
-      message = message.replace(/ , /, ' ');
-      message = message.replace(/, /g, ' ');
+      message = message.replace(', or ', ', ');
+      message = message.replace(/(, )+/g, '<br>');
     }
     toastr.error(message, title);
   }
