@@ -33,7 +33,7 @@ function reformat(event, ui) {
     if (err.message) {
       message = err.message;
       // console.log(message);
-      message = message.replace(/^Expected /, 'Expected:, ');
+      message = message.replace(/^Expected/, 'Expected:');
       message = message.replace(/ but .* found.$/, '');
       message = message.replace('end of input', '');
       message = message.replace('[ \\t]', '');
@@ -43,7 +43,7 @@ function reformat(event, ui) {
       message = message.replace(/"(\S+)"/g, '$1');
       message = message.replace(/'"'/, '"');
       message = message.replace(/\\"/g, '"');
-      message = message.replace(', or ', ', ');
+      message = message.replace('or ', ', ');
       message = message.replace(/(, )+/g, '<br>');
     }
     toastr.error(message, title);
