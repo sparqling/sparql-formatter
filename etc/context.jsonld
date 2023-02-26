@@ -1,0 +1,9 @@
+{
+  "@context": {
+    "@vocab": "https://purl.org/sparql-formatter/ontology#",
+    "type": "@type",
+    "dataType": {
+      "@type": "@id"
+    }
+  }
+}

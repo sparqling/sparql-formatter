@@ -1,0 +1,409 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix : <https://purl.org/sparql-formatter/ontology#> .
+
+<https://purl.org/sparql-formatter/ontology>
+    a owl:Ontoloty ;
+    dct:title "SPARQL formatter ontology" ;
+    dct:description "An ontology used for formatting SPARQL queries." .
+
+
+###############
+### Classes ###
+###############
+
+:construct 
+    a owl:Class ;
+    rdfs:label "construct" .
+
+:describe 
+    a owl:Class ;
+    rdfs:label "describe" .
+
+:ask 
+    a owl:Class ;
+    rdfs:label "ask" .
+
+### Update
+
+:load 
+    a owl:Class ;
+    rdfs:label "load" .
+
+:clear 
+    a owl:Class ;
+    rdfs:label "clear" .
+
+:drop 
+    a owl:Class ;
+    rdfs:label "drop" .
+
+:move 
+    a owl:Class ;
+    rdfs:label "move" .
+
+:copy 
+    a owl:Class ;
+    rdfs:label "copy" .
+
+:create 
+    a owl:Class ;
+    rdfs:label "create" .
+
+:insertdata 
+    a owl:Class ;
+    rdfs:label "insertdata" .
+
+:deletedata 
+    a owl:Class ;
+    rdfs:label "deletedata" .
+
+:deletewhere 
+    a owl:Class ;
+    rdfs:label "deletewhere" .
+
+:modify 
+    a owl:Class ;
+    rdfs:label "modify" .
+
+
+##################
+### Properties ###
+##################
+
+:prologue 
+    a owl:ObjectProperty ;
+    rdfs:label "queryBody" .
+
+:prefix 
+    a owl:DatatypeProperty ;
+    rdfs:label "prefix" .
+
+:base 
+    a owl:ObjectProperty ;
+    rdfs:label "base" .
+
+:queryBody 
+    a owl:ObjectProperty ;
+    rdfs:label "queryBody" .
+
+:variable 
+    a owl:DatatypeProperty ;
+    rdfs:label "variable" .
+
+:select 
+    a owl:ObjectProperty ;
+    rdfs:label "select" .
+
+:describe 
+    a owl:ObjectProperty ;
+    rdfs:label "describe" .
+
+:update 
+    a owl:ObjectProperty ;
+    rdfs:label "update" .
+
+:insert 
+    a owl:ObjectProperty ;
+    rdfs:label "insert" .
+
+:delete 
+    a owl:ObjectProperty ;
+    rdfs:label "delete" .
+
+:from 
+    a owl:ObjectProperty ;
+    rdfs:label "from" .
+
+:using 
+    a owl:ObjectProperty ;
+    rdfs:label "using" .
+
+:named 
+    a owl:ObjectProperty ;
+    rdfs:label "named" .
+
+:where 
+    a owl:ObjectProperty ;
+    rdfs:label "where" .
+
+:graph 
+    a owl:ObjectProperty ;
+    rdfs:label "graph" .
+
+:namedGraph 
+    a owl:ObjectProperty ;
+    rdfs:label "namedGraph" .
+
+:sourceGraph 
+    a owl:ObjectProperty ;
+    rdfs:label "sourceGraph" .
+
+:destinyGraph 
+    a owl:ObjectProperty ;
+    rdfs:label "destinyGraph" .
+
+:graphs 
+    a owl:ObjectProperty ;
+    rdfs:label "graphs" .
+
+:service 
+    a owl:ObjectProperty ;
+    rdfs:label "service" .
+
+:template 
+    a owl:ObjectProperty ;
+    rdfs:label "template" .
+
+:graphPattern 
+    a owl:ObjectProperty ;
+    rdfs:label "graphPattern" .
+
+:triplePattern 
+    a owl:ObjectProperty ;
+    rdfs:label "triplePattern" .
+
+:optional 
+    a owl:ObjectProperty ;
+    rdfs:label "optional" .
+
+:union 
+    a owl:ObjectProperty ;
+    rdfs:label "union" .
+
+:minus 
+    a owl:ObjectProperty ;
+    rdfs:label "minus" .
+
+:subject 
+    a owl:ObjectProperty ;
+    rdfs:label "subject" .
+
+:properties 
+    a owl:ObjectProperty ;
+    rdfs:label "properties" .
+
+:predicate 
+    a owl:ObjectProperty ;
+    rdfs:label "predicate" .
+
+:objects 
+    a owl:ObjectProperty ;
+    rdfs:label "objects" .
+
+:a 
+    rdfs:label "a" .
+
+:blankNode 
+    a owl:DatatypeProperty ;
+    rdfs:label "blankNode" .
+
+:blankNodeProperties 
+    a owl:ObjectProperty ;
+    rdfs:label "blankNodeProperties" .
+
+# for property paths
+
+:sequence 
+    a owl:ObjectProperty ;
+    rdfs:label "sequence" .
+
+:alternative 
+    a owl:ObjectProperty ;
+    rdfs:label "alternative" .
+
+:modifier 
+    a owl:DatatypeProperty ;
+    rdfs:label "modifier" .
+
+:collection 
+    rdfs:label "collection" .
+
+:iriPrefix 
+    a owl:DatatypeProperty ;
+    rdfs:label "iriPrefix" .
+
+:iriLocal 
+    a owl:DatatypeProperty ;
+    rdfs:label "iriLocal" .
+
+:quote 
+    a owl:DatatypeProperty ;
+    rdfs:label "quote" .
+
+:literal 
+    a owl:DatatypeProperty ;
+    rdfs:label "literal" .
+
+:lang 
+    a owl:DatatypeProperty ;
+    rdfs:label "lang" .
+
+:dataType 
+    rdfs:label "dataType" .
+
+:bind 
+    a owl:ObjectProperty ;
+    rdfs:label "bind" .
+
+:as 
+    a owl:ObjectProperty ;
+    rdfs:label "as" .
+
+:distinct 
+    rdfs:label "distinct" .
+
+:reduced 
+    rdfs:label "reduced" .
+
+:silent 
+    rdfs:label "silent" .
+
+:aggregateType 
+    a owl:DatatypeProperty ;
+    rdfs:label "aggregateType" .
+
+:separator 
+    a owl:DatatypeProperty ;
+    rdfs:label "separator" .
+
+:builtincall 
+    a owl:DatatypeProperty ;
+    rdfs:label "builtincall" .
+
+:args 
+    rdfs:label "args" .
+
+:expression 
+    rdfs:label "expression" .
+
+:unaryexpression 
+    rdfs:label "unaryExpression" .
+
+:expressionType 
+    rdfs:label "expressionType" .
+
+:operator 
+    a owl:DatatypeProperty ;
+    rdfs:label "operator" .
+
+:first 
+    a owl:ObjectProperty ;
+    rdfs:label "first" .
+
+:rest 
+    a owl:ObjectProperty ;
+    rdfs:label "rest" .
+
+:op1 
+    a owl:ObjectProperty ;
+    rdfs:label "op1" .
+
+:op2 
+    a owl:ObjectProperty ;
+    rdfs:label "op2" .
+
+:ops 
+    a owl:ObjectProperty ;
+    rdfs:label "ops" .
+
+:operands 
+    a owl:ObjectProperty ;
+    rdfs:label "operands" .
+
+:bracketted 
+    rdfs:label "bracketted" .
+
+:filter 
+    a owl:ObjectProperty ;
+    rdfs:label "filter" .
+
+:exists 
+    a owl:ObjectProperty ;
+    rdfs:label "exists" .
+
+:notexists 
+    a owl:ObjectProperty ;
+    rdfs:label "notexists" .
+
+:values 
+    a owl:ObjectProperty ;
+    rdfs:label "values" .
+
+:variables 
+    a owl:ObjectProperty ;
+    rdfs:label "variables" .
+
+:varType 
+    a owl:DatatypeProperty ;
+    rdfs:label "varType" .
+
+:oneVar 
+    a owl:ObjectProperty ;
+    rdfs:label "oneVar" .
+
+:data 
+    a owl:ObjectProperty ;
+    rdfs:label "data" .
+
+:limitOffset 
+    a owl:ObjectProperty ;
+    rdfs:label "limitOffset" .
+
+:limit 
+    a owl:DatatypeProperty ;
+    rdfs:label "limit" .
+
+:offset 
+    a owl:DatatypeProperty ;
+    rdfs:label "offset" .
+
+:orderBy 
+    a owl:ObjectProperty ;
+    rdfs:label "orderBy" .
+
+:desc 
+    rdfs:label "desc" .
+
+:asc 
+    rdfs:label "asc" .
+
+:group 
+    a owl:ObjectProperty ;
+    rdfs:label "group" .
+
+:having 
+    a owl:ObjectProperty ;
+    rdfs:label "having" .
+
+:value 
+    rdfs:label "value" .
+
+:iriref 
+    rdfs:label "iriref" .
+
+:iri 
+    a owl:DatatypeProperty ;
+    rdfs:label "iri" .
+
+:text 
+    rdfs:label "text" .
+
+:pattern 
+    rdfs:label "pattern" .
+
+:flags 
+    rdfs:label "flags" .
+
+:functionRef 
+    rdfs:label "functionRef" .
+
+### Additional properties
+
+:headers 
+    rdfs:label "headers" .
+
+:comments 
+    a owl:ObjectProperty ;
+    rdfs:label "comments" .
