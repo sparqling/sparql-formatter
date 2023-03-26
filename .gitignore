@@ -1,1 +1,5 @@
 node_modules/
+/sparql11-query/*.json
+/sparql11-query/*.rdf
+/sparql11-update/*.json
+/sparql11-update/*.rdf
