@@ -44,6 +44,8 @@ Example:
 `$ sparql-formatter sparql11-query/02.2.rq` or
 `$ cat sparql11-query/02.2.rq | sparql-formatter`
 
+or use Docker `$ cat sparql11-query/02.2.rq | docker run -i --rm sparqling/sparql-formatter`
+
 Input:
 ```
 $ cat sparql11-query/02.2.rq
@@ -66,11 +68,6 @@ WHERE {
   ?x foaf:name ?name .
   ?x foaf:mbox ?mbox .
 }
-```
-
-### Using Docker version
-```
-cat sparql11-query/02.2.rq | docker run -i --rm sparqling/sparql-formatter
 ```
 
 ## Install from GitHub
