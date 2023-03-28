@@ -77,10 +77,8 @@ $ npm ci
 ```
 Now the CLI programs are under `./bin/`.
 
-Optional:
-```
-$ npm link
-```
+Optional: `$ npm link`
+
 will make a symbolic link to `./bin/*` as `sparql-formatter` and `sparql-formatter-test` in your path.
 
 ## SPARQL 1.1 query examples
