@@ -48,7 +48,6 @@ or use Docker `$ cat sparql11-query/02.2.rq | docker run -i --rm sparqling/sparq
 
 Input:
 ```
-$ cat sparql11-query/02.2.rq
 PREFIX foaf:   <http://xmlns.com/foaf/0.1/>
 PREFIX foaf:   <http://xmlns.com/foaf/0.1/>
 SELECT ?name ?mbox
@@ -59,7 +58,6 @@ WHERE
 
 Output:
 ```
-$ sparql-formatter sparql11-query/02.2.rq
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
