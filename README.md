@@ -68,6 +68,11 @@ WHERE {
 }
 ```
 
+### Using Docker version
+```
+cat sparql11-query/02.2.rq | docker run -i --rm sparqling/sparql-formatter
+```
+
 ## Install from GitHub
 
 ```
