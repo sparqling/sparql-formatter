@@ -10,4 +10,4 @@ RUN cd /opt \
 
 WORKDIR /work
 
-CMD ["sparql-formatter"]
+ENTRYPOINT ["sparql-formatter"]
