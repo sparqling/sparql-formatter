@@ -39,7 +39,7 @@ $ npm install -g sparql-formatter
 ```
 A symbolic link to `./bin/sparql-formatter.js` will be created as `sparql-formatter` in your path.
 
-Example:
+Examples:
 
 `$ sparql-formatter sparql11-query/02.2.rq` or
 `$ cat sparql11-query/02.2.rq | sparql-formatter`
