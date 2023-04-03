@@ -41,8 +41,9 @@ A symbolic link to `./bin/sparql-formatter.js` will be created as `sparql-format
 
 Examples:
 
-`$ sparql-formatter sparql11-query/02.2.rq` or
-`$ cat sparql11-query/02.2.rq | sparql-formatter`
+`$ sparql-formatter sparql11-query/02.2.rq` 
+
+or `$ cat sparql11-query/02.2.rq | sparql-formatter`
 
 or use Docker `$ cat sparql11-query/02.2.rq | docker run -i --rm sparqling/sparql-formatter`
 
