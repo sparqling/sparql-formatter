@@ -25,10 +25,10 @@
   "dependencies": {
     "commander": "^8.0.0",
     "csv-write-stream": "^2.0.0",
-    "ls": "^0.2.1",
-    "pegjs": "^0.10.0"
+    "ls": "^0.2.1"
   },
   "devDependencies": {
+    "pegjs": "^0.10.0",
     "acorn": "^8.8.2",
     "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1"
