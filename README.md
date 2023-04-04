@@ -48,6 +48,8 @@ or `$ cat sparql11-query/02.2.rq | sparql-formatter`
 
 or use Docker `$ cat sparql11-query/02.2.rq | docker run -i --rm sparqling/sparql-formatter`
 
+or `$ docker run --rm -v $(pwd):/work sparqling/sparql-formatter sparql11-query/02.2.rq`
+
 Input:
 ```
 PREFIX foaf:   <http://xmlns.com/foaf/0.1/>
