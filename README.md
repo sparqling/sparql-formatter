@@ -97,3 +97,4 @@ true    sparql11-query/02.2.rq
 ...
 true    sparql11-query/17.rq
 ```
+* The `sparql-formatter` output for `*.rq` is compared with `*.txt`.
