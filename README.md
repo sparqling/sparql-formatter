@@ -81,11 +81,10 @@ $ git clone https://github.com/sparqling/sparql-formatter
 $ cd sparql-formatter
 $ npm ci
 ```
-Now the CLI programs are under `./bin/`.
+* Commands are in `sparql-formatter/bin/*`.
 
 Optional: `$ npm link`
-
-will make a symbolic link to `./bin/*` as `sparql-formatter` and `sparql-formatter-test` in your path.
+* Symbolic links to `sparql-formatter/bin/*` are created (as `sparql-formatter` and `sparql-formatter-test` in your path).
 
 ## SPARQL 1.1 query examples
 
