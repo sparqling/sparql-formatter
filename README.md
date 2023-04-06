@@ -7,11 +7,10 @@ npm: https://www.npmjs.com/package/sparql-formatter
 Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 
 ## Usage in web pages
-Read the following file:
 ```
 <script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@v0.7.2/dist/main.js'></script>
 ```
-Use the following function:
+Use the function:
 
 ```
 spfmt(query, indentDepth = 2)
