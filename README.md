@@ -15,7 +15,7 @@ Use the following function:
 ### spfmt(query, indentDepth = 2)
 * query: string
 * indentDepth: integer (>= 0)
-* return: string
+* return value: string
 
 ## Usage in Node.js
 
