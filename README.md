@@ -12,10 +12,13 @@ Read the following file:
 <script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@v0.7.2/dist/main.js'></script>
 ```
 Use the following function:
-### spfmt(query, indentDepth = 2)
-* query: string
-* indentDepth: integer (>= 0)
-* return value: string
+
+```
+spfmt(query, indentDepth = 2)
+```
+* `query`: *string*
+* `indentDepth`: *integer* (>= 0)
+* return value: *string*
 
 ## Usage in Node.js
 
