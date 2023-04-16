@@ -8,7 +8,7 @@ Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 
 ## Usage in web pages
 ```
-<script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@v0.7.2/dist/main.js'></script>
+<script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@v0.7.4/dist/main.js'></script>
 ```
 Use the function:
 
