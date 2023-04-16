@@ -1,0 +1,7 @@
+SELECT *
+WHERE {
+  SELECT *
+  WHERE {
+    ?s ?p ?o .
+  }
+}
