@@ -1,0 +1,11 @@
+#!/usr/bin/env spang2
+# @endpoint test
+# @option 
+
+SELECT *
+WHERE {
+  VALUES () {
+    ()
+  }
+  ?s ?p ?o .
+}
