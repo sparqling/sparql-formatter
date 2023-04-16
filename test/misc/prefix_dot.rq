@@ -1,0 +1,6 @@
+PREFIX rdf.s: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT *
+WHERE {
+  ?s rdfs:label ?o .
+}
