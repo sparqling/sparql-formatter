@@ -40,17 +40,22 @@ WHERE {
 ```
 $ npm install -g sparql-formatter
 ```
-A symbolic link to `./bin/sparql-formatter.js` will be created as `sparql-formatter` in your path.
 
 Examples:
 
 `$ sparql-formatter sparql11-query/02.2.rq` 
 
-or `$ cat sparql11-query/02.2.rq | sparql-formatter`
+or
 
-or use Docker `$ cat sparql11-query/02.2.rq | docker run -i --rm sparqling/sparql-formatter`
+`$ cat sparql11-query/02.2.rq | sparql-formatter`
 
-or `$ docker run --rm -v $(pwd):/work sparqling/sparql-formatter sparql11-query/02.2.rq`
+or use Docker
+
+`$ cat sparql11-query/02.2.rq | docker run -i --rm sparqling/sparql-formatter`
+
+or
+
+`$ docker run --rm -v $(pwd):/work sparqling/sparql-formatter sparql11-query/02.2.rq`
 
 Input:
 ```
