@@ -1,7 +1,7 @@
 PREFIX : <http://example.org/WMterms#>
 PREFIX t: <http://example.org/types#>
 
-SELECT ?aLabel1 ?bLabel
+SELECT ?aLabel ?bLabel
 WHERE {
   ?a :label ?aLabel .
   ?a :weight ?aWeight .
