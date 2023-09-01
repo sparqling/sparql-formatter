@@ -96,4 +96,26 @@ document.addEventListener('DOMContentLoaded', function (event) {
       }
     }
   });
+
+  const inputArea = document.getElementById("input-area");
+  const formattedArea = document.getElementById("formatted-area");
+  const resizeHandle = document.getElementById("resize-handle");
+  let isResizing = false;
+  resizeHandle.addEventListener("mousedown", (e) => {
+    e.preventDefault();
+    isResizing = true;
+  });
+  document.addEventListener("mousemove", (e) => {
+    if (isResizing) {
+      const newInputWidth = e.clientX - inputArea.getBoundingClientRect().left;
+      const newFormattedWidth = window.innerWidth - e.clientX;
+      const newInputPercent = newInputWidth / window.innerWidth * 100;
+      const newFormattedPercent = newFormattedWidth / window.innerWidth * 100;
+      inputArea.style.width = `${newInputPercent}%`;
+      formattedArea.style.width = `${newFormattedPercent}%`;
+    }
+  });
+  document.addEventListener("mouseup", () => {
+    isResizing = false;
+  });
 });

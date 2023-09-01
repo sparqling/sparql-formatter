@@ -2,6 +2,10 @@ body {
     font-family: Baskerville;
     background: #eeeeee;
 }
+.handle {
+    width: 5px;
+    cursor: col-resize;
+}
 #header {
     background: #2c5f85 !important;
     height: 60px;
