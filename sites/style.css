@@ -16,7 +16,7 @@ body {
     height: 93%;
 }
 #formatted-area {
-    flex: 1;
+    width: 50%;
     height: 93%;
 }
 #copy-button {

@@ -89,7 +89,8 @@ LIMIT 10</textarea>
          const outputArea = CodeMirror.fromTextArea(q('#formatted-sparql'), {
              lineNumbers: true,
              viewportMargin: Infinity,
-             lineWrapping: true,
+             lineWrapping: false,
+             cursorBlinkRate: -1,
              readOnly: true
          });
          editor.setSize('100%', '100%');
