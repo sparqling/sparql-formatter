@@ -1,0 +1,3 @@
+SELECT * WHERE {
+  BIND(REPLACE("abcb", "B.", "Z", "i") AS ?label)
+}
