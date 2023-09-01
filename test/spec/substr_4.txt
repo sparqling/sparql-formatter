@@ -1,0 +1,4 @@
+SELECT *
+WHERE {
+  BIND (substr("foobar", 4, 1) AS ?label)
+}
