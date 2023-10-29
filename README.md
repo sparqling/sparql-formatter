@@ -91,9 +91,11 @@ $ npm ci
 Optional: `$ npm link`
 * Symbolic links to `sparql-formatter/bin/*` are created (as `sparql-formatter` and `sparql-formatter-test` in your path).
 
-## SPARQL 1.1 query examples
+## SPARQL 1.1 examples
 
-* 91 SPARQL queries are extracted from the SPARQL 1.1 specification (https://www.w3.org/TR/sparql11-query/)
+* 91 SPARQL examples are extracted from the SPARQL 1.1 Query specification (https://www.w3.org/TR/sparql11-query/)
+* 16 SPARQL examples are extracted from the SPARQL 1.1 Update specification (https://www.w3.org/TR/sparql11-update/)
+* Other queries are added under test/ directory.
 
 Test:
 ```
