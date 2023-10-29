@@ -93,7 +93,7 @@ Optional: `$ npm link`
 
 ## SPARQL 1.1 examples
 
-* 91 SPARQL examples are extracted from the SPARQL 1.1 Query specification (https://www.w3.org/TR/sparql11-query/)
+* 91 SPARQL examples are extracted from the SPARQL 1.1 Query Language specification (https://www.w3.org/TR/sparql11-query/)
 * 16 SPARQL examples are extracted from the SPARQL 1.1 Update specification (https://www.w3.org/TR/sparql11-update/)
 * Other queries are added under test/ directory.
 
