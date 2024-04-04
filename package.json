@@ -17,7 +17,7 @@
     "sparql-formatter-test": "./bin/sparql-formatter-test.js"
   },
   "scripts": {
-    "pegjs": "pegjs -o lib/parser.js lib/sparql.pegjs",
+    "peggy": "peggy -o lib/parser.js lib/sparql.pegjs",
     "webpack": "webpack ./index.js --mode=production",
     "webpackDev": "webpack ./index.js --mode=development",
     "test": "sparql-formatter-test sparql11-query/*.rq sparql11-update/*.rq test/spec/*.rq test/misc/*.rq"
@@ -28,7 +28,7 @@
     "ls": "^0.2.1"
   },
   "devDependencies": {
-    "pegjs": "^0.10.0",
+    "peggy": "^3.0.2",
     "acorn": "^8.8.2",
     "webpack": "^5.76.3",
     "webpack-cli": "^5.0.1"
