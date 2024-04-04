@@ -967,15 +967,9 @@ VerbPath = Path
 VerbSimple = Var
 
 // [86] ObjectListPath ::= ObjectPath ( ',' ObjectPath )*
-ObjectListPath = o:ObjectPath os:( WS* ',' WS* ObjectPath )*
+ObjectListPath = o:ObjectPath os:( WS* ',' WS* @ObjectPath )*
 {
-  let ret = [o];
-
-  os.forEach((oi) => {
-    ret.push(oi[3]);
-  });
-
-  return ret;
+  return [o, ...os];
 }
 
 // [87] ObjectPath ::= GraphNodePath
