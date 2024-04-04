@@ -2,8 +2,8 @@
 
 const fs = require('fs').promises;
 const program = require('commander');
-const parser = require('../lib/parser.js');
-const formatter = require('../lib/formatter.js');
+const parser = require('../src/parser.js');
+const formatter = require('../src/formatter.js');
 const version = require('../package.json').version;
 
 const opts = program
