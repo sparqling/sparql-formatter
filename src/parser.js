@@ -1207,14 +1207,15 @@ function peg$parse(input, options) {
     location: location(),
   }
 };
-  var peg$f83 = function(o, os) {
-  let ret = [o];
+  var peg$f83 = function(o, a) {
+  // let ret = [o];
 
-  os.forEach((oi) => {
-    ret.push(oi[3]);
-  });
+  // os.forEach((oi) => {
+  //   ret.push(oi[3]);
+  // });
 
-  return ret;
+  // return ret;
+  return [o, ...a];
 };
   var peg$f84 = function(s, list) {
   return {
@@ -6919,8 +6920,7 @@ function peg$parse(input, options) {
         }
         s7 = peg$parseGraphNode();
         if (s7 !== peg$FAILED) {
-          s4 = [s4, s5, s6, s7];
-          s3 = s4;
+          s3 = s7;
         } else {
           peg$currPos = s3;
           s3 = peg$FAILED;
@@ -6954,8 +6954,7 @@ function peg$parse(input, options) {
           }
           s7 = peg$parseGraphNode();
           if (s7 !== peg$FAILED) {
-            s4 = [s4, s5, s6, s7];
-            s3 = s4;
+            s3 = s7;
           } else {
             peg$currPos = s3;
             s3 = peg$FAILED;

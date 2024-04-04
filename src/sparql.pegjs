@@ -2,7 +2,7 @@
   let comments = {};
 }
 
-DOCUMENT = h:(HEADER_LINE*) WS* s:SPARQL WS*
+DOCUMENT = h:( HEADER_LINE* ) WS* s:SPARQL WS*
 {
   let ret = {};
   if (h.length) {
@@ -919,15 +919,9 @@ Verb = VarOrIri
 }
 
 // [79] ObjectList ::= Object ( ',' Object )*
-ObjectList = o:Object os:( WS* ',' WS* Object )*
+ObjectList = o:Object os:( WS* ',' WS* @Object )*
 {
-  let ret = [o];
-
-  os.forEach((oi) => {
-    ret.push(oi[3]);
-  });
-
-  return ret;
+  return [o, ...os];
 }
 
 // [80] Object ::= GraphNode
