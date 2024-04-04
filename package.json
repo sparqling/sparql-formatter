@@ -2,7 +2,7 @@
   "name": "sparql-formatter",
   "version": "0.7.6",
   "description": "SPARQL 1.1 formatter",
-  "main": "index.js",
+  "main": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/sparqling/sparql-formatter"
@@ -18,8 +18,8 @@
   },
   "scripts": {
     "peggy": "peggy -o lib/parser.js lib/sparql.pegjs",
-    "webpack": "webpack ./index.js --mode=production",
-    "webpackDev": "webpack ./index.js --mode=development",
+    "webpack": "webpack ./lib/index.js --mode=production",
+    "webpackDev": "webpack ./lib/index.js --mode=development",
     "test": "sparql-formatter-test sparql11-query/*.rq sparql11-update/*.rq test/spec/*.rq test/misc/*.rq"
   },
   "dependencies": {
