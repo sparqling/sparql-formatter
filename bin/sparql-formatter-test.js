@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-const fs = require('fs');
-const program = require('commander');
-const { spawnSync } = require('child_process');
-const csvWriter = require('csv-write-stream');
-const ls = require('ls');
-const path = require('path');
+import fs from 'fs';
+import ls from 'ls';
+import path from 'path';
+import program from 'commander';
+import { spawnSync } from 'child_process';
+import csvWriter from 'csv-write-stream';
 
 const readFile = (path) => fs.readFileSync(path, 'utf8').toString();
 
@@ -86,8 +86,8 @@ function measureQuery(queryPath, expected) {
   let row = { name: queryPath };
 
   let validations = [];
-  let arguments = [queryPath];
-  let result = spawnSync(opts.command, arguments, { maxBuffer: Infinity });
+  let args = [queryPath];
+  let result = spawnSync(opts.command, args, { maxBuffer: Infinity });
   if (result.status) {
     // error
     console.error(result.stderr.toString());

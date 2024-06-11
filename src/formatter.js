@@ -4,7 +4,7 @@ let currentIndent;
 let indentUnit = '  ';
 let offset = 0;
 
-exports.format = (syntaxTree, indentDepth = 2) => {
+export function format(syntaxTree, indentDepth = 2) {
   indentUnit = ' '.repeat(indentDepth);
 
   output = [];

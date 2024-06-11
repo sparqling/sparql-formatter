@@ -1,16 +1,19 @@
 #!/usr/bin/env node
 
-const fs = require('fs').promises;
-const program = require('commander');
-const parser = require('../src/parser.js');
-const formatter = require('../src/formatter.js');
-const version = require('../package.json').version;
+import fs from 'fs';
+import path from 'path';
+import program from 'commander';
+import { parse } from '../src/parser.js';
+import { format } from '../src/formatter.js';
+
+const packageJsonPath = path.resolve(process.cwd(), 'package.json');
+const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
 const opts = program
   .option('-i, --indent <DEPTH>', 'indent depth', 2)
   .option('-j, --json', 'output AST in JSON')
   .option('-d, --debug', 'debug')
-  .version(version)
+  .version(packageJson.version)
   .arguments('[SPARQL_FILE]')
   .parse(process.argv)
   .opts();
@@ -23,7 +26,7 @@ if (program.args.length < 1 && process.stdin.isTTY) {
   let sparql;
   if (program.args[0]) {
     try {
-      sparql = await fs.readFile(program.args[0], "utf8");
+      sparql = await fs.promises.readFile(program.args[0], "utf8");
     } catch (err) {
       console.error(`cannot open ${program.args[0]}`);
       process.exit(1);
@@ -35,7 +38,7 @@ if (program.args.length < 1 && process.stdin.isTTY) {
 
   let ast;
   try {
-    ast = new parser.parse(sparql);
+    ast = parse(sparql);
   } catch (err) {
     if (opts.debug) {
       console.log(JSON.stringify(err, undefined, 2));
@@ -51,7 +54,7 @@ if (program.args.length < 1 && process.stdin.isTTY) {
   } else if (opts.json) {
     console.log(JSON.stringify(ast, selector, 2));
   } else {
-    console.log(formatter.format(ast, opts.indent));
+    console.log(format(ast, opts.indent));
   }
 })();
 

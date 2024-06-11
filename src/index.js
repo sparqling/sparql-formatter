@@ -1,8 +1,10 @@
-const parser = require('./parser.js');
-const formatter = require('./formatter.js');
+import { parse } from './parser.js';
+import { format } from './formatter.js';
 
-spfmt = (sparql, indentDepth = 2) => {
-  return formatter.format(parser.parse(sparql), indentDepth);
+export const spfmt = (sparql, indentDepth = 2) => {
+  return format(parse(sparql), indentDepth);
 };
 
-module.exports = spfmt;
+if (typeof window !== 'undefined') {
+  window.spfmt = spfmt;
+}
