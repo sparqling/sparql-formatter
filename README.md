@@ -1,6 +1,6 @@
 # SPARQL 1.1 formatter
 
-Website: https://sparqling.github.io/sparql-formatter/
+Website: https://sparql-formatter.dbcls.jp/
 
 npm: https://www.npmjs.com/package/sparql-formatter
 
