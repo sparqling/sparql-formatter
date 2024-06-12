@@ -23,7 +23,7 @@ spfmt(query, indentDepth = 2)
 
 Example:
 ```
-const spfmt = require('sparql-formatter');
+import { spfmt } from 'sparql-formatter';
 
 console.log(spfmt('select * where {?s ?p ?o}'));
 ```
