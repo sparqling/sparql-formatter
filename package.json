@@ -7,6 +7,7 @@
     "type": "git",
     "url": "https://github.com/sparqling/sparql-formatter"
   },
+  "homepage": "https://sparql-formatter.dbcls.jp/",
   "author": "Hirokazu Chiba",
   "license": "MIT",
   "keywords": [
