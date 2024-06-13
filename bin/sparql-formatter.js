@@ -6,14 +6,10 @@ import program from 'commander';
 import { parse } from '../src/parser.js';
 import { format } from '../src/formatter.js';
 
-const packageJsonPath = path.resolve(process.cwd(), 'package.json');
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
-
 const opts = program
   .option('-i, --indent <DEPTH>', 'indent depth', 2)
   .option('-j, --json', 'output AST in JSON')
   .option('-d, --debug', 'debug')
-  .version(packageJson.version)
   .arguments('[SPARQL_FILE]')
   .parse(process.argv)
   .opts();
