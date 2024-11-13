@@ -676,9 +676,6 @@ const getElem = (elem) => {
   if (elem.variable) {
     return getVar(elem);
   }
-  if (elem.iri || elem.a) {
-    return getUri(elem);
-  }
   if (elem.collection) {
     const collection = elem.collection.map((c) => {
       return getElem(c)
@@ -706,7 +703,7 @@ const getElem = (elem) => {
     ret += '^';
   }
 
-  if (elem.iriPrefix || elem.iriLocal) {
+  if (elem.iriPrefix || elem.iriLocal || elem.iri || elem.a) {
     ret += getUri(elem);
   }
   if (elem.alternative) {
