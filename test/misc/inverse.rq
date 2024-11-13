@@ -1,0 +1,1 @@
+SELECT * WHERE { ?s ^<http://schema.org/name> ?o. } LIMIT 1
