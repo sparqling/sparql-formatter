@@ -526,14 +526,14 @@ const addTriple = (triplepath) => {
   addLineWithComment(`${out} .`, outPos);
 };
 
-const getProperties = (properties, sLen = 2) => {
+const getProperties = (properties) => {
   if (properties.length === 1) {
     const prop = properties[0];
     return ` ${getElem(prop.predicate)} ${getElem(prop.objects)}`;
   }
   increaseIndent();
   let ret = '';
-  const indent = currentIndent + ' '.repeat(sLen);
+  const indent = currentIndent + ' '.repeat(2);
   properties.forEach((prop) => {
     if (ret) {
       ret += ` ;\n`;
