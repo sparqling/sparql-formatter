@@ -1,0 +1,14 @@
+SELECT *
+WHERE {
+  ?s a <foo> ;
+     <p1> ?p1value ;
+     <p2> [
+       a <something> ;
+       <playedBy> [
+         <name> ?name ;
+         <address> [
+           <hasCountryCode> ?countryUri
+         ]
+       ]
+     ] .
+}
