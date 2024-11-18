@@ -718,7 +718,7 @@ GraphGraphPattern = WS* 'GRAPH'i WS* g:VarOrIri WS* p:GroupGraphPattern
 }
 
 // [59] ServiceGraphPattern ::= 'SERVICE' 'SILENT'? VarOrIri GroupGraphPattern
-ServiceGraphPattern = 'SERVICE' WS* s:'SILENT'i? WS* v:VarOrIri WS* p:GroupGraphPattern
+ServiceGraphPattern = 'SERVICE'i WS* s:'SILENT'i? WS* v:VarOrIri WS* p:GroupGraphPattern
 {
   let ret = {
     type: 'ServiceGraphPattern',

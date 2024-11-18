@@ -221,7 +221,7 @@ function peg$parse(input, options) {
   var peg$c44 = "all";
   var peg$c45 = ".";
   var peg$c46 = "optional";
-  var peg$c47 = "SERVICE";
+  var peg$c47 = "service";
   var peg$c48 = "bind";
   var peg$c49 = "UNDEF";
   var peg$c50 = "minus";
@@ -409,7 +409,7 @@ function peg$parse(input, options) {
   var peg$e44 = peg$literalExpectation("ALL", true);
   var peg$e45 = peg$literalExpectation(".", false);
   var peg$e46 = peg$literalExpectation("OPTIONAL", true);
-  var peg$e47 = peg$literalExpectation("SERVICE", false);
+  var peg$e47 = peg$literalExpectation("SERVICE", true);
   var peg$e48 = peg$literalExpectation("BIND", true);
   var peg$e49 = peg$literalExpectation("UNDEF", false);
   var peg$e50 = peg$literalExpectation("MINUS", true);
@@ -5625,8 +5625,8 @@ function peg$parse(input, options) {
     var s0, s1, s2, s3, s4, s5, s6, s7;
 
     s0 = peg$currPos;
-    if (input.substr(peg$currPos, 7) === peg$c47) {
-      s1 = peg$c47;
+    if (input.substr(peg$currPos, 7).toLowerCase() === peg$c47) {
+      s1 = input.substr(peg$currPos, 7);
       peg$currPos += 7;
     } else {
       s1 = peg$FAILED;
