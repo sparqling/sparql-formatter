@@ -526,8 +526,8 @@ const addTriple = (triplepath) => {
   addLineWithComment(`${out} .`, outPos);
 };
 
-const getProperties = (properties) => {
-  if (properties.length === 1) {
+const getProperties = (properties, nested) => {
+  if (properties.length === 1 && !nested) {
     const prop = properties[0];
     return ` ${getElem(prop.predicate)} ${getElem(prop.objects)}`;
   }
@@ -537,10 +537,10 @@ const getProperties = (properties) => {
   properties.forEach((prop) => {
     if (ret) {
       ret += ` ;\n`;
-      ret += `${indent} ${getElem(prop.predicate)} ${getElem(prop.objects)}`;
+      ret += `${indent} ${getElem(prop.predicate)} ${getElem(prop.objects, true)}`;
     } else {
       ret += `\n${indent}`;
-      ret += ` ${getElem(prop.predicate)} ${getElem(prop.objects)}`;
+      ret += ` ${getElem(prop.predicate)} ${getElem(prop.objects, true)}`;
     }
   });
   ret += `\n${currentIndent}`;
@@ -674,12 +674,12 @@ const addInlineData = (inline) => {
   }
 };
 
-const getElem = (elem) => {
+const getElem = (elem, nested = false) => {
   if (elem === 'UNDEF') {
     return elem;
   }
   if (Array.isArray(elem)) {
-    return elem.map((e) => getElem(e)).join(', ');
+    return elem.map((e) => getElem(e, nested)).join(', ');
   }
   if (elem.variable) {
     return getVar(elem);
@@ -702,7 +702,7 @@ const getElem = (elem) => {
   }
 
   if (elem.blankNodeProperties) {
-    return `[${getProperties(elem.blankNodeProperties)} ]`;
+    return `[${getProperties(elem.blankNodeProperties, nested)} ]`;
   }
 
   // Path
