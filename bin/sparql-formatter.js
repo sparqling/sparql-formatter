@@ -4,11 +4,13 @@ import fs from 'fs';
 import path from 'path';
 import program from 'commander';
 import { parse } from '../src/parser.js';
+import { parse as parseCompact } from '../src/parser-compact.js';
 import { format } from '../src/formatter.js';
 
 const opts = program
   .option('-i, --indent <DEPTH>', 'indent depth', 2)
   .option('-j, --json', 'output AST in JSON')
+  .option('-c, --compact', 'compact mode')
   .option('-d, --debug', 'debug')
   .arguments('[SPARQL_FILE]')
   .parse(process.argv)
@@ -34,7 +36,11 @@ if (program.args.length < 1 && process.stdin.isTTY) {
 
   let ast;
   try {
-    ast = parse(sparql);
+    if (opts.compact) {
+      ast = parseCompact(sparql);
+    } else {
+      ast = parse(sparql);
+    }
   } catch (err) {
     if (opts.debug) {
       console.log(JSON.stringify(err, undefined, 2));
