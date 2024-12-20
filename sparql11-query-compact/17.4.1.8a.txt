@@ -1,0 +1,13 @@
+PREFIX : <http://example.org/WMterms#>
+PREFIX t: <http://example.org/types#>
+
+SELECT ?aLabel ?bLabel
+WHERE {
+  ?a :label ?aLabel ;
+     :weight ?aWeight ;
+     :displacement ?aDisp .
+  ?b :label ?bLabel ;
+     :weight ?bWeight ;
+     :displacement ?bDisp .
+  FILTER (sameTerm(?aWeight, ?bWeight) && !sameTerm(?aDisp, ?bDisp))
+}
