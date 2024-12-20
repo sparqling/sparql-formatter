@@ -11,6 +11,7 @@ const readFile = (path) => fs.readFileSync(path, 'utf8').toString();
 
 const opts = program
   .option('-c, --command <COMMAND>', 'command', 'sparql-formatter')
+  .option('-o, --options <OPTIONS>', 'options')
   .option('-d, --delimiter <DELIMITER>', 'delimiter of output', '\t')
   .option('-p, --pattern <REGEX>', 'extra constraint for file pattern specified in regex')
   .option('--exclude <REGEX>', 'extra constraint for file pattern to be excluded specified in regex')
@@ -87,6 +88,9 @@ function measureQuery(queryPath, expected) {
 
   let validations = [];
   let args = [queryPath];
+  if (opts.options) {
+    args = opts.options.split(' ').concat(args);
+  }
   let result = spawnSync(opts.command, args, { maxBuffer: Infinity });
   if (result.status) {
     // error
