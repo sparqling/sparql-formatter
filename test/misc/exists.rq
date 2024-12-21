@@ -19,7 +19,7 @@ WHERE
   ?subject ?wdt_prop ?object.
   FILTER (!regex(?object, ?regular_expression))
   
-  BIND (not exists{?statement pq:P2303 ?subject} AS ?exception)
+  BIND (exists{?statement pq:P2303 ?subject} AS ?exception)
   OPTIONAL {?statement pq:P2316 ?constraint_status}.
   OPTIONAL {?statement pq:P2241 ?deprecated_reason}.
   
