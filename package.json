@@ -18,9 +18,11 @@
     "sparql-formatter-test": "./bin/sparql-formatter-test.js"
   },
   "scripts": {
+    "peggy-compact": "peggy -o src/parser-compact.js --format es src/sparql-compact.pegjs",
     "peggy": "peggy -o src/parser.js --format es src/sparql.pegjs",
     "webpack": "webpack ./src/index.js --mode=production",
     "webpackDev": "webpack ./src/index.js --mode=development",
+    "test-compact": "sparql-formatter-test --options --compact sparql11-query-compact/*.rq",
     "test": "sparql-formatter-test sparql11-query/*.rq sparql11-update/*.rq test/spec/*.rq test/misc/*.rq"
   },
   "type": "module",
