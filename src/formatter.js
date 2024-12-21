@@ -528,29 +528,37 @@ const addTriple = (triplepath) => {
 
 const getTriples = (triples) => {
   let out = '';
-  if (triples.length >= 2) {
-    return;
-  }
   triples.forEach((t) => {
+    if (out) {
+      out += ' ';
+    }
     if (t.graph) {
-      return;
+      out += `GRAPH ${getElem(t.graph)} { `;
+      out += getTriples(t.triplePattern);
+      out += ' }';
     } else if (t.triplePattern) {
       out += getTriples(t.triplePattern);
     } else {
       out += getTriple(t);
+      if (triples.length > 1 || t.properties.length > 1) {
+        out += ' .';
+      }
     }
   });
   return out;
 };
 
 const getTriple = (triplepath) => {
-  if (triplepath.properties.length === 1) {
-    const s = getElem(triplepath.subject);
-    const prop = triplepath.properties[0];
-    return `${s} ${getElem(prop.predicate)} ${getElem(prop.objects)}`;
-  } else {
-    return;
-  }
+  const s = getElem(triplepath.subject);
+  let out;
+  triplepath.properties.forEach((prop) => {
+    if (out) {
+      out += ` ; ${getElem(prop.predicate)} ${getElem(prop.objects)}`;
+    } else {
+      out = `${s} ${getElem(prop.predicate)} ${getElem(prop.objects)}`;
+    }
+  });
+  return out;
 };
 
 const getProperties = (properties, nested) => {
