@@ -621,6 +621,10 @@ const getExpression = (expr) => {
     const triples = getTriples(expr.exists);
     return `EXISTS { ${triples} }`;
   }
+  if (expr.notexists) {
+    const triples = getTriples(expr.notexists);
+    return `NOT EXISTS { ${triples} }`;
+  }
   switch (expr.expressionType) {
     case 'atomic':
       return getElem(expr.value);
