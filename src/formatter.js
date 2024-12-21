@@ -526,6 +526,33 @@ const addTriple = (triplepath) => {
   addLineWithComment(`${out} .`, outPos);
 };
 
+const getTriples = (triples) => {
+  let out = '';
+  if (triples.length >= 2) {
+    return;
+  }
+  triples.forEach((t) => {
+    if (t.graph) {
+      return;
+    } else if (t.triplePattern) {
+      out += getTriples(t.triplePattern);
+    } else {
+      out += getTriple(t);
+    }
+  });
+  return out;
+};
+
+const getTriple = (triplepath) => {
+  if (triplepath.properties.length === 1) {
+    const s = getElem(triplepath.subject);
+    const prop = triplepath.properties[0];
+    return `${s} ${getElem(prop.predicate)} ${getElem(prop.objects)}`;
+  } else {
+    return;
+  }
+};
+
 const getProperties = (properties, nested) => {
   if (properties.length === 1 && !nested) {
     const prop = properties[0];
@@ -581,6 +608,10 @@ const getAggregate = (expr) => {
 const getExpression = (expr) => {
   if (expr.functionRef) {
     return getUri(expr.functionRef) + '(' + expr.args.map(getExpression).join(', ') + ')';
+  }
+  if (expr.exists) {
+    const triples = getTriples(expr.exists);
+    return `EXISTS { ${triples} }`;
   }
   switch (expr.expressionType) {
     case 'atomic':
