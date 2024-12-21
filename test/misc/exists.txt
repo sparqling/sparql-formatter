@@ -1,0 +1,24 @@
+# type of constraint for Wikidata properties: used to specify that the value for this property has to correspond to a given pattern
+# if ?s ?p ?o exists and ?P has format constraint, then the value of ?o must comply with the pattern expected.
+# These patterns are expressed with regular expressions, therefore we test ?o agains the regular expression
+
+SELECT ?subject ?wdt_prop ?object ?regular_expression ?constraint_status ?deprecated_reason
+  ?exception
+WHERE {
+  ?property wikibase:directClaim ?wdt_prop .
+  ?property p:P2302 ?statement .
+  ?statement ps:P2302 wd:Q21502404 . ## format constraint
+  ?statement pq:P1793 ?regular_expression .
+  ?subject ?wdt_prop ?object .
+  FILTER (!regex(?object, ?regular_expression))
+  BIND (EXISTS { ?statement pq:P2303 ?subject } AS ?exception)
+  OPTIONAL {
+    ?statement pq:P2316 ?constraint_status .
+  }
+  OPTIONAL {
+    ?statement pq:P2241 ?deprecated_reason .
+  }
+  # EXAMPLE (comment next line to query all violations for all properties of this type...)
+  # ... however note the risk of timeout: we suggest to run these queries one by one for each property of this type
+  FILTER (?wdt_prop = wdt:P3466)
+}
