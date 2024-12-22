@@ -4,9 +4,10 @@ let timerId;
 function reformat(event, ui) {
   const input = editor.getValue();
   const indentDepth = q('#indent-depth').value;
+  const compactMode = q('#compact-mode').checked;
   try {
     toastr.clear();
-    outputArea.setValue(spfmt(input, indentDepth));
+    outputArea.setValue(spfmt(input, indentDepth, compactMode));
   } catch (err) {
     toastr.remove();
     outputArea.setValue(input);
@@ -61,7 +62,9 @@ function onChanged(delta) {
 
 editor.on('change', onChanged);
 
-q('#indent-depth').addEventListener('change', onChanged);
+q('#indent-depth').addEventListener('change', reformat);
+
+q('#compact-mode').addEventListener('change', reformat);
 
 q('#query-select').addEventListener('change', (event) => {
   if (event.target.value === '') {
