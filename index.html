@@ -51,7 +51,7 @@
 
                     <div class="mt-1 text-container">
                         <textarea id='input-sparql'>
-SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
+SELECT * WHERE { ?s ?p ?o. ?s ?p2 ?o2 } LIMIT 10</textarea>
                     </div>
                 </div>
 
@@ -79,6 +79,7 @@ SELECT * WHERE { ?s ?p ?o. } LIMIT 10</textarea>
 SELECT *
 WHERE {
   ?s ?p ?o .
+  ?s ?p2 ?o2 .
 }
 LIMIT 10</textarea>
                     </div>
