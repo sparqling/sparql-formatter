@@ -1046,15 +1046,17 @@ function peg$parse(input, options) {
   var peg$f59 = function(a, b) {
   let triples = [a];
   if (b && b[3]) {
-    triples = b[3].triplePattern;
-    if (a.subject.variable === triples[0].subject.variable) {
-      if (areEqualProperties(a.properties[0].predicate, triples[0].properties[0].predicate)) {
-        triples[0].properties[0].objects = a.properties[0].objects.concat(triples[0].properties[0].objects);
-      } else {
-        triples[0].properties = a.properties.concat(triples[0].properties);
+    triples = [a].concat(b[3].triplePattern);
+    if (areEqual(a.subject, b[3].triplePattern[0].subject)) {
+      triples = JSON.parse(JSON.stringify(b[3].triplePattern));
+      triples[0].properties = a.properties.concat(b[3].triplePattern[0].properties);
+      const last = a.properties.length - 1;
+      if (areEqual(a.properties[last].predicate, b[3].triplePattern[0].properties[0].predicate)) {
+        console.error('a', a.properties);
+        triples[0].properties = a.properties;
+        triples[0].properties[last].objects = a.properties[last].objects.concat(b[3].triplePattern[0].properties[0].objects);
+        triples[0].properties = triples[0].properties.concat(b[3].triplePattern[0].properties.slice(1));
       }
-    } else {
-      triples = [a].concat(b[3].triplePattern);
     }
   }
 
@@ -16762,7 +16764,7 @@ function peg$parse(input, options) {
 
 
   let comments = {};
-  function areEqualProperties(obj1, obj2) {
+  function areEqual(obj1, obj2) {
     if (obj1.variable && obj1.variable === obj2.variable) {
       return true;
     }
