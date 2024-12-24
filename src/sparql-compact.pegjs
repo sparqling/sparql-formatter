@@ -1,5 +1,17 @@
 {
   let comments = {};
+  function areEqualProperties(obj1, obj2) {
+    if (obj1.variable && obj1.variable === obj2.variable) {
+      return true;
+    }
+    if (obj1.iri && obj1.iri === obj2.iri) {
+      return true;
+    }
+    if (obj1.iriPrefix && obj1.iriPrefix === obj2.iriPrefix && obj1.iriLocal === obj2.iriLocal) {
+      return true;
+    }
+    return false;
+  }
 }
 
 DOCUMENT = h:( HEADER_LINE* ) WS* s:SPARQL WS*
@@ -685,7 +697,11 @@ TriplesBlock = a:TriplesSameSubjectPath b:( WS* '.' WS* TriplesBlock? )?
   if (b && b[3]) {
     triples = b[3].triplePattern;
     if (a.subject.variable === triples[0].subject.variable) {
-      triples[0].properties = a.properties.concat(triples[0].properties);
+      if (areEqualProperties(a.properties[0].predicate, triples[0].properties[0].predicate)) {
+        triples[0].properties[0].objects = a.properties[0].objects.concat(triples[0].properties[0].objects);
+      } else {
+        triples[0].properties = a.properties.concat(triples[0].properties);
+      }
     } else {
       triples = [a].concat(b[3].triplePattern);
     }
