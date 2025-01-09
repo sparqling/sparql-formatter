@@ -850,7 +850,7 @@ ExpressionList = NIL
 {
   return [];
 }
-/ '(' WS* e:(IRIref / Expression) WS* es:( ',' WS* (IRIref / Expression) WS* )* ')'
+/ '(' WS* e:Expression WS* es:( ',' WS* Expression WS* )* ')'
 {
   return [e].concat(es.map((e) => e[2]));
 }
