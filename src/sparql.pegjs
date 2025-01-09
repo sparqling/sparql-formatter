@@ -947,7 +947,7 @@ TriplesSameSubjectPath = s:VarOrTerm WS* list:PropertyListPathNotEmpty
 PropertyListPath = PropertyListPathNotEmpty?
 
 // [83] PropertyListPathNotEmpty ::= ( VerbPath | VerbSimple ) ObjectListPath ( ';' ( ( VerbPath | VerbSimple ) ObjectList )? )*
-PropertyListPathNotEmpty = v:( VerbPath / VerbSimple ) WS* ol:ObjectListPath rest:( WS* ';' WS* ( ( VerbPath / VerbSimple ) WS* ObjectList )? )*
+PropertyListPathNotEmpty = v:( VerbPath / VerbSimple ) WS* ol:ObjectListPath rest:( WS* ';' WS* ( ( VerbPath / VerbSimple ) WS* ObjectListPath )? )*
 {
   let pairs = [];
   pairs.push({ predicate: v, objects: ol });
