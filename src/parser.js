@@ -6428,7 +6428,7 @@ function peg$parse(input, options) {
   }
 
   function peg$parseExpressionList() {
-    var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9;
+    var s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11;
 
     s0 = peg$currPos;
     s1 = peg$parseNIL();
@@ -6485,7 +6485,13 @@ function peg$parse(input, options) {
               s9 = peg$parseConditionalOrExpression();
             }
             if (s9 !== peg$FAILED) {
-              s7 = [s7, s8, s9];
+              s10 = [];
+              s11 = peg$parseWS();
+              while (s11 !== peg$FAILED) {
+                s10.push(s11);
+                s11 = peg$parseWS();
+              }
+              s7 = [s7, s8, s9, s10];
               s6 = s7;
             } else {
               peg$currPos = s6;
@@ -6517,7 +6523,13 @@ function peg$parse(input, options) {
                 s9 = peg$parseConditionalOrExpression();
               }
               if (s9 !== peg$FAILED) {
-                s7 = [s7, s8, s9];
+                s10 = [];
+                s11 = peg$parseWS();
+                while (s11 !== peg$FAILED) {
+                  s10.push(s11);
+                  s11 = peg$parseWS();
+                }
+                s7 = [s7, s8, s9, s10];
                 s6 = s7;
               } else {
                 peg$currPos = s6;
@@ -7073,7 +7085,7 @@ function peg$parse(input, options) {
               s11.push(s12);
               s12 = peg$parseWS();
             }
-            s12 = peg$parseObjectList();
+            s12 = peg$parseObjectListPath();
             if (s12 !== peg$FAILED) {
               s10 = [s10, s11, s12];
               s9 = s10;
@@ -7129,7 +7141,7 @@ function peg$parse(input, options) {
                 s11.push(s12);
                 s12 = peg$parseWS();
               }
-              s12 = peg$parseObjectList();
+              s12 = peg$parseObjectListPath();
               if (s12 !== peg$FAILED) {
                 s10 = [s10, s11, s12];
                 s9 = s10;
