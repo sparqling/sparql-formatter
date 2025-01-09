@@ -861,11 +861,11 @@ ArgList = NIL
     list: [],
   }
 }
-/ '(' WS* d:'DISTINCT'i? WS* e:Expression WS* es:( ',' WS* Expression)* ')'
+/ '(' WS* d:'DISTINCT'i? WS* e:Expression WS* es:( ',' WS* @Expression )* ')'
 {
   return {
     distinct: Boolean(d),
-    list: [e].concat(es.map((e) => e[2])),
+    list: [e, ...es],
   }
 }
 
@@ -874,9 +874,9 @@ ExpressionList = NIL
 {
   return [];
 }
-/ '(' WS* e:Expression WS* es:( ',' WS* Expression WS* )* ')'
+/ '(' WS* e:Expression WS* es:( ',' WS* @Expression WS* )* ')'
 {
-  return [e].concat(es.map((e) => e[2]));
+  return [e, ...es];
 }
 
 // [73] ConstructTemplate ::= '{' ConstructTriples? '}'
