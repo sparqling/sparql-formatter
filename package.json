@@ -1,6 +1,6 @@
 {
   "name": "sparql-formatter",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "SPARQL 1.1 formatter",
   "main": "src/index.js",
   "repository": {
