@@ -584,8 +584,8 @@ const getProperties = (properties, nested) => {
 };
 
 const getAggregate = (expr) => {
+  let distinct = expr.distinct ? 'DISTINCT ' : '';
   if (expr.aggregateType === 'count') {
-    let distinct = expr.distinct ? 'DISTINCT ' : '';
     let expression;
     if (expr.expression === '*') {
       expression = '*'
@@ -594,17 +594,16 @@ const getAggregate = (expr) => {
     }
     return `COUNT(${distinct}${expression})`;
   } else if (expr.aggregateType === 'sum') {
-    return `sum(${getVar(expr.expression.value)})`;
+    return `sum(${distinct}${getExpression(expr.expression)})`;
   } else if (expr.aggregateType === 'min') {
-    return `MIN(${getVar(expr.expression.value)})`;
+    return `MIN(${distinct}${getExpression(expr.expression)})`;
   } else if (expr.aggregateType === 'max') {
-    return `MAX(${getVar(expr.expression.value)})`;
+    return `MAX(${distinct}${getExpression(expr.expression)})`;
   } else if (expr.aggregateType === 'avg') {
-    return `AVG(${getExpression(expr.expression)})`;
+    return `AVG(${distinct}${getExpression(expr.expression)})`;
   } else if (expr.aggregateType === 'sample') {
-    return `SAMPLE(${getVar(expr.expression.value)})`;
+    return `SAMPLE(${distinct}${getExpression(expr.expression)})`;
   } else if (expr.aggregateType === 'group_concat') {
-    let distinct = expr.distinct ? 'DISTINCT ' : '';
     let separator = '';
     if (expr.separator) {
       separator = `; SEPARATOR = ${getLiteral(expr.separator)}`;
