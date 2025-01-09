@@ -428,9 +428,9 @@ const getOrderClause = (conditions) => {
       oc = getExpression(condition);
     }
     if (condition.asc) {
-      orderConditions.push(`ASC(${oc})`);
+      orderConditions.push(`ASC${oc}`);
     } else if (condition.desc) {
-      orderConditions.push(`DESC(${oc})`);
+      orderConditions.push(`DESC${oc}`);
     } else {
       orderConditions.push(oc);
     }
@@ -626,7 +626,7 @@ const getExpression = (expr) => {
   }
   switch (expr.expressionType) {
     case 'atomic':
-      return getElem(expr.value);
+      return getBracketted(getElem(expr.value), expr.bracketted);
     case 'irireforfunction':
       let iri = getUri(expr.iriref);
       if (expr.args) {
