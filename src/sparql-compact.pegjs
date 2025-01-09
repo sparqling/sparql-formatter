@@ -819,11 +819,11 @@ MinusGraphPattern = 'MINUS'i WS* p:GroupGraphPattern
 }
 
 // [67] GroupOrUnionGraphPattern ::= GroupGraphPattern ( 'UNION' GroupGraphPattern )*
-GroupOrUnionGraphPattern = a:GroupGraphPattern b:( WS* 'UNION'i WS* GroupGraphPattern )*
+GroupOrUnionGraphPattern = a:GroupGraphPattern b:( WS* 'UNION'i WS* @GroupGraphPattern )*
 {
   if (b.length) {
     return {
-      union: [a].concat(b.map((elem) => elem[3])),
+      union: [a, ...b],
       location: location(),
     };
   } else {

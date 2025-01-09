@@ -1124,7 +1124,7 @@ function peg$parse(input, options) {
   var peg$f70 = function(a, b) {
   if (b.length) {
     return {
-      union: [a].concat(b.map((elem) => elem[3])),
+      union: [a, ...b],
       location: location(),
     };
   } else {
@@ -6154,8 +6154,7 @@ function peg$parse(input, options) {
         }
         s7 = peg$parseGroupGraphPattern();
         if (s7 !== peg$FAILED) {
-          s4 = [s4, s5, s6, s7];
-          s3 = s4;
+          s3 = s7;
         } else {
           peg$currPos = s3;
           s3 = peg$FAILED;
@@ -6189,8 +6188,7 @@ function peg$parse(input, options) {
           }
           s7 = peg$parseGroupGraphPattern();
           if (s7 !== peg$FAILED) {
-            s4 = [s4, s5, s6, s7];
-            s3 = s4;
+            s3 = s7;
           } else {
             peg$currPos = s3;
             s3 = peg$FAILED;
