@@ -1171,12 +1171,12 @@ GraphTerm = IRIref / RDFLiteral / NumericLiteral / BooleanLiteral / BlankNode / 
 Expression = ConditionalOrExpression
 
 // [111] ConditionalOrExpression ::= ConditionalAndExpression ( '||' ConditionalAndExpression )*
-ConditionalOrExpression = v:ConditionalAndExpression vs:( WS* '||' WS* ConditionalAndExpression )*
+ConditionalOrExpression = v:ConditionalAndExpression vs:( WS* '||' WS* @ConditionalAndExpression )*
 {
   if (vs.length) {
     return {
       expressionType: 'conditionalor',
-      operands: [v].concat(vs.map(op => op[3])),
+      operands: [v, ...vs],
     };
   } else {
     return v;
@@ -1184,12 +1184,12 @@ ConditionalOrExpression = v:ConditionalAndExpression vs:( WS* '||' WS* Condition
 }
 
 // [112] ConditionalAndExpression ::= ValueLogical ( '&&' ValueLogical )*
-ConditionalAndExpression = v:ValueLogical vs:( WS* '&&' WS* ValueLogical )*
+ConditionalAndExpression = v:ValueLogical vs:( WS* '&&' WS* @ValueLogical )*
 {
   if (vs.length) {
     return {
       expressionType: 'conditionaland',
-      operands: [v].concat(vs.map(op => op[3])),
+      operands: [v, ...vs],
     };
   } else {
     return v;
