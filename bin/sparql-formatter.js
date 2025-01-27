@@ -2,7 +2,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import program from 'commander';
+import { program } from 'commander';
 import { parse } from '../src/parser.js';
 import { parse as parseCompact } from '../src/parser-compact.js';
 import { format } from '../src/formatter.js';

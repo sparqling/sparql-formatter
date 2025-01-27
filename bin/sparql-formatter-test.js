@@ -3,7 +3,7 @@
 import fs from 'fs';
 import ls from 'ls';
 import path from 'path';
-import program from 'commander';
+import { program } from 'commander';
 import { spawnSync } from 'child_process';
 import csvWriter from 'csv-write-stream';
 
