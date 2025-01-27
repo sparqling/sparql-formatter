@@ -1,13 +1,13 @@
 {
   let comments = {};
   function areEqual(obj1, obj2) {
-    if (obj1.variable && obj1.variable === obj2.variable) {
+    if (obj1.type === 'Var' && obj1.varType === obj2.varType && obj1.varname === obj2.varname) {
       return true;
     }
-    if (obj1.iri && obj1.iri === obj2.iri) {
+    if (obj1.iriref && obj1.iriref === obj2.iriref) {
       return true;
     }
-    if (obj1.iriPrefix && obj1.iriPrefix === obj2.iriPrefix && obj1.iriLocal === obj2.iriLocal) {
+    if (obj1.type === 'PrefixedName' && obj1.pn_prefix === obj2.pn_prefix && obj1.pn_local === obj2.pn_local) {
       return true;
     }
     return false;
@@ -34,7 +34,10 @@ DOCUMENT = h:( HEADER_LINE* ) WS* s:SPARQL WS*
     ret.comments = commentsArr;
   }
 
-  return ret;
+  return {
+    '@context': 'https://purl.org/sparql-formatter/context.jsonld',
+    ...ret
+  };
 }
 
 SPARQL = QueryUnit / UpdateUnit
@@ -46,10 +49,20 @@ QueryUnit = Query
 Query = p:Prologue WS* q:( SelectQuery / ConstructQuery / DescribeQuery / AskQuery ) v:ValuesClause
 {
   let ret = { type: 'Query' };
-  if (p.length) {
+  if (p) {
     ret.prologue = p;
   }
-  ret.queryBody = q;
+
+  if (q.type === 'SelectQuery') {
+    ret.selectQuery = q;
+  } else if (q.type === 'ConstructQuery') {
+    ret.constructQuery = q;
+  } else if (q.type === 'DescribeQuery') {
+    ret.describeQuery = q;
+  } else if (q.type === 'AskQuery') {
+    ret.askQuery = q;
+  }
+
   if (v) {
     ret.values = v;
   }
@@ -61,14 +74,24 @@ Query = p:Prologue WS* q:( SelectQuery / ConstructQuery / DescribeQuery / AskQue
 UpdateUnit = Update
 
 // [4] Prologue ::= ( BaseDecl | PrefixDecl )*
-Prologue = ( BaseDecl / PrefixDecl )*
+Prologue = p:( BaseDecl / PrefixDecl )*
+{
+  if (p.length) {
+    return {
+      type: 'Prologue',
+      decl: p,
+    };
+  } else {
+    return
+  }
+}
 
 // [5] BaseDecl ::= 'BASE' IRIREF
 BaseDecl = WS* 'BASE'i WS* i:IRIREF
 {
   return {
     type: 'BaseDecl',
-    base: i,
+    iriref: i,
   }
 }
 
@@ -77,8 +100,8 @@ PrefixDecl = WS* 'PREFIX'i WS* p:PNAME_NS WS* i:IRIREF
 {
   return {
     type: 'PrefixDecl',
-    prefix: p,
-    iri: i,
+    pn_prefix: p,
+    iriref: i,
   }
 }
 
@@ -90,8 +113,9 @@ SelectQuery = s:SelectClause WS* gs:DatasetClause* WS* w:WhereClause WS* sm:Solu
   }
 
   s = {
-    ...s,
-    where: w,
+    type: 'SelectQuery',
+    selectClause: s,
+    whereClause: w,
     ...sm,
   };
 
@@ -102,9 +126,11 @@ SelectQuery = s:SelectClause WS* gs:DatasetClause* WS* w:WhereClause WS* sm:Solu
 SubSelect = s:SelectClause WS* w:WhereClause WS* sm:SolutionModifier v:ValuesClause
 {
   let ret = {
-    ...s,
-    where: w,
+    type: 'SubSelect',
+    selectClause: s,
+    whereClause: w,
     ...sm,
+    location: location(),
   };
   if (v) {
     ret.values = v;
@@ -139,7 +165,7 @@ SelectClause = 'SELECT'i WS* m:( 'DISTINCT'i / 'REDUCED'i )? WS*
     });
   }
 
-  let ret = { select: vars };
+  let ret = { var: vars };
   if (m) {
     const modifier = m.toUpperCase();
     if (modifier === 'DISTINCT') {
@@ -156,7 +182,7 @@ SelectClause = 'SELECT'i WS* m:( 'DISTINCT'i / 'REDUCED'i )? WS*
 // [10] ConstructQuery ::= 'CONSTRUCT' ( ConstructTemplate DatasetClause* WhereClause SolutionModifier | DatasetClause* 'WHERE' '{' TriplesTemplate? '}' SolutionModifier )
 ConstructQuery = 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* w:WhereClause WS* sm:SolutionModifier
 {
-  let ret = { type: 'construct' };
+  let ret = { type: 'ConstructQuery' };
   if (gs.length) {
     ret.from = gs;
   }
@@ -173,7 +199,7 @@ ConstructQuery = 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* 
 }
 / 'CONSTRUCT'i WS* gs:DatasetClause* WS* 'WHERE'i WS* '{' WS* t:TriplesTemplate? WS* '}' WS* sm:SolutionModifier
 {
-  let ret = { type: 'construct' };
+  let ret = { type: 'ConstructQuery' };
   if (gs.length) {
     ret.from = gs;
   }
@@ -191,7 +217,7 @@ ConstructQuery = 'CONSTRUCT'i WS* t:ConstructTemplate WS* gs:DatasetClause* WS* 
 // [11] DescribeQuery ::= 'DESCRIBE' ( VarOrIri+ | '*' ) DatasetClause* WhereClause? SolutionModifier
 DescribeQuery = 'DESCRIBE'i WS* v:( VarOrIri+ / '*' ) WS* gs:DatasetClause* WS* w:WhereClause? WS* sm:SolutionModifier
 {
-  let ret = { type: 'describe' };
+  let ret = { type: 'DescribeQuery' };
   if (gs.length) {
     ret.from = gs;
   }
@@ -212,7 +238,7 @@ DescribeQuery = 'DESCRIBE'i WS* v:( VarOrIri+ / '*' ) WS* gs:DatasetClause* WS* 
 // [12] AskQuery ::= 'ASK' DatasetClause* WhereClause SolutionModifier
 AskQuery = WS* 'ASK'i WS* gs:DatasetClause* WS* w:WhereClause WS* sm:SolutionModifier
 {
-  let ret = { type: 'ask' };
+  let ret = { type: 'AskQuery' };
   if (gs.length) {
     ret.from = gs;
   }
@@ -397,8 +423,8 @@ ValuesClause = b:( 'VALUES'i DataBlock )?
 // [29] Update ::= Prologue ( Update1 ( ';' Update )? )?
 Update = p:Prologue u:( WS* Update1 ( WS* ';' WS* Update )? )? WS*
 {
-  let ret = {};
-  if (p.length) {
+  let ret = { type: 'Update' };
+  if (p) {
     ret.prologue = p;
   }
 
@@ -1985,7 +2011,8 @@ String = STRING_LITERAL_LONG1 / STRING_LITERAL_LONG2 / STRING_LITERAL1 / STRING_
 IRIref = iri:IRIREF
 {
   return {
-    iri: iri,
+    type: 'IRIref',
+    iriref: iri,
     location: location(),
   }
 }
@@ -1998,16 +2025,17 @@ IRIref = iri:IRIREF
 PrefixedName = p:PNAME_LN 
 {
   return {
-    iriPrefix: p[0],
-    iriLocal: p[1],
+    type: 'PrefixedName',
+    pn_prefix: p.pn_prefix,
+    pn_local: p.pn_local,
     location: location(),
   }
 }
 / p:PNAME_NS 
 {
   return {
-    iriPrefix: p,
-    iriLocal: '',
+    type: 'PrefixedName',
+    pn_prefix: p,
     location: location(),
   }
 }
@@ -2042,9 +2070,12 @@ PNAME_NS = p:PN_PREFIX? ':'
 }
 
 // [141] PNAME_LN ::= PNAME_NS PN_LOCAL
-PNAME_LN = p:PNAME_NS s:PN_LOCAL
+PNAME_LN = n:PNAME_NS l:PN_LOCAL
 {
-  return [p, s]
+  return {
+    pn_prefix: n,
+    pn_local: l,
+   };
 }
 
 // [142] BLANK_NODE_LABEL ::= '_:' ( PN_CHARS_U | [0-9] ) ((PN_CHARS|'.')* PN_CHARS)?
@@ -2059,7 +2090,9 @@ BLANK_NODE_LABEL = '_:' ( PN_CHARS_U / [0-9] ) (PN_CHARS / '.' PN_CHARS)*
 VAR1 = '?' v:VARNAME 
 {
   return {
-    variable: v,
+    type: 'Var',
+    varType: 'VAR1',
+    varname: v,
   }
 }
 
@@ -2067,8 +2100,9 @@ VAR1 = '?' v:VARNAME
 VAR2 = '$' v:VARNAME 
 {
   return {
-    varType: '$',
-    variable: v,
+    type: 'Var',
+    varType: 'VAR2',
+    varname: v,
   }
 }
 
