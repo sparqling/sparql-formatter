@@ -6,10 +6,12 @@ import program from 'commander';
 import { parse } from '../src/parser.js';
 import { parse as parseCompact } from '../src/parser-compact.js';
 import { format } from '../src/formatter.js';
+import { turtle } from '../src/turtle.js';
 
 const opts = program
   .option('-i, --indent <DEPTH>', 'indent depth', 2)
   .option('-j, --json', 'output AST in JSON')
+  .option('-t, --turtle', 'output Turtle')
   .option('-c, --compact', 'compact mode')
   .option('-d, --debug', 'debug')
   .arguments('[SPARQL_FILE]')
@@ -55,6 +57,8 @@ if (program.args.length < 1 && process.stdin.isTTY) {
     console.log(JSON.stringify(ast, undefined, 2));
   } else if (opts.json) {
     console.log(JSON.stringify(ast, selector, 2));
+  } else if (opts.turtle) {
+    console.log(turtle(ast));
   } else {
     console.log(format(ast, opts.indent));
   }
