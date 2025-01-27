@@ -7,7 +7,7 @@ function reformat(event, ui) {
   const compactMode = q('#compact-mode').checked;
   try {
     toastr.clear();
-    outputArea.setValue(spfmt(input, indentDepth, compactMode));
+    outputArea.setValue(spfmt.reformat(input, indentDepth, compactMode));
   } catch (err) {
     toastr.remove();
     outputArea.setValue(input);
