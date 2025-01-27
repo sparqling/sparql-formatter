@@ -60,13 +60,11 @@ SELECT * WHERE { ?s ?p ?o. ?s ?p2 ?o2 } LIMIT 10</textarea>
                 <div id='formatted-area' class="mt-2 mr-2">
                     <span class="ml-3 subheading">Formatted:</span>
                     <div class="float-right">
-                        <label for="compact-mode" class="mr-1 text-muted" style="cursor: pointer; margin: 0;">compact</label>
-                        <input type="checkbox" id="compact-mode">
-                        &emsp;
-                        <span class="mr-1 text-muted">indent</span>
-                        <select id="indent-depth" class="text-muted rounded" style="width: 75px">
-                            <option>2</option>
-                            <option>4</option>
+                        <select id="formatting-mode" class="text-muted rounded" style="width: 100px">
+                            <option>default</option>
+                            <option>compact</option>
+                            <option>JSON-LD</option>
+                            <option>Turtle</option>
                         </select>
                     </div>
 

@@ -3,11 +3,18 @@ let timerId;
 
 function reformat(event, ui) {
   const input = editor.getValue();
-  const indentDepth = q('#indent-depth').value;
-  const compactMode = q('#compact-mode').checked;
+  const formattingMode = q('#formatting-mode').value;
   try {
     toastr.clear();
-    outputArea.setValue(spfmt.reformat(input, indentDepth, compactMode));
+    if (formattingMode === 'compact') {
+      outputArea.setValue(spfmt.reformat(input, 2, true));
+    } else if (formattingMode === 'JSON-LD') {
+      outputArea.setValue(spfmt.sparql2Jsonld(input, false));
+    } else if (formattingMode === 'Turtle') {
+      outputArea.setValue(spfmt.sparql2Turtle(input, false));
+    } else {
+      outputArea.setValue(spfmt.reformat(input, 2, false));
+    }
   } catch (err) {
     toastr.remove();
     outputArea.setValue(input);
@@ -62,9 +69,7 @@ function onChanged(delta) {
 
 editor.on('change', onChanged);
 
-q('#indent-depth').addEventListener('change', reformat);
-
-q('#compact-mode').addEventListener('change', reformat);
+q('#formatting-mode').addEventListener('change', reformat);
 
 q('#query-select').addEventListener('change', (event) => {
   if (event.target.value === '') {
