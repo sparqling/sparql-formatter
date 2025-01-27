@@ -14,25 +14,25 @@ export function format(syntaxTree, indentDepth = 2) {
   if (syntaxTree.headers) {
     addLine(syntaxTree.headers.join(''));
   }
-  if (syntaxTree.prologue?.length) {
-    syntaxTree.prologue.forEach((p) => {
-      if (p.base) {
-        addLine(`BASE <${p.base}>`);
+  if (syntaxTree.prologue?.decl.length) {
+    syntaxTree.prologue.decl.forEach((p) => {
+      if (p.type === 'BaseDecl') {
+        addLine(`BASE <${p.iriref}>`);
       } else {
-        addLine(`PREFIX ${p.prefix || ''}: <${p.iri}>`);
+        addLine(`PREFIX ${p.pn_prefix || ''}: <${p.iriref}>`);
       }
     });
     addLine('');
   }
 
-  if (syntaxTree.queryBody?.select) {
-    addSelect(syntaxTree.queryBody);
-  } else if (syntaxTree.queryBody?.type === 'construct') {
-    addConstruct(syntaxTree.queryBody);
-  } else if (syntaxTree.queryBody?.type === 'ask') {
-    addAsk(syntaxTree.queryBody);
-  } else if (syntaxTree.queryBody?.type === 'describe') {
-    addDescribe(syntaxTree.queryBody);
+  if (syntaxTree.selectQuery) {
+    addSelect(syntaxTree.selectQuery);
+  } else if (syntaxTree.constructQuery) {
+    addConstruct(syntaxTree.constructQuery);
+  } else if (syntaxTree.askQuery) {
+    addAsk(syntaxTree.askQuery);
+  } else if (syntaxTree.describeQuery) {
+    addDescribe(syntaxTree.describeQuery);
   } else if (syntaxTree.update) {
     for (let i = 0; i < syntaxTree.update.length; i++) {
       if (i > 0) {
@@ -220,12 +220,9 @@ const getGraphRefAll = (graph) => {
 
 const addPatterns = (where, endPos = 0) => {
   increaseIndent();
-  if (where.select) {
-    addSelect(where);
-    if (where.values) {
-      addInlineData(where.values);
-      endPos = where.location.end.offset;
-    }
+  if (where.type === 'SubSelect') {
+    addSubSelect(where);
+    endPos = where.location.end.offset;
   } else if (where.graphPattern) {
     where.graphPattern.forEach((pattern) => {
       addPattern(pattern);
@@ -243,20 +240,34 @@ const addPatterns = (where, endPos = 0) => {
 };
 
 const addSelect = (query) => {
-  const vars = query.select;
-  const pos = query.location.start.offset;
-  let endPos = query.location.end.offset;
+  const pos = query.selectClause.location.start.offset;
+  addLineWithComment(getSelectClause(query.selectClause), pos);
 
-  addLineWithComment(getSelectClause(query), pos);
-
-  const datasetEndPos= addDataset(query.from);
+  let endPos = query.selectClause.location.end.offset;
+  const datasetEndPos= addDataset(query.selectClause.from);
   if (datasetEndPos > endPos) {
     endPos = datasetEndPos;
   }
 
   addLineWithComment('WHERE {', endPos+1);
-  endPos = addPatterns(query.where, endPos);
+  endPos = addPatterns(query.whereClause, endPos);
   addLineWithComment('}', endPos+1);
+
+  addSolutionModifier(query);
+};
+
+const addSubSelect = (query) => {
+  const pos = query.selectClause.location.start.offset;
+  let endPos = query.selectClause.location.end.offset;
+
+  addLineWithComment(getSelectClause(query.selectClause), pos);
+  addLineWithComment('WHERE {', endPos+1);
+  endPos = addPatterns(query.whereClause, endPos);
+  addLineWithComment('}', endPos+1);
+
+  if (query.values) {
+    addInlineData(query.values);
+  }
 
   addSolutionModifier(query);
 };
@@ -336,13 +347,21 @@ const addFromNamed = (graph) => {
 
 const addPattern = (pattern) => {
   offset = pattern.location.start.offset;
+  if (pattern.type === 'SubSelect') {
+    addLine('{');
+    increaseIndent();
+    addSubSelect(pattern);
+    decreaseIndent();
+    addLine('}');
+    return;
+  }
   if (pattern.graphPattern && pattern.graph) {
     addLineWithComment(`GRAPH ${getElem(pattern.graph)} {`, offset);
     const endPos = addPatterns(pattern);
     addLineWithComment('}', endPos+1);
     return;
   }
-  if (pattern.graphPattern || pattern.select) {
+  if (pattern.graphPattern) {
     addLine('{');
     const endPos = addPatterns(pattern);
     addLineWithComment('}', endPos+1);
@@ -387,14 +406,20 @@ const addPattern = (pattern) => {
     addLine(`BIND (${getExpression(pattern.bind)} AS ${getVar(pattern.as)})`);
     return;
   }
-  if (pattern.service) {
+  if (pattern.type === 'ServiceGraphPattern') {
     let silent = ' ';
     if (pattern.silent) {
       silent = ' SILENT ';
     }
     addLine(`SERVICE${silent}${getElem(pattern.service)} {`);
-    const endPos = addPatterns(pattern.pattern);
-    addLineWithComment('}', endPos+1);
+    if (pattern.pattern.type === 'SubSelect') {
+      increaseIndent();
+      addSubSelect(pattern.pattern);
+      decreaseIndent();
+    } else {
+      addPatterns(pattern.pattern);
+    }
+    addLine('}');
     return;
   }
   if (pattern.functionRef) {
@@ -422,7 +447,7 @@ const getOrderClause = (conditions) => {
   let orderConditions = [];
   conditions.forEach((condition) => {
     let oc;
-    if (condition.variable) {
+    if (condition.type === 'Var') {
       oc = getVar(condition);
     } else {
       oc = getExpression(condition);
@@ -450,7 +475,7 @@ const getSelectClause = (query) => {
   }
 
   let i = 0;
-  query.select.forEach((v) => {
+  query.var.forEach((v) => {
     if (select[i].length > 80) {
       i++;
       select[i] = '  ';
@@ -464,7 +489,7 @@ const getSelectClause = (query) => {
 };
 
 const getSelectVar = (v) => {
-  if (v.variable) {
+  if (v.varname) {
     return getVar(v);
   }
   if (v.as) {
@@ -723,7 +748,7 @@ const getElem = (elem, nested = false) => {
   if (Array.isArray(elem)) {
     return elem.map((e) => getElem(e, nested)).join(', ');
   }
-  if (elem.variable) {
+  if (elem.varname) {
     return getVar(elem);
   }
   if (elem.collection) {
@@ -753,7 +778,7 @@ const getElem = (elem, nested = false) => {
     ret += '^';
   }
 
-  if (elem.iriPrefix || elem.iriLocal || elem.iri || elem.a) {
+  if (elem.pn_prefix || elem.pn_local || elem.iriref || elem.a) {
     ret += getUri(elem);
   }
   if (elem.alternative) {
@@ -793,23 +818,23 @@ const getLiteral = (elem) => {
 };
 
 const getUri = (uri) => {
-  if (uri.iri) {
-    return `<${uri.iri}>`;
-  } else if (uri.iriPrefix && uri.iriLocal) {
-    return `${uri.iriPrefix}:${uri.iriLocal}`;
-  } else if (uri.iriPrefix) {
-    return `${uri.iriPrefix}:`;
-  } else if (uri.iriLocal) {
-    return `:${uri.iriLocal}`;
+  if (uri.iriref) {
+    return `<${uri.iriref}>`;
+  } else if (uri.pn_prefix && uri.pn_local) {
+    return `${uri.pn_prefix}:${uri.pn_local}`;
+  } else if (uri.pn_prefix) {
+    return `${uri.pn_prefix}:`;
+  } else if (uri.pn_local) {
+    return `:${uri.pn_local}`;
   } else if (uri.a) {
     return 'a';
   }
 };
 
 const getVar = (variable) => {
-  if (variable.varType === '$') {
-    return '$' + variable.variable;
+  if (variable.varType === 'VAR2') {
+    return '$' + variable.varname;
   } else {
-    return '?' + variable.variable;
+    return '?' + variable.varname;
   }
 };
