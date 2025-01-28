@@ -34,7 +34,11 @@ body {
     top: 3px;
     right: 5px;
     z-index: 999;
-    background: transparent;
+    background: rgba(255,255,255,0.9);
+    display: none;
+}
+.text-container:hover #copy-button {
+    display: block;
 }
 #copy-button:hover {
     background: #eeeeee;
