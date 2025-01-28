@@ -13,7 +13,10 @@ Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 Use the function:
 
 ```
-spfmt(query, indentDepth = 2)
+spfmt.format(query, indentDepth = 2)
+spfmt.compactFormat(query, indentDepth = 2)
+spfmt.sparql2Jsonld(query, indentDepth = 2)
+spfmt.sparql2Turtle(query, indentDepth = 4)
 ```
 * `query`: *string*
 * `indentDepth`: *integer* (>= 0)
@@ -25,7 +28,7 @@ Example:
 ```
 import { spfmt } from 'sparql-formatter';
 
-console.log(spfmt('select * where {?s ?p ?o}'));
+console.log(spfmt.format('select * where {?s ?p ?o}'));
 ```
 
 Output:
