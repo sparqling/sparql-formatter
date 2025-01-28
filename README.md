@@ -10,7 +10,7 @@ Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 ```
 <script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@v0.9.3/dist/main.js'></script>
 ```
-Use the function:
+Use spfmt functions:
 
 ```
 spfmt.format(query, indentDepth = 2)
