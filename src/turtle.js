@@ -1,7 +1,9 @@
 let currentIndent = '';
-let indentUnit = '    ';
+let indentUnit;
 
-export function turtle(syntaxTree) {
+export function turtle(syntaxTree, indentDepth = 4) {
+  indentUnit = ' '.repeat(indentDepth);
+
   let out = '';
   out += '@prefix : <https://purl.org/sparql-formatter/ontology#> .\n\n';
   out += '[]\n' + formatObj(syntaxTree) + ' .' + '\n';
