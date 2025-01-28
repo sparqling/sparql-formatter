@@ -1,14 +1,14 @@
 import { parse } from './parser.js';
 import { parse as parseCompact } from './parser-compact.js';
-import { format } from './formatter.js';
+import { format as formatAst } from './formatter.js';
 import { turtle } from '../src/turtle.js';
 
-const reformat = (sparql, indentDepth = 2) => {
-  return format(parse(sparql), indentDepth);
+const format = (sparql, indentDepth = 2) => {
+  return formatAst(parse(sparql), indentDepth);
 };
 
 const compactFormat = (sparql, indentDepth = 2) => {
-  return format(parseCompact(sparql), indentDepth);
+  return formatAst(parseCompact(sparql), indentDepth);
 };
 
 const sparql2Turtle = (sparql, indentDepth = 2) => {
@@ -26,7 +26,7 @@ function selector(key, value) {
 }
 
 export const spfmt = {
-  reformat,
+  format,
   compactFormat,
   sparql2Turtle,
   sparql2Jsonld

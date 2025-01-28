@@ -13,7 +13,7 @@ function reformat(event, ui) {
     } else if (formattingMode === 'Turtle') {
       outputArea.setValue(spfmt.sparql2Turtle(input, 4));
     } else {
-      outputArea.setValue(spfmt.reformat(input, 2));
+      outputArea.setValue(spfmt.format(input, 2));
     }
   } catch (err) {
     toastr.remove();
