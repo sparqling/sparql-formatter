@@ -21,7 +21,11 @@ function formatObj(obj) {
     } else if (typeof obj[key] === 'object') {
       arr.push(formatProps(key, obj[key]));
     } else {
-      arr.push(currentIndent + `:${key} "${obj[key]}"`);
+      let value = obj[key];
+      if (typeof value === 'string') {
+        value = JSON.stringify(value);
+      }
+      arr.push(currentIndent + `:${key} ${value}`);
     }
   });
   decreaseIndent();
