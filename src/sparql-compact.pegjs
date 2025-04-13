@@ -726,7 +726,12 @@ TriplesBlock = a:TriplesSameSubjectPath b:( WS* '.' WS* TriplesBlock? )?
       const last = a.properties.length - 1;
       if (areEqual(a.properties[last].predicate, b[3].triplePattern[0].properties[0].predicate)) {
         triples[0].properties = a.properties;
-        triples[0].properties[last].objects.push(...b[3].triplePattern[0].properties[0].objects);
+        const lastObject = triples[0].properties[last].objects.length - 1;
+        b[3].triplePattern[0].properties[0].objects.forEach((o) => {
+          if (!areEqual(a.properties[last].objects[lastObject], o)) {
+            triples[0].properties[last].objects.push(o);
+          }
+        });
         triples[0].properties.push(...b[3].triplePattern[0].properties.slice(1));
       } else {
         triples[0].properties = a.properties.concat(b[3].triplePattern[0].properties);
