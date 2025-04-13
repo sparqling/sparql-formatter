@@ -1003,7 +1003,17 @@ PropertyListPathNotEmpty = v:( VerbPath / VerbSimple ) WS* ol:ObjectListPath res
   pairs.push({ predicate: v, objects: ol });
   rest.forEach((r) => {
     if (r[3]) {
-      pairs.push({ predicate: r[3][0], objects: r[3][2] });
+      const last = pairs.length - 1;
+      const lastObject = pairs[last].objects.length - 1;
+      if (areEqual(pairs[last].predicate, r[3][0])) {
+        r[3][2].forEach((o) => {
+          if (! areEqual(pairs[last].objects[lastObject], o)) {
+            pairs[last].objects.push(o);
+          }
+        });
+      } else {
+        pairs.push({ predicate: r[3][0], objects: r[3][2] });
+      }
     }
   });
 
