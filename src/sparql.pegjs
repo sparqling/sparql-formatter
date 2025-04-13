@@ -707,9 +707,11 @@ GroupGraphPatternSub = tb:TriplesBlock? WS* tbs:( GraphPatternNotTriples WS* '.'
 // [55] TriplesBlock ::= TriplesSameSubjectPath ( '.' TriplesBlock? )?
 TriplesBlock = a:TriplesSameSubjectPath b:( WS* '.' WS* TriplesBlock? )?
 {
-  let triples = [a];
+  let triples = [];
   if (b && b[3]) {
-    triples = triples.concat(b[3].triplePattern);
+    triples = [a].concat(b[3].triplePattern);
+  } else {
+    triples = [a];
   }
 
   return {
