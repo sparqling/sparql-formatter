@@ -1070,21 +1070,28 @@ function peg$parse(input, options) {
   }
 };
   var peg$f60 = function(a, b) {
-  let triples = [a];
+  let triples = [];
   if (b && b[3]) {
     if (areEqual(a.subject, b[3].triplePattern[0].subject)) {
       triples = JSON.parse(JSON.stringify(b[3].triplePattern));
       const last = a.properties.length - 1;
       if (areEqual(a.properties[last].predicate, b[3].triplePattern[0].properties[0].predicate)) {
         triples[0].properties = a.properties;
-        triples[0].properties[last].objects = a.properties[last].objects.concat(b[3].triplePattern[0].properties[0].objects);
-        triples[0].properties = triples[0].properties.concat(b[3].triplePattern[0].properties.slice(1));
+        const lastObject = triples[0].properties[last].objects.length - 1;
+        b[3].triplePattern[0].properties[0].objects.forEach((o) => {
+          if (!areEqual(a.properties[last].objects[lastObject], o)) {
+            triples[0].properties[last].objects.push(o);
+          }
+        });
+        triples[0].properties.push(...b[3].triplePattern[0].properties.slice(1));
       } else {
         triples[0].properties = a.properties.concat(b[3].triplePattern[0].properties);
       }
     } else {
       triples = [a].concat(b[3].triplePattern);
     }
+  } else {
+    triples = [a];
   }
 
   return {
