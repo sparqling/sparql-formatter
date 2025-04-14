@@ -1070,9 +1070,11 @@ function peg$parse(input, options) {
   }
 };
   var peg$f60 = function(a, b) {
-  let triples = [a];
+  let triples = [];
   if (b && b[3]) {
-    triples = triples.concat(b[3].triplePattern);
+    triples = [a].concat(b[3].triplePattern);
+  } else {
+    triples = [a];
   }
 
   return {
