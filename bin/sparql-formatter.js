@@ -3,8 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 import { program } from 'commander';
-import { parse } from '../src/sparql-parser.js';
-import { parse as parseCompact } from '../src/sparql-parser-compact.js';
+import { parse as parseSparql } from '../src/sparql-parser.js';
+import { parse as parseSparqlAsCompact } from '../src/sparql-parser-compact.js';
 import { formatAst } from '../src/formatter.js';
 import { turtle } from '../src/turtle.js';
 
@@ -39,9 +39,9 @@ if (program.args.length < 1 && process.stdin.isTTY) {
   let ast;
   try {
     if (opts.compact) {
-      ast = parseCompact(sparql);
+      ast = parseSparqlAsCompact(sparql);
     } else {
-      ast = parse(sparql);
+      ast = parseSparql(sparql);
     }
   } catch (err) {
     if (opts.debug) {
