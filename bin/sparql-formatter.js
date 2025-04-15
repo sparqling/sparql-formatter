@@ -5,7 +5,7 @@ import path from 'path';
 import { program } from 'commander';
 import { parse } from '../src/sparql-parser.js';
 import { parse as parseCompact } from '../src/sparql-parser-compact.js';
-import { format } from '../src/formatter.js';
+import { formatAst } from '../src/formatter.js';
 import { turtle } from '../src/turtle.js';
 
 const opts = program
@@ -60,7 +60,7 @@ if (program.args.length < 1 && process.stdin.isTTY) {
   } else if (opts.turtle) {
     console.log(turtle(ast));
   } else {
-    console.log(format(ast, opts.indent));
+    console.log(formatAst(ast, opts.indent));
   }
 })();
 
