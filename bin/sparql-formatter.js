@@ -3,8 +3,8 @@
 import fs from 'fs';
 import path from 'path';
 import { program } from 'commander';
-import { parse } from '../src/parser.js';
-import { parse as parseCompact } from '../src/parser-compact.js';
+import { parse } from '../src/sparql-parser.js';
+import { parse as parseCompact } from '../src/sparql-parser-compact.js';
 import { format } from '../src/formatter.js';
 import { turtle } from '../src/turtle.js';
 

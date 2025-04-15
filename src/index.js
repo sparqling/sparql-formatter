@@ -1,5 +1,5 @@
-import { parse as parseSparql } from './parser.js';
-import { parse as parseSparqlAsCompact } from './parser-compact.js';
+import { parse as parseSparql } from './sparql-parser.js';
+import { parse as parseSparqlAsCompact } from './sparql-parser-compact.js';
 import { format as formatAst } from './formatter.js';
 import { turtle } from '../src/turtle.js';
 
