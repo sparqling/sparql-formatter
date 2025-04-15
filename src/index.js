@@ -1,22 +1,21 @@
-import { parse } from './parser.js';
-import { parse as parseCompact } from './parser-compact.js';
+import { parse as parseSparql } from './parser.js';
+import { parse as parseSparqlAsCompact } from './parser-compact.js';
 import { format as formatAst } from './formatter.js';
 import { turtle } from '../src/turtle.js';
 
-const format = (sparql, indentDepth = 2) => {
-  return formatAst(parse(sparql), indentDepth);
-};
-
-const compactFormat = (sparql, indentDepth = 2) => {
-  return formatAst(parseCompact(sparql), indentDepth);
-};
-
-const sparql2Turtle = (sparql, indentDepth = 2) => {
-  return turtle(parse(sparql), indentDepth);
-};
-
-const sparql2Jsonld = (sparql, indentDepth = 2) => {
-  return JSON.stringify(parse(sparql), selector, indentDepth);
+const formatSparql = (sparql, formattingMode = 'default', indentDepth = 2) => {
+  switch (formattingMode) {
+    case 'default':
+      return formatAst(parseSparql(sparql), indentDepth);
+    case 'compact':
+      return formatAst(parseSparqlAsCompact(sparql), indentDepth);
+    case 'turtle':
+      return turtle(parseSparql(sparql), indentDepth);
+    case 'jsonld':
+      return JSON.stringify(parseSparql(sparql), selector, indentDepth);
+    default:
+      throw new Error(`Unsupported formatting mode: ${formattingMode}`);
+  }
 };
 
 function selector(key, value) {
@@ -26,10 +25,10 @@ function selector(key, value) {
 }
 
 export const spfmt = {
-  format,
-  compactFormat,
-  sparql2Turtle,
-  sparql2Jsonld
+  parseSparql,
+  parseSparqlAsCompact,
+  formatAst,
+  formatSparql
 };
 
 if (typeof window !== 'undefined') {
