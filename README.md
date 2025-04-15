@@ -8,7 +8,7 @@ Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 
 ## Usage in web pages
 ```
-<script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@v0.9.3/dist/main.js'></script>
+<script src='https://cdn.jsdelivr.net/gh/sparqling/sparql-formatter@v1.0.0/dist/spfmt.js'></script>
 ```
 Use spfmt functions:
 
