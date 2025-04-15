@@ -4,18 +4,18 @@ let currentIndent;
 let indentUnit = '  ';
 let offset = 0;
 
-export function formatAst(syntaxTree, indentDepth = 2) {
+export function formatAst(ast, indentDepth = 2) {
   indentUnit = ' '.repeat(indentDepth);
 
   output = [];
-  comments = syntaxTree.comments;
+  comments = ast.comments;
   currentIndent = '';
 
-  if (syntaxTree.headers) {
-    addLine(syntaxTree.headers.join(''));
+  if (ast.headers) {
+    addLine(ast.headers.join(''));
   }
-  if (syntaxTree.prologue?.decl.length) {
-    syntaxTree.prologue.decl.forEach((p) => {
+  if (ast.prologue?.decl.length) {
+    ast.prologue.decl.forEach((p) => {
       if (p.type === 'BaseDecl') {
         addLine(`BASE <${p.iriref}>`);
       } else {
@@ -25,24 +25,24 @@ export function formatAst(syntaxTree, indentDepth = 2) {
     addLine('');
   }
 
-  if (syntaxTree.selectQuery) {
-    addSelect(syntaxTree.selectQuery);
-  } else if (syntaxTree.constructQuery) {
-    addConstruct(syntaxTree.constructQuery);
-  } else if (syntaxTree.askQuery) {
-    addAsk(syntaxTree.askQuery);
-  } else if (syntaxTree.describeQuery) {
-    addDescribe(syntaxTree.describeQuery);
-  } else if (syntaxTree.update) {
-    for (let i = 0; i < syntaxTree.update.length; i++) {
+  if (ast.selectQuery) {
+    addSelect(ast.selectQuery);
+  } else if (ast.constructQuery) {
+    addConstruct(ast.constructQuery);
+  } else if (ast.askQuery) {
+    addAsk(ast.askQuery);
+  } else if (ast.describeQuery) {
+    addDescribe(ast.describeQuery);
+  } else if (ast.update) {
+    for (let i = 0; i < ast.update.length; i++) {
       if (i > 0) {
         output[output.length - 1] += " ;\n";
       }
-      addUnit(syntaxTree.update[i]);
+      addUnit(ast.update[i]);
     }
   }
-  if (syntaxTree.values) {
-    addInlineData(syntaxTree.values);
+  if (ast.values) {
+    addInlineData(ast.values);
   }
 
   while (comments && comments.length) {
