@@ -19,11 +19,7 @@ spfmt.formatSparql(query, 'jsonld')
 spfmt.formatSparql(query, 'turtle', 4)
 ```
 * `query`: *string*
-* `formattingMode`: *string*, optional (default: `default`)
-  * `default`
-  * `compact`
-  * `turtle`
-  * `jsonld`
+* `formattingMode`: *string* (`default`, `compact`, `turtle`, `jsonld`), optional (default: `default`)
 * `indentDepth`: *integer* (>= 0), optional (default: `2`)
 * return value: *string*
 
