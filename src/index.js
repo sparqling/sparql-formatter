@@ -3,7 +3,7 @@ import { parse as parseSparqlAsCompact } from './sparql-parser-compact.js';
 import { format as formatAst } from './formatter.js';
 import { turtle } from '../src/turtle.js';
 
-const formatSparql = (sparql, formattingMode = 'default', indentDepth = 2) => {
+const format = (sparql, formattingMode = 'default', indentDepth = 2) => {
   switch (formattingMode) {
     case 'default':
       return formatAst(parseSparql(sparql), indentDepth);
@@ -28,7 +28,7 @@ export const spfmt = {
   parseSparql,
   parseSparqlAsCompact,
   formatAst,
-  formatSparql
+  format
 };
 
 if (typeof window !== 'undefined') {

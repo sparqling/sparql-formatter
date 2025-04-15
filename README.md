@@ -13,10 +13,10 @@ Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 Use spfmt functions:
 
 ```
-spfmt.formatSparql(query)
-spfmt.formatSparql(query, 'compact')
-spfmt.formatSparql(query, 'jsonld')
-spfmt.formatSparql(query, 'turtle', 4)
+spfmt.format(query)
+spfmt.format(query, 'compact')
+spfmt.format(query, 'jsonld')
+spfmt.format(query, 'turtle', 4)
 ```
 * `query`: *string*
 * `formattingMode`: *string* (`default`, `compact`, `turtle`, `jsonld`), optional (default: `default`)
@@ -29,7 +29,7 @@ Example:
 ```
 import { spfmt } from 'sparql-formatter';
 
-console.log(spfmt.formatSparql('select * where {?s ?p ?o}'));
+console.log(spfmt.format('select * where {?s ?p ?o}'));
 ```
 
 Output:
