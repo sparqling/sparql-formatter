@@ -13,13 +13,18 @@ Docker: https://hub.docker.com/r/sparqling/sparql-formatter
 Use spfmt functions:
 
 ```
-spfmt.format(query, indentDepth = 2)
-spfmt.compactFormat(query, indentDepth = 2)
-spfmt.sparql2Jsonld(query, indentDepth = 2)
-spfmt.sparql2Turtle(query, indentDepth = 4)
+spfmt.formatSparql(query)
+spfmt.formatSparql(query, 'compact')
+spfmt.formatSparql(query, 'jsonld')
+spfmt.formatSparql(query, 'turtle', 4)
 ```
 * `query`: *string*
-* `indentDepth`: *integer* (>= 0)
+* `formattingMode`: *string*, optional (default: `default`)
+  * `default`
+  * `compact`
+  * `turtle`
+  * `jsonld`
+* `indentDepth`: *integer* (>= 0), optional (default: `2`)
 * return value: *string*
 
 ## Usage in Node.js
