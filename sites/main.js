@@ -7,13 +7,13 @@ function reformat(event, ui) {
   try {
     toastr.clear();
     if (formattingMode === 'compact') {
-      outputArea.setValue(spfmt.compactFormat(input, 2));
+      outputArea.setValue(spfmt.formatSparql(input, 'compact', 2));
     } else if (formattingMode === 'JSON-LD') {
-      outputArea.setValue(spfmt.sparql2Jsonld(input, 2));
+      outputArea.setValue(spfmt.formatSparql(input, 'jsonld', 2));
     } else if (formattingMode === 'Turtle') {
-      outputArea.setValue(spfmt.sparql2Turtle(input, 4));
+      outputArea.setValue(spfmt.formatSparql(input, 'turtle', 4));
     } else {
-      outputArea.setValue(spfmt.format(input, 2));
+      outputArea.setValue(spfmt.formatSparql(input, 'default', 2));
     }
   } catch (err) {
     toastr.remove();
