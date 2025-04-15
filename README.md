@@ -29,7 +29,7 @@ Example:
 ```
 import { spfmt } from 'sparql-formatter';
 
-console.log(spfmt.format('select * where {?s ?p ?o}'));
+console.log(spfmt.formatSparql('select * where {?s ?p ?o}'));
 ```
 
 Output:
