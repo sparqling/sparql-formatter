@@ -4,7 +4,7 @@
 @prefix : <https://purl.org/sparql-formatter/ontology#> .
 
 <https://purl.org/sparql-formatter/ontology>
-    a owl:Ontoloty ;
+    a owl:Ontology ;
     dct:title "SPARQL formatter ontology" ;
     dct:description "An ontology used for formatting SPARQL queries." .
 
