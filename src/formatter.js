@@ -524,8 +524,11 @@ const addTriples = (triples) => {
       addLine('}');
     } else if (t.triplePattern) {
       addTriples(t.triplePattern);
-    } else {
+    } else if (t.properties) {
       addTriple(t);
+    } else {
+      // TriplesNodePath (typically BlankNodePropertyListPath) as subject followed by empty properties
+      addLineWithComment(`[${getBlankNodeProperties(t.subject.blankNodeProperties)}] .`, t.subject.location.start.offset);
     }
   });
 };
@@ -605,6 +608,26 @@ const getProperties = (properties, nested) => {
   });
   ret += `\n${currentIndent}`;
   decreaseIndent();
+  return ret;
+};
+
+const getBlankNodeProperties = (properties) => {
+  if (properties.length === 1) {
+    const prop = properties[0];
+    return ` ${getElem(prop.predicate)} ${getElem(prop.objects)} `;
+  }
+  let ret = '';
+  const indent = currentIndent + ' '.repeat(2);
+  properties.forEach((prop) => {
+    if (ret) {
+      ret += ` ;\n`;
+      ret += `${indent}${getElem(prop.predicate)} ${getElem(prop.objects, true)}`;
+    } else {
+      ret += `\n${indent}`;
+      ret += `${getElem(prop.predicate)} ${getElem(prop.objects, true)}`;
+    }
+  });
+  ret += `\n${currentIndent}`;
   return ret;
 };
 
